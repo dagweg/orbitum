@@ -1,18 +1,19 @@
 {
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc",
+    "build": "typescript src/index.ts --outDir dist",
     "serve": "node dist/index.js"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
+    "@types/node": "^20.12.8",
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
+    "tsc": "^2.0.4",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
-  },
-  "type": "module"
+  }
 }
