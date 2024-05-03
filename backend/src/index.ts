@@ -1,10 +1,23 @@
 import express from "express";
+import connectDB from "./db";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
+
+// Estabilish connection to MongoDB
+connectDB();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
+// Define routes
 app.get("/", (req, res) => {
   res.send("Hello, World!");
+});
+
+app.get("/user", (req, res) => {
+  // TODO
 });
 
 app.listen(port, () => {
