@@ -13,33 +13,68 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Home, MessageCircle, Tv, UserRound, UsersRound } from "lucide-react";
+import {
+  Bell,
+  CircleHelp,
+  Contrast,
+  Home,
+  LogOut,
+  MessageCircle,
+  Settings,
+  Tv,
+  User,
+  UserRound,
+  UsersRound,
+} from "lucide-react";
+import NavItem from "./navitem";
 
 const chats: { title: string; href: string; icon: React.ReactNode }[] = [
   {
     title: "Private",
-    href: "/chat/private",
+    href: "/site/chat/private",
     icon: <UserRound />,
   },
   {
     title: "Group",
-    href: "/chat/group",
+    href: "/site/chat/group",
     icon: <UsersRound />,
   },
   {
     title: "Channel",
-    href: "/chat/channel",
+    href: "/site/chat/channel",
     icon: <Tv />,
+  },
+];
+
+const user: { title: string; href: string; icon: React.ReactNode }[] = [
+  {
+    title: "Settings & Privacy",
+    href: "/site/settings",
+    icon: <Settings />,
+  },
+  {
+    title: "Help & Support",
+    href: "/site/help",
+    icon: <CircleHelp />,
+  },
+  {
+    title: "Display & Accessibility",
+    href: "/site/accessibility",
+    icon: <Contrast />,
+  },
+  {
+    title: "Logout",
+    href: "/site/logout",
+    icon: <LogOut />,
   },
 ];
 
 export default function Navbar() {
   return (
-    <NavigationMenu className="mx-auto bg-red-500 flex justify-between !w-full">
-      <h1>Orbit</h1>
+    <NavigationMenu className="w-fit mx-auto">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
+          <Link href="/site/feed" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               <Home />
             </NavigationMenuLink>
@@ -52,17 +87,38 @@ export default function Navbar() {
           <NavigationMenuContent>
             <ul className="flex flex-col w-[200px] gap-3 p-4  ">
               {chats.map((chat) => (
-                <div
-                  key={chat.title}
-                  className="flex items-center justify-start gap-3"
-                >
+                <NavItem key={chat.title}>
                   {chat.icon}
                   <ListItem
                     key={chat.title}
                     title={chat.title}
                     href={chat.href}
                   ></ListItem>
-                </div>
+                </NavItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <Link href="/site/notifications" legacyBehavior passHref>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <Bell />
+          </NavigationMenuLink>
+        </Link>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>
+            <User />
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              {user.map((items) => (
+                <NavItem key={items.title}>
+                  {items.icon}
+                  <ListItem
+                    key={items.title}
+                    title={items.title}
+                    href={items.href}
+                  ></ListItem>
+                </NavItem>
               ))}
             </ul>
           </NavigationMenuContent>

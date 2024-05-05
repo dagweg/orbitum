@@ -1,9 +1,11 @@
+"use client";
+import { Loader } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import LoaderPage from "../components/loader-page";
 
 export default function Home() {
-  return (
-    <div>
-      <h1>Welcome to Sphere Net</h1>
-    </div>
-  );
+  const router = useRouter();
+  router.push("/auth/register");
+  return <LoaderPage />;
 }
