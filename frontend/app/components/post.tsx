@@ -23,16 +23,15 @@ export default function Post() {
           ></image> */}
       </section>
       <section className="w-full space-y-3">
-        <div className="flex -space-x-3 border-b-2 pb-2">
+        <div className="flex -space-x-2 border-b-2 pb-2">
           {["😂", "👍", "😔"].map((em, i) => {
             // TODO
             const z = 10 - i;
-            const t = `translate-x-[${i * 100}px]`;
             return (
               <span
                 key={i}
-                className={`relative rounded-full ${t} bg-white w-[22px] text-center aspect-square`}
-                style={{ zIndex: z, translate: t }}
+                className={`relative rounded-full  bg-white w-[22px] text-center aspect-square`}
+                style={{ zIndex: z }}
               >
                 {em}
               </span>
