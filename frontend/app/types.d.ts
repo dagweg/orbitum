@@ -3,6 +3,7 @@ export type TSize = "small" | "medium" | "large";
 export type TContactProps = {
   name: string;
   lastMessage: string;
+  onClick: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 export type TChatProps = {
@@ -31,6 +32,11 @@ export type TBackground =
   | "bg-neutral-300";
 
 export type TChatSideBar = {
+  enabled: boolean;
+  enabledStyle: string;
+  disabledStyle: string;
+};
+export type TChatArea = {
   enabled: boolean;
   enabledStyle: string;
   disabledStyle: string;

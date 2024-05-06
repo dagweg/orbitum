@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import chatSideBarReducer, { closeChatSideBar } from "./slices/chatSlice";
+import { chatAreaReducer, chatSideBarReducer } from "./slices/chatSlice";
 
 export const store = configureStore({
   reducer: {
     chatSideBarReducer,
+    chatAreaReducer,
   },
 });
 

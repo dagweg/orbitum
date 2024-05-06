@@ -27,24 +27,9 @@ import {
   UsersRound,
 } from "lucide-react";
 import NavItem from "./navitem";
-
-// const chats: { title: string; href: string; icon: React.ReactNode }[] = [
-//   {
-//     title: "Private",
-//     href: "/site/chat/private",
-//     icon: <UserRound />,
-//   },
-//   {
-//     title: "Group",
-//     href: "/site/chat/group",
-//     icon: <UsersRound />,
-//   },
-//   {
-//     title: "Channel",
-//     href: "/site/chat/channel",
-//     icon: <Tv />,
-//   },
-// ];
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { closeChatArea, openChatSideBar } from "@/lib/redux/slices/chatSlice";
 
 const user: { title: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -70,6 +55,16 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Navbar() {
+  const store = useSelector((state: RootState) => state.chatSideBarReducer);
+  const dispatch = useDispatch<AppDispatch>();
+
+  function handleChatClick() {
+    dispatch(openChatSideBar());
+    if (window.innerWidth <= 950) {
+      dispatch(closeChatArea());
+    }
+  }
+
   return (
     <NavigationMenu className="w-fit mx-auto">
       <NavigationMenuList>
@@ -80,7 +75,7 @@ export default function Navbar() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem onClick={handleChatClick}>
           <Link href="/site/chat" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               <MessageCircle />
