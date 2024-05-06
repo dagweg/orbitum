@@ -16,8 +16,10 @@ app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
-app.get("/user", (req, res) => {
+app.post("/api/user", async (req, res) => {
   // TODO
+  const data = await req.body();
+  console.log("YOURE" + data);
 });
 
 app.listen(port, () => {

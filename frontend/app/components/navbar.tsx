@@ -28,23 +28,23 @@ import {
 } from "lucide-react";
 import NavItem from "./navitem";
 
-const chats: { title: string; href: string; icon: React.ReactNode }[] = [
-  {
-    title: "Private",
-    href: "/site/chat/private",
-    icon: <UserRound />,
-  },
-  {
-    title: "Group",
-    href: "/site/chat/group",
-    icon: <UsersRound />,
-  },
-  {
-    title: "Channel",
-    href: "/site/chat/channel",
-    icon: <Tv />,
-  },
-];
+// const chats: { title: string; href: string; icon: React.ReactNode }[] = [
+//   {
+//     title: "Private",
+//     href: "/site/chat/private",
+//     icon: <UserRound />,
+//   },
+//   {
+//     title: "Group",
+//     href: "/site/chat/group",
+//     icon: <UsersRound />,
+//   },
+//   {
+//     title: "Channel",
+//     href: "/site/chat/channel",
+//     icon: <Tv />,
+//   },
+// ];
 
 const user: { title: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -81,23 +81,11 @@ export default function Navbar() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>
-            <MessageCircle />
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="flex flex-col w-[200px] gap-3 p-4  ">
-              {chats.map((chat) => (
-                <NavItem key={chat.title}>
-                  {chat.icon}
-                  <ListItem
-                    key={chat.title}
-                    title={chat.title}
-                    href={chat.href}
-                  ></ListItem>
-                </NavItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
+          <Link href="/site/chat" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <MessageCircle />
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
         <Link href="/site/notifications" legacyBehavior passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>

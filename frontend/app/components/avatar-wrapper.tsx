@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
-import { TSize } from "../types";
+import { TBackground, TLineClamp, TSize } from "../types";
 import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 
@@ -11,17 +11,27 @@ function AvatarWrapper({
   fallback = <User />,
   name = "",
   date = undefined,
+  lineClamp = "line-clamp-1",
+  background = "bg-transparent",
+  className = "",
+  summary = "",
   size = "small",
 }: {
   src?: string;
   alt?: string;
   name?: string;
   date?: Date | undefined;
+  lineClamp?: TLineClamp;
+  background?: TBackground;
+  className?: string;
+  summary?: string;
   fallback?: React.ReactNode;
   size?: TSize;
 }) {
   return (
-    <div className="flex items-start justify-start gap-2">
+    <div
+      className={`flex items-start justify-start gap-2 ${background} rounded-lg ${className}`}
+    >
       <Avatar
         className={cn(
           size == "small"
@@ -40,14 +50,30 @@ function AvatarWrapper({
       <div
         className={cn(
           "flex flex-col",
-          name.length > 0 || date !== undefined ? "visible" : "hidden"
+          name.length > 0 || date !== undefined || summary.length > 0
+            ? "visible"
+            : "hidden"
         )}
       >
         <span className={cn(name.length == 0 && "hidden")}>{name}</span>
         <span
-          className={cn("text-sm font-light", date === undefined && "hidden")}
+          className={cn(
+            "text-sm font-light",
+            (date === undefined || summary.length > 0) && "hidden"
+          )}
         >
-          {new Date().toDateString().split(" ").slice(1, 4).join(" ")}
+          {date
+            ? date.toDateString()
+            : new Date().toDateString().split(" ").slice(1, 4).join(" ")}
+        </span>
+
+        <span
+          className={cn(
+            `text-sm font-light ${lineClamp} max-w-prose`,
+            summary.length <= 0 && "hidden"
+          )}
+        >
+          {summary}
         </span>
       </div>
     </div>
