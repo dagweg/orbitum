@@ -29,3 +29,9 @@ export type TBackground =
   | "bg-neutral-200"
   | "bg-neutral-100"
   | "bg-neutral-300";
+
+export type TChatSideBar = {
+  enabled: boolean;
+  enabledStyle: string;
+  disabledStyle: string;
+};

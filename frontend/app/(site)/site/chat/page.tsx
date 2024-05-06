@@ -5,22 +5,25 @@ import ChatMessage from "@/app/components/chat-message";
 import Heading from "@/app/components/heading";
 import SelectContact from "@/app/components/select-contact";
 import { Input } from "@/components/ui/input";
+import chatSideBarReducer, {
+  closeChatSideBar,
+  openChatSideBar,
+} from "@/lib/redux/slices/chatSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-
-type TSideBar = {
-  enabled: boolean;
-  enabledStyle: string;
-  disabledStyle: string;
-};
+import { useDispatch, useSelector } from "react-redux";
 
 function Chat() {
-  const [sideBar, setSideBar] = useState<TSideBar>({
-    enabled: true,
-    enabledStyle: "w-[400px]",
-    disabledStyle: "w-0 hidden",
-  });
+  // const [sideBar, setSideBar] = useState<TChatSideBar>({
+  //   enabled: true,
+  //   enabledStyle: "w-[400px]",
+  //   disabledStyle: "w-0 hidden",
+  // });
+
+  const sideBar = useSelector((state: RootState) => state.chatSideBarReducer);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     console.log("Helo");
@@ -33,9 +36,9 @@ function Chat() {
       const innerWidth = e.currentTarget.innerWidth;
 
       if (innerWidth <= 950) {
-        setSideBar({ ...sideBar, enabled: false });
+        dispatch(closeChatSideBar());
       } else {
-        setSideBar({ ...sideBar, enabled: true });
+        dispatch(openChatSideBar());
       }
     }
 

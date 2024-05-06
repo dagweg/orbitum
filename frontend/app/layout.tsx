@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar";
+import { Provider } from "react-redux";
+import { store } from "@/lib/redux/store";
+import ReduxProvider from "./components/providers/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} h-screen w-screen`}>
-        <main className="h-full w-full">{children}</main>
+        <ReduxProvider>
+          <main className="h-full w-full">{children}</main>
+        </ReduxProvider>
       </body>
     </html>
   );
