@@ -66,7 +66,7 @@ export default function Navbar() {
   }
 
   return (
-    <NavigationMenu className="w-fit mx-auto">
+    <NavigationMenu className="w-fit mx-auto p-2">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/site/feed" legacyBehavior passHref>

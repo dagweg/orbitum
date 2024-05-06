@@ -4,7 +4,7 @@ function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <div className="w-full h-full bg-neutral-300">{children}</div>
+      <div className="w-full h-full bg-neutral-50">{children}</div>
     </>
   );
 }

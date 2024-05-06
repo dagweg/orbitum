@@ -57,7 +57,7 @@ function ChatSideBar() {
   return (
     <div
       className={cn(
-        `h-full border-r-[1px] border-neutral-600 bg-white p-2`,
+        `h-full  bg-white p-2`,
         sideBar.enabled ? `${sideBar.enabledStyle}` : `${sideBar.disabledStyle}`
       )}
     >
