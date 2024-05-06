@@ -9,18 +9,27 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
+import { ChangeEvent, useState } from "react";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.chatAreaReducer);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  function handleTextAreaChange() {}
+  const [hasStartedTyping, setHasStartedTyping] = useState(false);
+
+  function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    if (e.target.value.length > 0) {
+      setHasStartedTyping(true);
+    } else {
+      setHasStartedTyping(false);
+    }
+  }
 
   return (
     <div
       className={cn(
-        "flex-1 flex flex-col h-full w-full bg-neutral-100",
+        "flex-1 flex flex-col h-full w-full max-w-[1000px] mx-auto bg-neutral-100 p-4",
         chatArea.enabled
           ? `${chatArea.enabledStyle}`
           : `${chatArea.disabledStyle}`
@@ -31,7 +40,11 @@ function ChatArea() {
           name="Dagmawi Tefera"
           message="Hey how are you doing Hey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doing Hey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doing"
         />
-        <AvatarWrapper name="You" summary="I'm doing great... you?  " />
+        <ChatMessage
+          name="You"
+          sender="you"
+          message="I'm doing great. You? 😁"
+        />
       </section>
       <section className="h-fit sticky bottom-0 w-full flex flex-col-reverse">
         <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-400">
@@ -40,11 +53,10 @@ function ChatArea() {
             maxRows={10}
             className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar resize-none"
             placeholder="Type a message"
-            onChange={handleTextAreaChange}
+            onChange={(e) => handleTextAreaChange(e)}
           />
           <Smile />
-          <Mic />
-          {/* <SendHorizontal className="" /> */}
+          {hasStartedTyping ? <SendHorizontal /> : <Mic />}
         </div>
       </section>
     </div>

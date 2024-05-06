@@ -6,9 +6,30 @@ export type TContactProps = {
   onClick: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
+type TSender = "you" | "default";
+type TChatType = "default" | "private" | "group" | "channel";
+
 export type TChatProps = {
   name: string;
   message: string;
+  sender?: TSender;
+  chatType?: TChatType;
+};
+
+export type TAvatarWrapper = {
+  src?: string;
+  alt?: string;
+  name?: string;
+  date?: Date | undefined;
+  lineClamp?: TLineClamp;
+  background?: TBackground;
+  className?: string;
+  summary?: string;
+  fallback?: React.ReactNode;
+  noavatar?: boolean;
+  size?: TSize;
+  sender?: TSender;
+  chatType?: TChatType;
 };
 
 export type TLineClamp =
