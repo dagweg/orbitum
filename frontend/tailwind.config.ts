@@ -10,6 +10,9 @@ const config = {
   ],
   prefix: "",
   theme: {
+    fontFamily: {
+      lemonMilk: ["var(--font-lemonmilk)"],
+    },
     container: {
       center: true,
       padding: "2rem",

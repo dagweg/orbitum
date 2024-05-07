@@ -17,6 +17,7 @@ import {
   Bell,
   CircleHelp,
   Contrast,
+  Divide,
   Home,
   LogOut,
   MessageCircle,

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "@next/font/local";
 import "./globals.css";
 import Navbar from "./components/navbar";
 import { Provider } from "react-redux";
@@ -7,6 +8,15 @@ import { store } from "@/lib/redux/store";
 import ReduxProvider from "./components/providers/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
+const lemonMilk = localFont({
+  src: [
+    {
+      path: "../public/fonts/LEMONMILK-Regular.otf",
+      weight: "400",
+    },
+  ],
+  variable: "--font-lemonmilk",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-screen w-screen`}>
+      <body
+        className={`${inter.className} ${lemonMilk.variable} h-screen w-screen`}
+      >
         <ReduxProvider>
           <main className="h-full w-full">{children}</main>
         </ReduxProvider>

@@ -24,9 +24,7 @@ function AvatarWrapper({
   return (
     <div
       className={cn(
-        `flex items-start justify-start gap-2 ${background}  rounded-lg ${className}`,
-        sender === "you" && "border-r-2 border-blue-200 rounded-r-none",
-        sender === "default" && "border-l-2 border-orange-200 rounded-l-none"
+        `flex items-start justify-start gap-2 ${background}  rounded-lg ${className}`
       )}
     >
       {!noavatar && (
