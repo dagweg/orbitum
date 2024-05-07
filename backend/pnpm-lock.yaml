@@ -32,6 +32,9 @@ dependencies:
   typescript:
     specifier: ^5.4.5
     version: 5.4.5
+  zod:
+    specifier: ^3.23.7
+    version: 3.23.7
 
 devDependencies:
   ts-node:
@@ -1204,3 +1207,7 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
     dev: true
+
+  /zod@3.23.7:
+    resolution: {integrity: sha512-NBeIoqbtOiUMomACV/y+V3Qfs9+Okr18vR5c/5pHClPpufWOrsx8TENboDPe265lFdfewX2yBtNTLPvnmCxwog==}
+    dev: false
