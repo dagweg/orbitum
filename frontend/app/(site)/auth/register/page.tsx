@@ -1,9 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,35 +12,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { env } from "process";
 import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import { z } from "zod";
+import { TUserSchema } from "@val/user.validation";
+import { API_HOST } from "@/app/config/apiConfig";
 
 function Register() {
-  const form = useForm();
+  const form = useForm<TUserSchema>({});
   const router = useRouter();
 
   function onSubmit() {
-    fetch(`https://localhost:5000/api/user`, {
+    fetch(`${API_HOST}/api/v1/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(form.getValues()),
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(async (res) => {
+        const data = await res.json();
         console.log(data);
+        if (res.ok) {
+          router.push("/auth/otp");
+        } else {
+          // form.
+        }
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
       });
   }
 
   function register() {
-    router.push("/auth/otp");
+    // router.push("/auth/otp");
   }
 
   return (
@@ -54,19 +56,20 @@ function Register() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="userName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input placeholder="Username" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="firstname"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Firstname</FormLabel>
@@ -81,7 +84,7 @@ function Register() {
             />
             <FormField
               control={form.control}
-              name="Lastname"
+              name="lastName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Lastname</FormLabel>
@@ -111,7 +114,7 @@ function Register() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="passWord"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
@@ -123,7 +126,7 @@ function Register() {
             />
             <FormField
               control={form.control}
-              name="cpassword"
+              name="confirmPassWord"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>

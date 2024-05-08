@@ -62,3 +62,16 @@ export type TChatArea = {
   enabledStyle: string;
   disabledStyle: string;
 };
+
+// Zod Return Type
+export type TZodReturn = {
+  errors: [
+    {
+      code: string;
+      expected: string;
+      message: string;
+      path: string[];
+      recieved: string;
+    }
+  ];
+};
