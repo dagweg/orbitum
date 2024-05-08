@@ -1,19 +1,20 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import express from "express";
 import { User } from "../../models/user.model";
-import { validate_user } from "../../validators/user.validation";
+import { validateCredentials } from "../../validators/user.validation";
 
-export default function user_route_handler(): Router {
+export default function userRouteHandler(): Router {
   const router = express.Router();
+
   router.get("/", (req, res) => {
     res.send("hi");
   });
 
-  router.post("/", validate_user, register_user);
+  router.post("/", validateCredentials, registerUser);
 
   return router;
 }
 
-function register_user(req: Request, res: Response) {
-  typeof User;
+export function registerUser(req: Request, res: Response) {
+  res.send("you have been registered successfully");
 }

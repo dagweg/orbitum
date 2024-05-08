@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "d:/Projects/sphere-net/",
     "strict": true,
     "strictNullChecks": true,
     "esModuleInterop": true,

@@ -5,6 +5,7 @@ import { Settings } from "./settings.model";
 const userSchema = new mongoose.Schema({
   userName: { type: String, unique: true, require: true },
   firstName: { type: String, required: true },
+  passWord: { type: String, required: true },
   lastName: { type: String, require: true },
   phoneNumber: { type: String },
   profileUrl: { type: String },
