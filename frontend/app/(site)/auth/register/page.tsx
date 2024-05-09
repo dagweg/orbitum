@@ -15,28 +15,68 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { z } from "zod";
-import { TUserSchema } from "@val/user.validation";
+import { TUserSchema, userSchemaValidator } from "@val/user.validation";
 import { API_HOST } from "@/app/config/apiConfig";
+import { useEffect, useState } from "react";
+import { error } from "console";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { Loader } from "lucide-react";
+import Spinner from "@/app/components/spinner";
+
+type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
 function Register() {
-  const form = useForm<TUserSchema>({});
+  const schema = userSchemaValidator;
+  const form = useForm<TUserSchema>({
+    defaultValues: {
+      userName: "Dagmawi",
+      firstName: "Dagmawi",
+      lastName: "Tefera",
+      passWord: "abcd1234@A",
+      phoneNumber: "0993508272",
+      confirmPassWord: "abcd1234@A",
+      email: "dagtef@",
+    },
+  });
   const router = useRouter();
 
-  function onSubmit() {
+  const [errors, setErrors] = useState<TRegisterError>();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
+  function register() {
+    setLoading(true);
+
+    const formValues = form.getValues();
     fetch(`${API_HOST}/api/v1/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(form.getValues()),
+      body: JSON.stringify(formValues),
     })
       .then(async (res) => {
         const data = await res.json();
-        console.log(data);
+
+        setLoading(false);
+
         if (res.ok) {
           router.push("/auth/otp");
         } else {
-          // form.
+          const errz: { [key: string]: z.ZodIssue } = {};
+          for (const error of data.errors) {
+            const e = error as z.ZodIssue;
+            errz[(error as z.ZodIssue).path[0] as string] = e;
+            console.log(error);
+          }
+          if (formValues.passWord !== formValues.confirmPassWord)
+            errz["confirmPassWord"].message = "Passwords don't match";
+          setErrors(errz);
         }
       })
       .catch((e: Error) => {
@@ -44,16 +84,15 @@ function Register() {
       });
   }
 
-  function register() {
-    // router.push("/auth/otp");
-  }
-
   return (
-    <div className="flex flex-col justify-center h-full">
-      <div className="min-w-[400px] max-w-[500px] border-2 border-neutral-400 p-10 mx-auto rounded-lg">
+    <div className="flex flex-col items-center mx-auto h-full p-4 w-full sm:w-fit">
+      <div className="w-full sm:w-fit border-2  duration-300 border-neutral-200 p-10 mx-auto rounded-md">
         <h1 className="text-4xl font-bold  mb-4">Register</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(register)}
+            className="relative flex flex-col px-2  woverflow-y-scroll no-scrollbar"
+          >
             <FormField
               control={form.control}
               name="userName"
@@ -63,7 +102,7 @@ function Register() {
                   <FormControl>
                     <Input placeholder="Username" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{errors?.userName?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -79,6 +118,7 @@ function Register() {
                   <FormDescription>
                     This is your public display name.
                   </FormDescription>
+                  <FormMessage>{errors?.firstName?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -94,6 +134,7 @@ function Register() {
                   <FormDescription>
                     This is your public display name.
                   </FormDescription>
+                  <FormMessage>{errors?.lastName?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -109,6 +150,7 @@ function Register() {
                   <FormDescription>
                     Your email won&apos;t be displayed
                   </FormDescription>
+                  <FormMessage>{errors?.email?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -121,6 +163,7 @@ function Register() {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
+                  <FormMessage>{errors?.passWord?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -137,12 +180,30 @@ function Register() {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage>{errors?.confirmPassWord?.message}</FormMessage>
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phonenumber</FormLabel>
+                  <FormControl>
+                    <PhoneInput
+                      value={field.value as string}
+                      onBlur={field.onBlur}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors?.phoneNumber?.message}</FormMessage>
+                </FormItem>
+              )}
+            ></FormField>
             <div className="flex flex-col gap-2">
               <Button type="submit" onClick={register}>
-                Register
+                {loading ? <Spinner /> : "Register"}
               </Button>
               <p>
                 Already have an account? <Link href="/auth/login">Login</Link>
