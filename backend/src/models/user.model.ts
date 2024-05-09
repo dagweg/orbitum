@@ -7,8 +7,10 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   passWord: { type: String, required: true },
   lastName: { type: String, require: true },
-  phoneNumber: { type: String },
+  phoneNumber: { type: String, unique: true },
   profileUrl: { type: String },
+  otp: { type: String },
+  otpExpiry: { type: Date },
   settings: {
     type: ObjectId,
     ref: Settings,
