@@ -6,6 +6,7 @@ import Navbar from "./components/navbar";
 import { Provider } from "react-redux";
 import { store } from "@/lib/redux/store";
 import ReduxProvider from "./components/providers/ReduxProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const lemonMilk = localFont({
@@ -35,6 +36,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <main className="h-full w-full">{children}</main>
+          <Toaster />
         </ReduxProvider>
       </body>
     </html>

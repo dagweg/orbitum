@@ -27,7 +27,6 @@ import Spinner from "@/app/components/spinner";
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
 function Register() {
-  const schema = userSchemaValidator;
   const form = useForm<TUserSchema>({
     defaultValues: {
       userName: "Dagmawi",
@@ -45,10 +44,6 @@ function Register() {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   function register() {
     setLoading(true);
 
@@ -64,9 +59,10 @@ function Register() {
         const data = await res.json();
 
         setLoading(false);
-
-        if (res.ok) {
-          router.push("/auth/otp");
+        if (res.status === 200) {
+          console.log("Success" + data.token);
+          document.cookie = `token=${data.token}; Secure; HttpOnly`;
+          router.push(`/auth/otp?jwt=${data.token}`);
         } else {
           const errz: { [key: string]: z.ZodIssue } = {};
           for (const error of data.errors) {
@@ -80,7 +76,7 @@ function Register() {
         }
       })
       .catch((e: Error) => {
-        console.log(e.message);
+        console.log("Error" + e.message);
       });
   }
 
