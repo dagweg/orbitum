@@ -60,6 +60,8 @@ function Register() {
 
   const dialogRef = useRef<HTMLButtonElement>(null);
 
+  const tokenRef = useRef("");
+
   function register() {
     setLoading(true);
 
@@ -75,15 +77,19 @@ function Register() {
       .then(async (res) => {
         const data = await res.json();
         setLoading(false);
-
+        tokenRef.current = data.token;
+        console.log(data);
         if (res.status === 200) {
           console.log("Success" + data.token);
-          router.push(`/auth/otp?jwt=${data.token}`);
+          redirectToOtpPage();
         } else if (res.status === 409) {
           toast({
             title: "An error has occured",
             description: data.message,
           });
+          if (!data.verified) {
+            dialogRef.current?.click();
+          }
         } else if (res.status === 400) {
           const errz: { [key: string]: z.ZodIssue } = {};
           for (const error of data.errors) {
@@ -101,6 +107,11 @@ function Register() {
         console.log("Error" + e);
       });
   }
+
+  const redirectToOtpPage = () => {
+    console.log("again check" + tokenRef.current);
+    router.push(`/auth/otp?jwt=${tokenRef.current}`);
+  };
 
   return (
     <div className="flex flex-col items-center mx-auto h-full p-4 w-full sm:w-fit">
@@ -238,15 +249,20 @@ function Register() {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  An unverified account has been found!
+                </AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  We have found an account with the following credentials. Click
+                  continue if you want us to send you an otp so that you get
+                  verified and start using our platform.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <AlertDialogAction onClick={redirectToOtpPage}>
+                  Continue
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

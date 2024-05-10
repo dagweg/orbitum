@@ -28,17 +28,24 @@ export default function OtpPage() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetch(`${API_HOST}/api/v1/token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: params.get("jwt") }),
-    }).then(async (res) => {
-      const data = await res.json();
+    async function fetchToken() {
+      const response = await fetch(`${API_HOST}/api/v1/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: params.get("jwt") }),
+      });
+      if (!response.ok) {
+        router.push("/auth/register");
+      }
+
+      const data = await response.json();
       setEmail(data.email);
-    });
-  }, [params]);
+    }
+
+    fetchToken();
+  }, [params, router]);
 
   function handleOtpChange(s: string) {
     console.log(s);
