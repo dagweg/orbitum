@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { User } from "../models/user.model";
 
 export function tokenRouteHandler() {
   const router = express.Router();
@@ -22,6 +23,18 @@ export async function validateToken(req: Request, res: Response) {
 
     if (!decoded) {
       return res.status(403).json({ message: "Invalid token" });
+    }
+
+    const user = await User.findOne({
+      email: (decoded as { email: string }).email,
+    });
+
+    if (!user) {
+      return res.status(500).json({ message: "User find query error." });
+    }
+
+    if (user.verified) {
+      return res.status(403).json({ message: "Invalid Token" });
     }
 
     return res

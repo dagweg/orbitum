@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   passWord: { type: String, required: true },
   phoneNumber: { type: String, unique: true },
   profileUrl: { type: String },
-  otp: { type: String },
+  otp: { type: String, default: null },
   otpExpiry: { type: Date },
   verified: { type: Boolean, default: false },
   settings: {

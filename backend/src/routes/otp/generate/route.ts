@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 /**
  *
- * @param req {token, email}
+ * @param req {token}
  * @param res
  * @param next
  * @returns
@@ -65,10 +65,11 @@ export async function sendOtp(req: Request, res: Response) {
         email,
       },
       {
-        otp,
-        otpExpiry,
-      },
-      { new: true }
+        $set: {
+          otp,
+          otpExpiry,
+        },
+      }
     );
 
     if (!user) {

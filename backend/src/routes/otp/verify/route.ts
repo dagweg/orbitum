@@ -52,6 +52,23 @@ export async function verifyOTP(req: Request, res: Response) {
       });
     }
 
+    // Expire the otp and change user status to verified
+    user = await User.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          otpExpiry: new Date(Date.now() - 1000 * 60 * 60 * 24),
+          verified: true,
+        },
+      }
+    );
+
+    if (!user) {
+      return res
+        .status(500)
+        .json({ message: "Problem with otp expiry & verification" });
+    }
+
     if (user.otp === inputOtp)
       return res.status(200).json({ message: "OTP verified successfully" });
 
