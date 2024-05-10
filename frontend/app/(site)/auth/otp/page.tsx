@@ -123,17 +123,28 @@ export default function OtpPage() {
   }
 
   function resendOTP() {
-    toast({
-      description:
-        "We have resent an OTP please check your email and try again.",
-    });
-
-    fetch(`${API_HOST}/api/v1/user/otp`).then(async (res) => {
+    fetch(`${API_HOST}/api/v1/otp/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+        inputOtp: otp,
+      }),
+    }).then(async (res) => {
       const data = await res.json();
       if (res.ok) {
-        // OTP sent
+        toast({
+          description:
+            "We have resent an OTP please check your email and try again.",
+        });
       } else {
-        // Handle error
+        toast({
+          description:
+            "We were unable to send you an OTP at this time. Please try again later.",
+          variant: "destructive",
+        });
       }
     });
   }
