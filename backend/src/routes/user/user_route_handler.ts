@@ -7,40 +7,20 @@ import {
 } from "../../validators/user.validation";
 import { sendMail } from "../../utils/resend";
 import { generateOTP } from "../../utils/otp";
+import { sendOtp, validateToken } from "../otp/otpRouteHandler";
+import { sendEmail } from "../../utils/email";
+import { User } from "../../models/user.model";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
 
-  router
-    .get("/", (req, res) => {
-      res.send("hi");
-    })
-    .post("/", validateRegistrationCredentials, registerUser);
+  router.get("/", (req, res) => {
+    res.send("hi");
+  });
+
+  router.post("/", validateRegistrationCredentials, registerUser);
 
   return router;
-}
-
-export async function registerUser(req: Request, res: Response) {
-  try {
-    let userData = req.body as TUserSchema;
-    let { otp, otpExpiry } = generateOTP();
-
-    console.log(otp + " and " + otpExpiry);
-
-    const token = jwt.sign(
-      { email: userData.email },
-      process.env.TOKEN_KEY as string,
-      {
-        expiresIn: "1800s",
-      }
-    );
-    res.status(200).json({
-      message: "OTP Has been sent",
-      token,
-    });
-  } catch (error) {
-    res.status(400).send((error as Error).message);
-  }
 }
 
 // middleware
@@ -58,5 +38,53 @@ export function validateRegistrationCredentials(
     next();
   } catch (error) {
     throw new Error(error as string);
+  }
+}
+
+export async function registerUser(req: Request, res: Response) {
+  try {
+    let userData = req.body as TUserSchema;
+
+    let { otp, otpExpiry } = generateOTP();
+
+    const token = jwt.sign(
+      { email: userData.email },
+      process.env.TOKEN_KEY as string,
+      {
+        expiresIn: "1800s",
+      }
+    );
+
+    let user = await User.findOne({ email: userData.email });
+
+    if (user) {
+      res.status(409).json({ message: "User already exists. Please login!" });
+    }
+
+    // Create user
+    user = await User.create({
+      ...userData,
+      otp,
+      otpExpiry,
+    });
+
+    console.log(user);
+
+    // Send OTP
+    await sendEmail(
+      userData.email,
+      "Account Verification OTP",
+      `<p>Thanks for registering to Orbitum.<br>Here is your OTP: <strong>${otp}</strong>.<br> It is to expire after ${Math.abs(
+        new Date().getHours() - otpExpiry.getHours()
+      )} hours at ${otpExpiry}</p>`
+    );
+
+    res.status(200).json({
+      message: "OTP Has been sent",
+      token,
+    });
+  } catch (error) {
+    console.log("ERROR", error);
+    res.status(400).send((error as Error).message);
   }
 }

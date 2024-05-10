@@ -1,16 +1,19 @@
 import { ObjectId } from "mongodb";
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 import { Settings } from "./settings.model";
+import { boolean } from "zod";
 
 const userSchema = new mongoose.Schema({
   userName: { type: String, unique: true, require: true },
+  email: { type: String, unique: true },
   firstName: { type: String, required: true },
-  passWord: { type: String, required: true },
   lastName: { type: String, require: true },
+  passWord: { type: String, required: true },
   phoneNumber: { type: String, unique: true },
   profileUrl: { type: String },
   otp: { type: String },
   otpExpiry: { type: Date },
+  verified: { type: Boolean, default: false },
   settings: {
     type: ObjectId,
     ref: Settings,
@@ -47,4 +50,5 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-export const User = mongoose.model("User", userSchema);
+type UserDocument = InferSchemaType<typeof userSchema>;
+export const User = mongoose.model<UserDocument>("User", userSchema);
