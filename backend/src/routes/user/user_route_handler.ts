@@ -55,10 +55,32 @@ export async function registerUser(req: Request, res: Response) {
       }
     );
 
-    let user = await User.findOne({ email: userData.email });
+    let user = await User.findOne({
+      $or: [
+        { email: userData.email },
+        { userName: userData.userName },
+        { phoneNumber: userData.phoneNumber },
+      ],
+    });
 
     if (user) {
-      res.status(409).json({ message: "User already exists. Please login!" });
+      let response = {
+        message: "",
+        verified: user.verified,
+        token,
+      };
+      if (user.email === userData.email) {
+        response.message =
+          "User with the specified email already exists. Please login!";
+      } else if (user.userName === userData.userName) {
+        response.message =
+          "User with the specified username already exists. Please login!";
+      } else if (user.phoneNumber === userData.phoneNumber) {
+        response.message =
+          "User with the specified phone number already exists. Please login!";
+      }
+
+      return res.status(409).json(response);
     }
 
     // Create user
@@ -79,12 +101,12 @@ export async function registerUser(req: Request, res: Response) {
       )} hours at ${otpExpiry}</p>`
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "OTP Has been sent",
       token,
     });
   } catch (error) {
     console.log("ERROR", error);
-    res.status(400).send((error as Error).message);
+    return res.status(400).send({ error });
   }
 }
