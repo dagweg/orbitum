@@ -5,9 +5,8 @@ import {
   TUserSchema,
   userSchemaValidator,
 } from "../../validators/user.validation";
-import { sendMail } from "../../utils/resend";
+import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
-import { sendOtp, validateToken } from "../otp/otpRouteHandler";
 import { sendEmail } from "../../utils/email";
 import { User } from "../../models/user.model";
 
@@ -92,14 +91,7 @@ export async function registerUser(req: Request, res: Response) {
 
     console.log(user);
 
-    // Send OTP
-    await sendEmail(
-      userData.email,
-      "Account Verification OTP",
-      `<p>Thanks for registering to Orbitum.<br>Here is your OTP: <strong>${otp}</strong>.<br> It is to expire after ${Math.abs(
-        new Date().getHours() - otpExpiry.getHours()
-      )} hours at ${otpExpiry}</p>`
-    );
+    await sendOtpEmail(userData.email, otp, otpExpiry);
 
     return res.status(200).json({
       message: "OTP Has been sent",

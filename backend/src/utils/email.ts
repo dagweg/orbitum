@@ -29,3 +29,20 @@ export async function sendEmail(to: string, subject: string, html: string) {
     console.log((error as Error).message);
   }
 }
+
+export async function sendOtpEmail(
+  recieverEmail: string,
+  otp: string,
+  otpExpiry: Date
+) {
+  const expiryInMilliseconds = otpExpiry.getTime() - new Date().getTime();
+
+  if (expiryInMilliseconds <= 0)
+    throw new Error("OTP has already expired. Please set another OTP");
+
+  const expiryHours = Math.round(expiryInMilliseconds / (1000 * 60 * 60));
+
+  const emailBody = `<p>Thanks for registering to Orbitum.<br>Here is your OTP: <strong>${otp}</strong>.<br> It is to expire after ${expiryHours} hours at ${otpExpiry.toLocaleString()}</p>`;
+
+  await sendEmail(recieverEmail, "Account Verification OTP", emailBody);
+}

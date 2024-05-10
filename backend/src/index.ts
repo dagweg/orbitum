@@ -5,6 +5,7 @@ import userRouteHandler from "./routes/user/user_route_handler";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { tokenRouteHandler } from "./routes/tokenRouteHandler";
+import { otpRouteHandler } from "./routes/otp/otpRouteHandler";
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // Define routes
 app.use("/", router);
 app.use("/api/v1/user", userRouteHandler());
+app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
 
 app.listen(port, () => {

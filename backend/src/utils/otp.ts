@@ -5,6 +5,7 @@ export function generateOTP(
   hours: number = 7
 ): { otp: string; otpExpiry: Date } {
   let otp: string = "";
+
   for (let i = 0; i < len; i++) {
     otp += Math.floor(Math.random() * 10);
   }

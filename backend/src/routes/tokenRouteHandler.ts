@@ -7,24 +7,28 @@ export function tokenRouteHandler() {
   return router;
 }
 
-function validateToken(req: Request, res: Response) {
+export async function validateToken(req: Request, res: Response) {
   try {
     const token = req.body.token;
+
     if (!token) {
-      return res.sendStatus(401);
+      return res.status(400).json({ message: "Token is required" });
     }
-    jwt.verify(
+
+    const decoded = jwt.verify(
       token as string,
-      process.env.TOKEN_KEY as string,
-      (err, decoded) => {
-        if (err) {
-          return res.sendStatus(403);
-        }
-        return res.status(200).send(decoded);
-      }
+      process.env.TOKEN_KEY as string
     );
+
+    if (!decoded) {
+      return res.status(403).json({ message: "Invalid token" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Token is Valid!", ...(decoded as {}) });
   } catch (error) {
     console.log((error as Error).message);
-    res.send(500).json({ error });
+    return res.status(500).json({ error });
   }
 }
