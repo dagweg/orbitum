@@ -11,7 +11,18 @@ import {
 } from "@/components/ui/input-otp";
 import { Toast } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { ToastProvider } from "@radix-ui/react-toast";
+import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -24,9 +35,15 @@ export default function OtpPage() {
   const resendRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
   const params = useSearchParams();
+  const token = params.get("jwt");
 
   const [email, setEmail] = useState("");
+  const [verified, setVerified] = useState(false);
+  const dialogRef = useRef<HTMLButtonElement>(null);
 
+  /**
+   *  Handling token verification & authorization
+   */
   useEffect(() => {
     async function fetchToken() {
       const response = await fetch(`${API_HOST}/api/v1/token`, {
@@ -34,10 +51,11 @@ export default function OtpPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: params.get("jwt") }),
+        body: JSON.stringify({ token }),
       });
       if (!response.ok) {
         router.push("/auth/register");
+        return;
       }
 
       const data = await response.json();
@@ -45,35 +63,50 @@ export default function OtpPage() {
     }
 
     fetchToken();
-  }, [params, router]);
+  }, [router, token]);
 
-  function handleOtpChange(s: string) {
-    console.log(s);
-    setOtp(s);
+  /**
+   * Handle Otp Submit validation
+   * @param inputOtp
+   */
+  function handleOtpChange(inputOtp: string) {
+    console.log(inputOtp);
+    setOtp(inputOtp);
 
-    if (s.length === 6) {
+    if (inputOtp.length === 6) {
       console.log(otp);
       setLoading(true);
       goBackRef.current?.setAttribute("disabled", "");
       resendRef.current?.setAttribute("disabled", "");
 
-      setTimeout(() => {
+      fetch(`${API_HOST}/api/v1/otp/verify`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          inputOtp,
+        }),
+      }).then(async (res) => {
+        const data = await res.json();
         setLoading(false);
         goBackRef.current?.removeAttribute("disabled");
         resendRef.current?.removeAttribute("disabled");
-      }, 2000);
-      fetch(`${API_HOST}/api/v1/otp/`).then(async (res) => {
-        const data = await res.json();
-        setTimeout(() => {
-          setLoading(false);
-          goBackRef.current?.removeAttribute("disable");
-          resendRef.current?.removeAttribute("disable");
-        }, 2000);
 
-        if (res.ok) {
-          // Registration successful. Login
-        } else {
-          // Handle invalid otp
+        switch (res.status) {
+          case 401:
+            toast({
+              description: "You have entered a wrong OTP. Please try again",
+              variant: "destructive",
+            });
+            break;
+          case 200:
+            setVerified(true);
+            toast({
+              description: "Verification Complete.",
+            });
+            dialogRef.current?.click();
         }
       });
     }
@@ -105,6 +138,10 @@ export default function OtpPage() {
     });
   }
 
+  function redirectToLogin() {
+    router.push("/auth/login");
+  }
+
   return (
     <div className="flex flex-col items-center justify-center p-4 h-full gap-4">
       <h1 className="font-bold text-4xl">Verify your account</h1>
@@ -116,7 +153,7 @@ export default function OtpPage() {
         <InputOTP
           maxLength={6}
           value={otp}
-          onChange={(s) => handleOtpChange(s)}
+          onChange={(inputOtp) => handleOtpChange(inputOtp)}
           ref={otpRef}
         >
           {loading ? (
@@ -124,15 +161,33 @@ export default function OtpPage() {
           ) : (
             <>
               <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
+                <InputOTPSlot
+                  index={0}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
+                <InputOTPSlot
+                  index={1}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
+                <InputOTPSlot
+                  index={2}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
               </InputOTPGroup>
               <InputOTPSeparator />
               <InputOTPGroup>
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
+                <InputOTPSlot
+                  index={3}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
+                <InputOTPSlot
+                  index={4}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
+                <InputOTPSlot
+                  index={5}
+                  className={cn(verified && "border-green-500 bg-green-50")}
+                />
               </InputOTPGroup>
             </>
           )}
@@ -150,9 +205,29 @@ export default function OtpPage() {
           </Button>
         </div>
       </div>
-      <ToastProvider>
-        <Toast>Hello</Toast>
-      </ToastProvider>
+      <div className="sr-only">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" ref={dialogRef}>
+              Show Dialog
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Verification Successful!</AlertDialogTitle>
+              <AlertDialogDescription>
+                You can now chat, call & meet people around the world. Have fun
+                & stay safe out there.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={redirectToLogin}>
+                Login
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 }
