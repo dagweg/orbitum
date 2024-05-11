@@ -26,7 +26,7 @@ import { getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import { setUserSession } from "@/lib/redux/slices/userSlice";
+import { setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { SESSION_ID } from "@/app/config/constants";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
@@ -59,7 +59,7 @@ export default function Login() {
             description: data.message,
           });
           localStorage.setItem(SESSION_ID, data.sessionId);
-          dispatch(setUserSession(data.sessionId));
+          dispatch(setUserSessionId(data.sessionId));
           break;
         case 401:
           toast({

@@ -18,7 +18,7 @@ import { z } from "zod";
 import { UserSchemaRefined } from "@val/user.validation";
 import { TUserSchema, TZodErrors } from "@val/types";
 import { API_HOST } from "@/app/config/apiConfig";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import Spinner from "@/app/components/spinner";
 import { useToast } from "@/components/ui/use-toast";
@@ -34,6 +34,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { getMappedZodErrors } from "@/lib/utils";
+import { SESSION_ID } from "@/app/config/constants";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
@@ -50,16 +51,29 @@ function Register() {
     },
   });
   const router = useRouter();
-
   const [errors, setErrors] = useState<TRegisterError>();
-
   const [loading, setLoading] = useState(false);
-
   const { toast } = useToast();
-
   const dialogRef = useRef<HTMLButtonElement>(null);
-
   const tokenRef = useRef("");
+
+  useLayoutEffect(() => {
+    (async () => {
+      const sessionId = localStorage.getItem(SESSION_ID);
+      if (sessionId?.trim() === "") {
+        return;
+      }
+      // Validate the sessionId
+      const response = await fetch(`${API_HOST}/api/v1/session/validate`, {
+        method: "POST",
+        body: JSON.stringify({ sessionId }),
+      });
+      // Session Id is valid (You cannot register) so push to /site. They can logout themselves there
+      if (response.ok) {
+        router.push("/site");
+      }
+    })();
+  });
 
   function register() {
     setLoading(true);
