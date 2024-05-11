@@ -1,5 +1,6 @@
 import nodemailer, { Transport } from "nodemailer";
 import process from "process";
+import { getHourGap } from "./date";
 
 export const createTransport = nodemailer.createTransport;
 
@@ -35,12 +36,10 @@ export async function sendOtpEmail(
   otp: string,
   otpExpiry: Date
 ) {
-  const expiryInMilliseconds = otpExpiry.getTime() - new Date().getTime();
+  const expiryHours = getHourGap(otpExpiry, new Date());
 
-  if (expiryInMilliseconds <= 0)
+  if (expiryHours <= 0)
     throw new Error("OTP has already expired. Please set another OTP");
-
-  const expiryHours = Math.round(expiryInMilliseconds / (1000 * 60 * 60));
 
   const emailBody = `<p>Thanks for registering to Orbitum.<br>Here is your OTP: <strong>${otp}</strong>.<br> It is to expire after ${expiryHours} hours at ${otpExpiry.toLocaleString()}</p>`;
 

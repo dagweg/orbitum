@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   profileUrl: { type: String },
   otp: { type: String, default: null },
   otpExpiry: { type: Date },
-  verified: { type: Boolean, default: false },
+  emailVerified: { type: Boolean, default: false },
   settings: {
     type: ObjectId,
     ref: Settings,

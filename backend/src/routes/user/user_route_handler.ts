@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response, Router } from "express";
 import express from "express";
 import jwt from "jsonwebtoken";
-import {
-  TUserSchema,
-  userSchemaValidator,
-} from "../../validators/user.validation";
+import { UserSchemaRefined } from "../../validators/user.validation";
+import { TUserSchema } from "../../validators/types";
 import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
 import { sendEmail } from "../../utils/email";
 import { User } from "../../models/user.model";
+import { loginUser, validateLoginCredentials } from "./login/route";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -18,6 +17,8 @@ export default function userRouteHandler(): Router {
   });
 
   router.post("/", validateRegistrationCredentials, registerUser);
+
+  router.post("/login", validateLoginCredentials, loginUser);
 
   return router;
 }
@@ -30,7 +31,7 @@ export function validateRegistrationCredentials(
 ) {
   try {
     const data: TUserSchema = req.body;
-    const validation = userSchemaValidator.safeParse(data);
+    const validation = UserSchemaRefined.safeParse(data);
     if (!validation.success) {
       return res.status(400).json({ errors: validation.error.errors });
     }
@@ -65,7 +66,7 @@ export async function registerUser(req: Request, res: Response) {
     if (user) {
       let response = {
         message: "",
-        verified: user.verified,
+        verified: user.emailVerified,
         token,
       };
       if (user.email === userData.email) {

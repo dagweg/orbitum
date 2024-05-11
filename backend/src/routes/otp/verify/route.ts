@@ -58,7 +58,7 @@ export async function verifyOTP(req: Request, res: Response) {
       {
         $set: {
           otpExpiry: new Date(Date.now() - 1000 * 60 * 60 * 24),
-          verified: true,
+          emailVerified: true,
         },
       }
     );

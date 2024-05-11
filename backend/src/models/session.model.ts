@@ -5,7 +5,7 @@ import { dateHoursFromNow } from "../utils/date";
 
 const sessionSchema = new mongoose.Schema({
   userId: { type: ObjectId, unique: true, ref: "User" },
-  sessionToken: { type: String, required: true },
+  sessionId: { type: String, required: true },
   expires: { type: Date, optional: true, default: dateHoursFromNow(24) },
 });
 

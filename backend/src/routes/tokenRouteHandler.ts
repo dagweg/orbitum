@@ -33,13 +33,11 @@ export async function validateToken(req: Request, res: Response) {
       return res.status(500).json({ message: "User find query error." });
     }
 
-    if (user.verified) {
-      return res.status(403).json({ message: "Invalid Token" });
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Token is Valid!", ...(decoded as {}) });
+    return res.status(200).json({
+      message: "Token is Valid!",
+      ...(decoded as {}),
+      emailVerified: user.emailVerified,
+    });
   } catch (error) {
     console.log((error as Error).message);
     return res.status(500).json({ error });
