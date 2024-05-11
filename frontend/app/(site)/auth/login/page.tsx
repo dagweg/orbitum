@@ -16,34 +16,66 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { env } from "process";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "@/app/components/link";
+import { useToast } from "@/components/ui/use-toast";
+import { UserSchema } from "@val/user.validation";
+import { TLoginSchema } from "@val/types";
+import { useLayoutEffect, useState } from "react";
+import { getMappedZodErrors } from "@/lib/utils";
+import Spinner from "@/app/components/spinner";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { setUserSession } from "@/lib/redux/slices/userSlice";
+import { SESSION_ID } from "@/app/config/constants";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 
 export default function Login() {
   const form = useForm();
-  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<TLoginError>();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   function onSubmit() {
-    fetch(`https://localhost:5000/api/user`, {
+    setLoading(true);
+    console.log(form.getValues());
+    fetch(`http://localhost:5000/api/v1/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  }
-
-  function login() {
-    router.push("/site/");
+      body: JSON.stringify(form.getValues()),
+    }).then(async (res) => {
+      const data = await res.json();
+      setErrors({});
+      setLoading(false);
+      switch (res.status) {
+        case 200:
+          toast({
+            title: "Success",
+            description: data.message,
+          });
+          localStorage.setItem(SESSION_ID, data.sessionId);
+          dispatch(setUserSession(data.sessionId));
+          break;
+        case 401:
+          toast({
+            title: "Error",
+            description: data.message,
+            variant: "destructive",
+          });
+          break;
+        case 400:
+          const _errors = getMappedZodErrors(data.errors);
+          setErrors(_errors);
+          break;
+        default:
+          setErrors({});
+      }
+    });
   }
 
   return (
@@ -61,27 +93,29 @@ export default function Login() {
                   <FormControl>
                     <Input placeholder="Email" {...field} />
                   </FormControl>
+                  <FormMessage>{errors?.email?.message}</FormMessage>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="password"
+              name="passWord"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
+                  <FormMessage>{errors?.passWord?.message}</FormMessage>
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-2">
-              <Button type="submit" onClick={login}>
-                Login
+              <Button type="submit" onClick={onSubmit}>
+                {loading ? <Spinner /> : "Login"}
               </Button>
               <p>
-                Are you new here? <Link href="/auth/register">Register</Link>
+                New to Orbitum? <Link href="/auth/register">Register</Link>
               </p>
             </div>
           </form>

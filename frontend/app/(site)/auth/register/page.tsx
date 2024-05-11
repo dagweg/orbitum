@@ -15,13 +15,11 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { z } from "zod";
-import { TUserSchema, userSchemaValidator } from "@val/user.validation";
+import { UserSchemaRefined } from "@val/user.validation";
+import { TUserSchema, TZodErrors } from "@val/types";
 import { API_HOST } from "@/app/config/apiConfig";
 import { useEffect, useRef, useState } from "react";
-import { error } from "console";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { Loader } from "lucide-react";
 import Spinner from "@/app/components/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -35,6 +33,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { getMappedZodErrors } from "@/lib/utils";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
@@ -79,28 +78,32 @@ function Register() {
         setLoading(false);
         tokenRef.current = data.token;
         console.log(data);
-        if (res.status === 200) {
-          console.log("Success" + data.token);
-          redirectToOtpPage();
-        } else if (res.status === 409) {
-          toast({
-            title: "An error has occured",
-            description: data.message,
-          });
-          if (!data.verified) {
-            dialogRef.current?.click();
-          }
-        } else if (res.status === 400) {
-          const errz: { [key: string]: z.ZodIssue } = {};
-          for (const error of data.errors) {
-            const e = error as z.ZodIssue;
-            errz[(error as z.ZodIssue).path[0] as string] = e;
-            console.log(error);
-          }
-          if (formValues.passWord !== formValues.confirmPassWord)
-            errz["confirmPassWord"].message = "Passwords don't match";
-          else errz["confirmPassWord"].message = "";
-          setErrors(errz);
+        setErrors({});
+        switch (res.status) {
+          case 200:
+            console.log("Success" + data.token);
+            redirectToOtpPage();
+            break;
+          case 409:
+            toast({
+              title: "An error has occured",
+              description: data.message,
+            });
+            if (!data.verified) {
+              dialogRef.current?.click();
+            }
+            break;
+          case 400:
+            let errz: TZodErrors = getMappedZodErrors(data.errors);
+            if (errz["confirmPassword"]) {
+              if (formValues.passWord !== formValues.confirmPassWord)
+                errz["confirmPassWord"].message = "Passwords don't match";
+              else errz["confirmPassWord"].message = "";
+            }
+            setErrors(errz);
+            break;
+          default:
+            break;
         }
       })
       .catch((e: Error) => {
@@ -109,7 +112,6 @@ function Register() {
   }
 
   const redirectToOtpPage = () => {
-    console.log("again check" + tokenRef.current);
     router.push(`/auth/otp?jwt=${tokenRef.current}`);
   };
 

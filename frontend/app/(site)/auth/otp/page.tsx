@@ -24,7 +24,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export default function OtpPage() {
   const { toast } = useToast();
@@ -44,7 +44,7 @@ export default function OtpPage() {
   /**
    *  Handling token verification & authorization
    */
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function fetchToken() {
       const response = await fetch(`${API_HOST}/api/v1/token`, {
         method: "POST",
@@ -59,6 +59,10 @@ export default function OtpPage() {
       }
 
       const data = await response.json();
+
+      if (data.emailVerified) {
+        router.push("/auth/login");
+      }
       setEmail(data.email);
     }
 
@@ -103,10 +107,12 @@ export default function OtpPage() {
             break;
           case 200:
             setVerified(true);
-            toast({
-              description: "Verification Complete.",
-            });
-            dialogRef.current?.click();
+            setTimeout(() => {
+              toast({
+                description: "Verification Complete.",
+              });
+              dialogRef.current?.click();
+            }, 1000);
         }
       });
     }
