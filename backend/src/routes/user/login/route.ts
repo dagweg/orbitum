@@ -6,6 +6,7 @@ import { Session } from "../../../models/session.model";
 import { generateToken } from "../../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../../utils/date";
 import jwt from "jsonwebtoken";
+import { auth_token } from "../../../apiConfig";
 
 export const LoginSchema = z.object({
   email: z
@@ -61,17 +62,13 @@ export async function loginUser(req: Request, res: Response) {
 
     const expireSpan = 24 * 3;
     const expires = dateHoursFromNow(expireSpan);
-    const sessionId = jwt.sign(
-      { email, passWord },
-      process.env.TOKEN_KEY as string,
-      {
-        expiresIn: `${expireSpan}h`,
-      }
-    );
+    const sessionId = jwt.sign({ email }, process.env.TOKEN_KEY as string, {
+      expiresIn: `${expireSpan}h`,
+    });
 
     const session = await Session.findOneAndUpdate(
       {
-        userId: user.id,
+        email,
       },
       {
         $set: {
@@ -85,7 +82,7 @@ export async function loginUser(req: Request, res: Response) {
     if (!session) {
       return res.status(500).json({ message: "Session creation failed!" });
     }
-    res.cookie("auth-token", sessionId, { expires, httpOnly: true });
+    res.cookie(auth_token, sessionId, { expires, httpOnly: true });
     return res
       .status(200)
       .json({ message: "Successfully logged in!", sessionId });

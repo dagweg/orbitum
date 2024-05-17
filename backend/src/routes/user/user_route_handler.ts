@@ -8,6 +8,7 @@ import { generateOTP } from "../../utils/otp";
 import { sendEmail } from "../../utils/email";
 import { User } from "../../models/user.model";
 import { loginUser, validateLoginCredentials } from "./login/route";
+import { logoutUser } from "./logout/route";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -19,6 +20,8 @@ export default function userRouteHandler(): Router {
   router.post("/", validateRegistrationCredentials, registerUser);
 
   router.post("/login", validateLoginCredentials, loginUser);
+
+  router.post("/logout", logoutUser);
 
   return router;
 }
