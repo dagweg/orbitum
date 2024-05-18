@@ -6,7 +6,7 @@ import { Session } from "../../../models/session.model";
 import { generateToken } from "../../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../../utils/date";
 import jwt from "jsonwebtoken";
-import { auth_token } from "../../../apiConfig";
+import { AUTH_TOKEN } from "../../../apiConfig";
 
 export const LoginSchema = z.object({
   email: z
@@ -56,10 +56,6 @@ export async function loginUser(req: Request, res: Response) {
         .json({ message: "Password is incorrect. Please try again!" });
     }
 
-    // Allow the user to login & also create a session and send it a payload
-
-    // const sessionId = generateToken();
-
     const expireSpan = 24 * 3;
     const expires = dateHoursFromNow(expireSpan);
     const sessionId = jwt.sign({ email }, process.env.TOKEN_KEY as string, {
@@ -82,10 +78,9 @@ export async function loginUser(req: Request, res: Response) {
     if (!session) {
       return res.status(500).json({ message: "Session creation failed!" });
     }
-    res.cookie(auth_token, sessionId, { expires, httpOnly: true });
-    return res
-      .status(200)
-      .json({ message: "Successfully logged in!", sessionId });
+    // res.cookie(AUTH_TOKEN, sessionId, { expires });
+    res.setHeader("Set-Cookie", `${AUTH_TOKEN}=${sessionId};`);
+    return res.status(200).json({ message: "Successfully logged in!" });
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });
   }

@@ -6,11 +6,11 @@ import { Session } from "../../../models/session.model";
 import { generateToken } from "../../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../../utils/date";
 import jwt from "jsonwebtoken";
-import { auth_token } from "../../../apiConfig";
+import { AUTH_TOKEN } from "../../../apiConfig";
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    const cookie = req.cookies[auth_token];
+    const cookie = req.cookies[AUTH_TOKEN];
 
     const decoded = jwt.verify(cookie, process.env.TOKEN_Key as string);
 

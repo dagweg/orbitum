@@ -9,6 +9,9 @@ import { sendEmail } from "../../utils/email";
 import { User } from "../../models/user.model";
 import { loginUser, validateLoginCredentials } from "./login/route";
 import { logoutUser } from "./logout/route";
+import { AUTH_TOKEN } from "../../apiConfig";
+import { Session } from "../../models/session.model";
+import { validateUserLoggedIn } from "../../middlewares/loggedIn/route";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -22,6 +25,10 @@ export default function userRouteHandler(): Router {
   router.post("/login", validateLoginCredentials, loginUser);
 
   router.post("/logout", logoutUser);
+
+  router.post("/isLoggedIn", validateUserLoggedIn, (req, res) => {
+    return res.json({ message: "YOU ARE LOGGED IN" });
+  });
 
   return router;
 }

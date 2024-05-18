@@ -21,13 +21,16 @@ import Link from "@/app/components/link";
 import { useToast } from "@/components/ui/use-toast";
 import { UserSchema } from "@val/user.validation";
 import { TLoginSchema } from "@val/types";
-import { useLayoutEffect, useState } from "react";
-import { getMappedZodErrors } from "@/lib/utils";
+import { useContext, useLayoutEffect, useState } from "react";
+import { getCookie, getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { SESSION_ID } from "@/app/config/constants";
+import { API_HOST } from "@/app/config/apiConfig";
+import { SessionContext } from "@/app/components/providers/SessionProvider";
+import { AUTH_TOKEN } from "../../../../../backend/src/apiConfig";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 
@@ -36,46 +39,63 @@ export default function Login() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<TLoginError>();
+  const { isLoggedIn } = useContext(SessionContext);
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  function onSubmit() {
+  useLayoutEffect(() => {
+    if (isLoggedIn) {
+      console.log("YOU ARE LOGGED IN");
+      router.push("/site/feed");
+    } else {
+      console.log("YOU ARE NOT LOGGED IN");
+    }
+  }, [isLoggedIn, router]);
+
+  async function onSubmit() {
     setLoading(true);
-    console.log(form.getValues());
-    fetch(`http://localhost:5000/api/v1/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form.getValues()),
-    }).then(async (res) => {
-      const data = await res.json();
+    try {
+      const loginResponse = await fetch(`${API_HOST}/api/v1/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(form.getValues()),
+      });
+
+      const loginData = await loginResponse.json();
       setErrors({});
       setLoading(false);
-      switch (res.status) {
+
+      // Handle cases
+      switch (loginResponse.status) {
         case 200:
           toast({
             title: "Success",
-            description: data.message,
+            description: loginData.message,
           });
-          localStorage.setItem(SESSION_ID, data.sessionId);
-          dispatch(setUserSessionId(data.sessionId));
+          dispatch(setUserSessionId(loginData.sessionId));
+          router.push("/site");
           break;
         case 401:
           toast({
             title: "Error",
-            description: data.message,
+            description: loginData.message,
             variant: "destructive",
           });
           break;
         case 400:
-          const _errors = getMappedZodErrors(data.errors);
+          const _errors = getMappedZodErrors(loginData.errors);
           setErrors(_errors);
           break;
         default:
           setErrors({});
       }
-    });
+    } catch (error) {
+      console.error("Error in login fetch:", error);
+    }
   }
 
   return (
