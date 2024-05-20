@@ -1,3 +1,4 @@
+import { SESSION_ID } from "@/app/config/constants";
 import { PayloadAction, Tuple, createSlice } from "@reduxjs/toolkit";
 import { TUserSchema } from "@val/types";
 
@@ -8,7 +9,7 @@ type TUserSession = {
 
 const userSessionInitialState: TUserSession = {
   email: undefined,
-  sessionId: undefined,
+  sessionId: localStorage.getItem(SESSION_ID) || undefined,
 };
 
 const userSessionSlice = createSlice({
@@ -19,6 +20,7 @@ const userSessionSlice = createSlice({
       state.email = action.payload;
     },
     setUserSessionId(state, action: PayloadAction<string | undefined>) {
+      console.log(action);
       state.sessionId = action.payload;
     },
   },

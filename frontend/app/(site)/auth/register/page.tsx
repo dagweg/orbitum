@@ -57,23 +57,7 @@ function Register() {
   const dialogRef = useRef<HTMLButtonElement>(null);
   const tokenRef = useRef("");
 
-  useLayoutEffect(() => {
-    (async () => {
-      const sessionId = localStorage.getItem(SESSION_ID);
-      if (sessionId?.trim() === "") {
-        return;
-      }
-      // Validate the sessionId
-      const response = await fetch(`${API_HOST}/api/v1/session/validate`, {
-        method: "POST",
-        body: JSON.stringify({ sessionId }),
-      });
-      // Session Id is valid (You cannot register) so push to /site. They can logout themselves there
-      if (response.ok) {
-        router.push("/site");
-      }
-    })();
-  });
+  useLayoutEffect(() => {});
 
   function register() {
     setLoading(true);

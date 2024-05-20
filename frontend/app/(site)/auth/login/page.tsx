@@ -21,15 +21,14 @@ import Link from "@/app/components/link";
 import { useToast } from "@/components/ui/use-toast";
 import { UserSchema } from "@val/user.validation";
 import { TLoginSchema } from "@val/types";
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { getCookie, getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { SESSION_ID } from "@/app/config/constants";
 import { API_HOST } from "@/app/config/apiConfig";
-import { SessionContext } from "@/app/components/providers/SessionProvider";
 import { AUTH_TOKEN } from "../../../../../backend/src/apiConfig";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
@@ -39,19 +38,24 @@ export default function Login() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<TLoginError>();
-  const { isLoggedIn } = useContext(SessionContext);
   const router = useRouter();
+
+  const sessionId = useSelector(
+    (state: RootState) => state.userSessionReducer.sessionId
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
+  console.log(sessionId, "SESSION ID");
+
   useLayoutEffect(() => {
-    if (isLoggedIn) {
+    if (sessionId) {
       console.log("YOU ARE LOGGED IN");
-      router.push("/site/feed");
+      redirect("/site/feed");
     } else {
       console.log("YOU ARE NOT LOGGED IN");
     }
-  }, [isLoggedIn, router]);
+  }, [sessionId]);
 
   async function onSubmit() {
     setLoading(true);
@@ -61,7 +65,6 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify(form.getValues()),
       });
 
@@ -77,7 +80,9 @@ export default function Login() {
             description: loginData.message,
           });
           dispatch(setUserSessionId(loginData.sessionId));
-          router.push("/site");
+          localStorage.setItem(SESSION_ID, loginData.sessionId as string);
+          console.log(loginData);
+          router.push("/site/feed");
           break;
         case 401:
           toast({

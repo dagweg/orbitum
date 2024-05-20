@@ -3,13 +3,12 @@ import { isUserLoggedIn } from "@/lib/user";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AUTH_TOKEN } from "../../../../backend/src/apiConfig";
+import { store } from "@/lib/redux/store";
 
 async function SiteLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
   const authToken = cookieStore.get(AUTH_TOKEN)?.value;
-  const loggedIn = await isUserLoggedIn(authToken ?? "");
-
-  if (!loggedIn) {
+  if (store.getState().userSessionReducer.sessionId) {
     redirect("/auth/login");
   }
   return (
