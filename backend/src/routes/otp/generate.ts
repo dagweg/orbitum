@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import { User } from "../../../models/user.model";
-import { sendOtpEmail } from "../../../utils/email";
-import { generateOTP } from "../../../utils/otp";
+import { User } from "../../models/user.model";
+import { sendOtpEmail } from "../../utils/email";
+import { generateOTP } from "../../utils/otp";
 import jwt from "jsonwebtoken";
 
 /**

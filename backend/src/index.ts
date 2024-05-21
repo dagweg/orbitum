@@ -1,11 +1,11 @@
 import express from "express";
 import connectDB from "./db";
 import dotenv from "dotenv";
-import userRouteHandler from "./routes/user/user_route_handler";
+import userRouteHandler from "./routes/user/handler";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { tokenRouteHandler } from "./routes/tokenRouteHandler";
-import { otpRouteHandler } from "./routes/otp/otpRouteHandler";
+import { tokenRouteHandler } from "./routes/token/handler";
+import { otpRouteHandler } from "./routes/otp/handler";
 
 // Load environment variables
 dotenv.config();

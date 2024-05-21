@@ -47,11 +47,11 @@ function ChatArea() {
         />
       </section>
       <section className="h-fit sticky bottom-0 w-full flex flex-col-reverse">
-        <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-400">
+        <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
           <Paperclip className="" />
           <TextAreaAutoSize
             maxRows={10}
-            className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar resize-none"
+            className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
             placeholder="Type a message"
             onChange={(e) => handleTextAreaChange(e)}
           />

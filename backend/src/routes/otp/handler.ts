@@ -2,12 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { User } from "../../models/user.model";
-import { validateToken } from "../tokenRouteHandler";
+import { validateToken } from "../token/handler";
 import { sendEmail } from "../../utils/email";
 import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
-import { sendOtp, validateOTPGenerateRequest } from "./generate/route";
-import { validateOtpVerifyRequest, verifyOTP } from "./verify/route";
+import { sendOtp, validateOTPGenerateRequest } from "./generate";
+import { validateOtpVerifyRequest, verifyOTP } from "./verify";
 
 /**
  *  /generate

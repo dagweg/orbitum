@@ -48,6 +48,13 @@ const config = {
             display: "none",
           },
         },
+        ".scrollbar": {
+          "scrollbar-width": "2px",
+          "-ms-overflow-style": "none",
+          "&::-webkit-scrollbar": {
+            display: "absolute",
+          },
+        },
       });
     },
     require("@tailwindcss/typography"),

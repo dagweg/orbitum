@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodObject, z } from "zod";
-import { UserSchema } from "../../../validators/user.validation";
-import { User } from "../../../models/user.model";
-import { Session } from "../../../models/session.model";
-import { generateToken } from "../../../utils/token";
-import { dateHoursFromNow, getHourGap } from "../../../utils/date";
+import { UserSchema } from "../../validators/user.validation";
+import { User } from "../../models/user.model";
+import { Session } from "../../models/session.model";
+import { generateToken } from "../../utils/token";
+import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { AUTH_TOKEN } from "../../../apiConfig";
+import { AUTH_TOKEN } from "../../apiConfig";
 
 export const LoginSchema = z.object({
   email: z
@@ -17,28 +17,10 @@ export const LoginSchema = z.object({
     .refine((data) => data.trim().length > 0, { message: "Cannot be empty." }),
 });
 
-export function validateLoginCredentials(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const validation = LoginSchema.safeParse(req.body);
-    if (!validation.success) {
-      return res.status(400).json({
-        errors: validation.error.errors,
-        message: "Input validation error",
-      });
-    }
-    next();
-  } catch (error) {
-    return res.status(500).json({ error, message: (error as Error).message });
-  }
-}
-
 export async function loginUser(req: Request, res: Response) {
   try {
     const { email, passWord } = req.body;
+
     // Check if user exists
     let user = await User.findOne({ email });
 
@@ -56,13 +38,31 @@ export async function loginUser(req: Request, res: Response) {
         .json({ message: "Password is incorrect. Please try again!" });
     }
 
-    const expireSpan = 24 * 3;
-    const expires = dateHoursFromNow(expireSpan);
+    // Check if the user is logged in already
+    // If so, return an error
+
+    let session = await Session.findOne({ email });
+    const dateNow = new Date();
+
+    // Check if the session hasnt expired
+    if (session && session.expires > dateNow) {
+      // Then user cannot login unless logged out first
+      return res
+        .status(301)
+        .json({ message: "You must first sign out before signing in again." });
+    }
+
+    // If the user is not logged in, then create a session
+    // and set the cookie
+
+    const expireDuration = 24 * 3; // 3 days
+    const expires: Date = dateHoursFromNow(expireDuration); // Date repr
+
     const sessionId = jwt.sign({ email }, process.env.TOKEN_KEY as string, {
-      expiresIn: `${expireSpan}h`,
+      expiresIn: `${expireDuration}h`,
     });
 
-    const session = await Session.findOneAndUpdate(
+    session = await Session.findOneAndUpdate(
       {
         email,
       },
@@ -78,9 +78,11 @@ export async function loginUser(req: Request, res: Response) {
     if (!session) {
       return res.status(500).json({ message: "Session creation failed!" });
     }
-    // res.cookie(AUTH_TOKEN, sessionId, { expires });
-    res.setHeader("Set-Cookie", `${AUTH_TOKEN}=${sessionId};`);
-    return res.status(200).json({ message: "Successfully logged in!" });
+
+    return res
+      .status(200)
+      .cookie("sessionId", sessionId)
+      .json({ message: "Successfully logged in!", sessionId });
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });
   }

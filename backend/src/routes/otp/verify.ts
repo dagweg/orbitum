@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
-import { User } from "../../../models/user.model";
+import { User } from "../../models/user.model";
 
 const schema = z.object({
   inputOtp: z.string(),

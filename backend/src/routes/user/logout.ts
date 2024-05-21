@@ -1,17 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodObject, z } from "zod";
-import { UserSchema } from "../../../validators/user.validation";
-import { User } from "../../../models/user.model";
-import { Session } from "../../../models/session.model";
-import { generateToken } from "../../../utils/token";
-import { dateHoursFromNow, getHourGap } from "../../../utils/date";
+import { UserSchema } from "../../validators/user.validation";
+import { User } from "../../models/user.model";
+import { Session } from "../../models/session.model";
+import { generateToken } from "../../utils/token";
+import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { AUTH_TOKEN } from "../../../apiConfig";
+import { SESSION_ID } from "../../apiConfig";
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    const cookie = req.cookies[AUTH_TOKEN];
+    // Check for the session id that comes as cookie
+    const cookie = req.cookies[SESSION_ID];
 
+    // Verify the validity of the session id
     const decoded = jwt.verify(cookie, process.env.TOKEN_Key as string);
 
     if (!decoded) {
@@ -19,7 +21,6 @@ export async function logoutUser(req: Request, res: Response) {
     }
 
     // The Cookie is a jwt so parse it to get the email
-
     const sess = await Session.findOneAndUpdate(
       { email: (decoded as { email: string }).email },
       {
@@ -28,8 +29,6 @@ export async function logoutUser(req: Request, res: Response) {
         },
       }
     );
-
-    console.log(sess);
 
     return res.json({ message: "Successully Logged out!" });
   } catch (error) {

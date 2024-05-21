@@ -1,55 +1,9 @@
-import { NextFunction, Request, Response, Router } from "express";
-import express from "express";
-import jwt from "jsonwebtoken";
-import { UserSchemaRefined } from "../../validators/user.validation";
-import { TUserSchema } from "../../validators/types";
+import { Request, Response } from "express";
+import { User } from "../../models/user.model";
 import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
-import { sendEmail } from "../../utils/email";
-import { User } from "../../models/user.model";
-import { loginUser, validateLoginCredentials } from "./login/route";
-import { logoutUser } from "./logout/route";
-import { AUTH_TOKEN } from "../../apiConfig";
-import { Session } from "../../models/session.model";
-import { validateUserLoggedIn } from "../../middlewares/loggedIn/route";
-
-export default function userRouteHandler(): Router {
-  const router = express.Router();
-
-  router.get("/", (req, res) => {
-    res.send("hi");
-  });
-
-  router.post("/", validateRegistrationCredentials, registerUser);
-
-  router.post("/login", validateLoginCredentials, loginUser);
-
-  router.post("/logout", logoutUser);
-
-  router.post("/isLoggedIn", validateUserLoggedIn, (req, res) => {
-    return res.json({ message: "YOU ARE LOGGED IN" });
-  });
-
-  return router;
-}
-
-// middleware
-export function validateRegistrationCredentials(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const data: TUserSchema = req.body;
-    const validation = UserSchemaRefined.safeParse(data);
-    if (!validation.success) {
-      return res.status(400).json({ errors: validation.error.errors });
-    }
-    next();
-  } catch (error) {
-    throw new Error(error as string);
-  }
-}
+import { TUserSchema } from "../../validators/types";
+import jwt from "jsonwebtoken";
 
 export async function registerUser(req: Request, res: Response) {
   try {
