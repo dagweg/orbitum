@@ -29,7 +29,7 @@ import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { SESSION_ID } from "@/app/config/constants";
 import { API_HOST } from "@/app/config/apiConfig";
-import { AUTH_TOKEN } from "../../../../../backend/src/apiConfig";
+import { AUTH_TOKEN } from "../../../../../backend/src/config/apiConfig";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 

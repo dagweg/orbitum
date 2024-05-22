@@ -1,38 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { z } from "zod";
-import jwt from "jsonwebtoken";
 import { User } from "../../models/user.model";
-
-const schema = z.object({
-  inputOtp: z.string(),
-  token: z.string(),
-});
-
-export async function validateOtpVerifyRequest(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const validation = schema.safeParse(req.body);
-
-    if (!validation.success) {
-      return res.status(400).json({ errors: validation.error.errors });
-    }
-    const body: z.infer<typeof schema> = req.body;
-
-    const decoded = jwt.verify(body.token, process.env.TOKEN_KEY as string);
-
-    if (!decoded) {
-      return res.status(403).json({ message: "Invalid token. Unauthorized." });
-    }
-
-    req.body.decoded = decoded;
-    next();
-  } catch (error) {
-    return res.status(500).json({ error, message: (error as Error).message });
-  }
-}
+import { OTPVerifySchema } from "../../validators/otpVerify.validation";
 
 export async function verifyOTP(req: Request, res: Response) {
   try {
@@ -42,7 +11,7 @@ export async function verifyOTP(req: Request, res: Response) {
     const {
       decoded: { email },
       inputOtp,
-    }: z.infer<typeof schema> & Td = req.body;
+    }: z.infer<typeof OTPVerifySchema> & Td = req.body;
 
     let user = await User.findOne({ email });
 

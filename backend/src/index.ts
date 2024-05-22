@@ -1,5 +1,5 @@
 import express from "express";
-import connectDB from "./db";
+import connectDB from "./utils/db";
 import dotenv from "dotenv";
 import userRouteHandler from "./routes/user/handler";
 import cors from "cors";

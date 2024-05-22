@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { TUserSchema } from "../validators/types";
+import { TUserSchema } from "../types/schema";
 import { UserSchemaRefined } from "../validators/user.validation";
 
 // middleware

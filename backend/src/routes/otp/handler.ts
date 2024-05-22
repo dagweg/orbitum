@@ -6,8 +6,10 @@ import { validateToken } from "../token/handler";
 import { sendEmail } from "../../utils/email";
 import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
-import { sendOtp, validateOTPGenerateRequest } from "./generate";
-import { validateOtpVerifyRequest, verifyOTP } from "./verify";
+import { sendOtp } from "./generate";
+import { verifyOTP } from "./verify";
+import { validateOTPGenerateRequest } from "../../middlewares/validateOTPGenerateRequest";
+import { validateOtpVerifyRequest } from "../../middlewares/validateOTPVerifyRequest";
 
 /**
  *  /generate

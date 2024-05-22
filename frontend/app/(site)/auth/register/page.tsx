@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { z } from "zod";
 import { UserSchemaRefined } from "@val/user.validation";
-import { TUserSchema, TZodErrors } from "@val/types";
+import { TUserSchema, TZodErrors } from "@_types/schema";
 import { API_HOST } from "@/app/config/apiConfig";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";

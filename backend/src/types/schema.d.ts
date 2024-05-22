@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { UserSchemaRefined } from "./user.validation";
-import { LoginSchema } from "../routes/user/login";
+import { UserSchemaRefined } from "../validators/user.validation";
+import { LoginSchema } from "../validators/login.validation";
 
 export type TUserSchema = z.infer<typeof UserSchemaRefined>;
 

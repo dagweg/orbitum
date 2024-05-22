@@ -38,17 +38,17 @@ const postsSchema = new mongoose.Schema({
     enum: ["text", "image", "video"],
     default: "text",
   },
-  imageUrl : {
+  imageUrl: {
     type: String,
   },
-  videoUrl : {
+  videoUrl: {
     type: String,
   },
   privacy: {
     type: String,
     enum: ["public", "private", "friends"],
     default: "public",
-  }
+  },
 });
 
 export const Posts = mongoose.model("Posts", postsSchema);

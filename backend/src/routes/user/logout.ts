@@ -6,7 +6,7 @@ import { Session } from "../../models/session.model";
 import { generateToken } from "../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { SESSION_ID } from "../../apiConfig";
+import { SESSION_ID } from "../../config/apiConfig";
 
 export async function logoutUser(req: Request, res: Response) {
   try {

@@ -19,7 +19,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@val/*": ["../backend/src/validators/*"]
+      "@_validators/*": ["../backend/src/validators/*"],
+      "@_types/*": ["../backend/src/types/*"]
     }
   },
   "include": [

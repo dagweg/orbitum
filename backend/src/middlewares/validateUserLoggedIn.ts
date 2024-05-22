@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { AUTH_TOKEN } from "../apiConfig";
+import { AUTH_TOKEN } from "../config/apiConfig";
 import { isUserLoggedIn } from "../lib/isUserLoggedIn";
 
 export async function validateUserLoggedIn(

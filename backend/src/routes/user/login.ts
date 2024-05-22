@@ -6,16 +6,7 @@ import { Session } from "../../models/session.model";
 import { generateToken } from "../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { AUTH_TOKEN } from "../../apiConfig";
-
-export const LoginSchema = z.object({
-  email: z
-    .string()
-    .refine((data) => data.trim().length > 0, { message: "Cannot be empty." }),
-  passWord: z
-    .string()
-    .refine((data) => data.trim().length > 0, { message: "Cannot be empty." }),
-});
+import { AUTH_TOKEN, SESSION_ID } from "../../config/apiConfig";
 
 export async function loginUser(req: Request, res: Response) {
   try {
@@ -58,7 +49,9 @@ export async function loginUser(req: Request, res: Response) {
     const expireDuration = 24 * 3; // 3 days
     const expires: Date = dateHoursFromNow(expireDuration); // Date repr
 
-    const sessionId = jwt.sign({ email }, process.env.TOKEN_KEY as string, {
+    const sessionId = jwt.sign({ 
+      email,
+     }, process.env.TOKEN_KEY as string, {
       expiresIn: `${expireDuration}h`,
     });
 
@@ -81,7 +74,6 @@ export async function loginUser(req: Request, res: Response) {
 
     return res
       .status(200)
-      .cookie("sessionId", sessionId)
       .json({ message: "Successfully logged in!", sessionId });
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });

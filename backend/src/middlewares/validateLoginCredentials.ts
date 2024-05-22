@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { LoginSchema } from "../routes/user/login";
+import { z } from "zod";
+import { LoginSchema } from "../validators/login.validation";
 
 // Middleware
 export function validateLoginCredentials(
