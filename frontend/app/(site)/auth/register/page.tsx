@@ -34,7 +34,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { getMappedZodErrors } from "@/lib/utils";
-import { SESSION_ID } from "@/app/config/constants";
+import { SESSION_TOKEN } from "@/app/config/constants";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 

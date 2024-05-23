@@ -26,7 +26,7 @@ export async function validateOTPGenerateRequest(
     }
 
     const { token } = req.body;
-    let decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
+    let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
 
     if (!decoded) {
       return res.status(401).json({ message: "Invalid token" });

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import { SESSION_ID } from "../config/apiConfig";
+import { SESSION_TOKEN } from "../config/apiConfig";
 import { verifyJWT } from "../utils/jwt";
 import { PostSchema } from "../validators/post.validation";
 
@@ -12,7 +12,7 @@ export function validatePostRequest(
   next: NextFunction
 ) {
   try {
-    const sessionId = req.cookies[SESSION_ID];
+    const sessionId = req.cookies[SESSION_TOKEN];
 
     const decoded = verifyJWT(sessionId);
 

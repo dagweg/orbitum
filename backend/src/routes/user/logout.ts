@@ -6,15 +6,15 @@ import { Session } from "../../models/session.model";
 import { generateToken } from "../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { SESSION_ID } from "../../config/apiConfig";
+import { SESSION_TOKEN } from "../../config/apiConfig";
 
 export async function logoutUser(req: Request, res: Response) {
   try {
     // Check for the session id that comes as cookie
-    const cookie = req.cookies[SESSION_ID];
+    const cookie = req.cookies[SESSION_TOKEN];
 
     // Verify the validity of the session id
-    const decoded = jwt.verify(cookie, process.env.TOKEN_Key as string);
+    const decoded = jwt.verify(cookie, process.env.JWT_SECRET_KEY as string);
 
     if (!decoded) {
       return res.status(400).json("Invalid cookie!");

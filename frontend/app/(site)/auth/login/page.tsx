@@ -27,7 +27,7 @@ import Spinner from "@/app/components/spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { setUserSessionId } from "@/lib/redux/slices/userSlice";
-import { SESSION_ID } from "@/app/config/constants";
+import { SESSION_TOKEN } from "@/app/config/constants";
 import { API_HOST } from "@/app/config/apiConfig";
 import { AUTH_TOKEN } from "../../../../../backend/src/config/apiConfig";
 
@@ -80,7 +80,7 @@ export default function Login() {
             description: loginData.message,
           });
           dispatch(setUserSessionId(loginData.sessionId));
-          localStorage.setItem(SESSION_ID, loginData.sessionId as string);
+          localStorage.setItem(SESSION_TOKEN, loginData.sessionId as string);
           console.log(loginData);
           router.push("/site/feed");
           break;

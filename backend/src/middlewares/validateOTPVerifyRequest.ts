@@ -16,7 +16,10 @@ export async function validateOtpVerifyRequest(
     }
     const body: z.infer<typeof OTPVerifySchema> = req.body;
 
-    const decoded = jwt.verify(body.token, process.env.TOKEN_KEY as string);
+    const decoded = jwt.verify(
+      body.token,
+      process.env.JWT_SECRET_KEY as string
+    );
 
     if (!decoded) {
       return res.status(403).json({ message: "Invalid token. Unauthorized." });

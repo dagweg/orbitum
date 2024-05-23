@@ -13,7 +13,7 @@ export async function registerUser(req: Request, res: Response) {
 
     const token = jwt.sign(
       { email: userData.email },
-      process.env.TOKEN_KEY as string,
+      process.env.JWT_SECRET_KEY as string,
       {
         expiresIn: "1800s",
       }

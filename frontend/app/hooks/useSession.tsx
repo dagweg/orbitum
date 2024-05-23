@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import { redirect } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { API_HOST } from "../config/apiConfig";
-import { SESSION_ID } from "../config/constants";
+import { SESSION_TOKEN } from "../config/constants";
 import { setUser, setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ function useSession() {
   const [isTokenValid, setIsTokenValid] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const _sessionId = localStorage.getItem(SESSION_ID);
+  const _sessionId = localStorage.getItem(SESSION_TOKEN);
   dispatch(setUserSessionId(_sessionId ?? undefined));
 
   if (sessionId?.trim() === "") {

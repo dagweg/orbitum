@@ -18,7 +18,7 @@ export async function validateToken(req: Request, res: Response) {
 
     const decoded = jwt.verify(
       token as string,
-      process.env.TOKEN_KEY as string
+      process.env.JWT_SECRET_KEY as string
     );
 
     if (!decoded) {

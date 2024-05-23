@@ -6,7 +6,7 @@ import { Session } from "../../models/session.model";
 import { generateToken } from "../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../utils/date";
 import jwt from "jsonwebtoken";
-import { AUTH_TOKEN, SESSION_ID } from "../../config/apiConfig";
+import { AUTH_TOKEN, PRODUCTION, SESSION_TOKEN } from "../../config/apiConfig";
 
 export async function loginUser(req: Request, res: Response) {
   try {
@@ -29,39 +29,29 @@ export async function loginUser(req: Request, res: Response) {
         .json({ message: "Password is incorrect. Please try again!" });
     }
 
-    // Check if the user is logged in already
-    // If so, return an error
-
-    let session = await Session.findOne({ email });
-    const dateNow = new Date();
-
-    // Check if the session hasnt expired
-    if (session && session.expires > dateNow) {
-      // Then user cannot login unless logged out first
-      return res
-        .status(301)
-        .json({ message: "You must first sign out before signing in again." });
-    }
-
     // If the user is not logged in, then create a session
     // and set the cookie
 
     const expireDuration = 24 * 3; // 3 days
     const expires: Date = dateHoursFromNow(expireDuration); // Date repr
 
-    const sessionId = jwt.sign({ 
-      email,
-     }, process.env.TOKEN_KEY as string, {
-      expiresIn: `${expireDuration}h`,
-    });
+    const sessionToken = jwt.sign(
+      {
+        email,
+      },
+      process.env.JWT_SECRET_KEY as string,
+      {
+        expiresIn: `${expireDuration}h`,
+      }
+    );
 
-    session = await Session.findOneAndUpdate(
+    const session = await Session.findOneAndUpdate(
       {
         email,
       },
       {
         $set: {
-          sessionId,
+          sessionId: sessionToken,
           expires,
         },
       },
@@ -74,7 +64,11 @@ export async function loginUser(req: Request, res: Response) {
 
     return res
       .status(200)
-      .json({ message: "Successfully logged in!", sessionId });
+      .cookie(SESSION_TOKEN, sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === PRODUCTION,
+      })
+      .json({ message: "Successfully logged in!" });
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });
   }

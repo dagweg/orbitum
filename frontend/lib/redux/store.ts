@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatAreaReducer, chatSideBarReducer } from "./slices/chatSlice";
 import { userReducer, userSessionReducer } from "./slices/userSlice";
-import { SESSION_ID } from "@/app/config/constants";
+import { SESSION_TOKEN } from "@/app/config/constants";
 import { string } from "zod";
 
 const persistedState =

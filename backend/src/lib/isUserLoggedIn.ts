@@ -5,7 +5,7 @@ export async function isUserLoggedIn(authToken: string): Promise<boolean> {
   try {
     console.log(`AUTH TOKEN: ${authToken}`);
 
-    const decoded = jwt.verify(authToken, process.env.TOKEN_KEY as string);
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY as string);
     if (!decoded) {
       console.log("Token verification failed");
       return false;
