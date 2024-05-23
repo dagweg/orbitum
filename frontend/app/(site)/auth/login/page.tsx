@@ -19,8 +19,7 @@ import { env } from "process";
 import { redirect, useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { useToast } from "@/components/ui/use-toast";
-import { UserSchema } from "@val/user.validation";
-import { TLoginSchema } from "@val/types";
+import { TLoginSchema } from "@_types/schema";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { getCookie, getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
@@ -46,17 +45,6 @@ export default function Login() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log(sessionId, "SESSION ID");
-
-  useLayoutEffect(() => {
-    if (sessionId) {
-      console.log("YOU ARE LOGGED IN");
-      redirect("/site/feed");
-    } else {
-      console.log("YOU ARE NOT LOGGED IN");
-    }
-  }, [sessionId]);
-
   async function onSubmit() {
     setLoading(true);
     try {
@@ -65,10 +53,12 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(form.getValues()),
       });
 
       const loginData = await loginResponse.json();
+
       setErrors({});
       setLoading(false);
 
@@ -79,9 +69,6 @@ export default function Login() {
             title: "Success",
             description: loginData.message,
           });
-          dispatch(setUserSessionId(loginData.sessionId));
-          localStorage.setItem(SESSION_TOKEN, loginData.sessionId as string);
-          console.log(loginData);
           router.push("/site/feed");
           break;
         case 401:

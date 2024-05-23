@@ -1,28 +1,36 @@
-import AvatarWrapper from "@/app/components/avatar-wrapper";
+import { getPosts } from "@/app/actions/posts";
 import Heading from "@/app/components/heading";
 import Post from "@/app/components/post";
 import PostInput from "@/app/components/post-input";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { AvatarFallback } from "@radix-ui/react-avatar";
-import {
-  Ellipsis,
-  Image,
-  MessageSquareText,
-  Share2,
-  ThumbsUp,
-  Video,
-} from "lucide-react";
-import { default as image } from "next/image";
+import { SESSION_TOKEN } from "@/app/config/constants";
+import { TPostSchema, TUserSchema } from "@_types/schema";
+import { cookies } from "next/headers";
 
-function FeedPage() {
+async function FeedPage() {
+  const cookieStore = cookies();
+
+  const posts: TPostSchema[] = await getPosts(
+    cookieStore.get(SESSION_TOKEN)?.value
+  );
+
+  console.log(cookieStore.get(SESSION_TOKEN)?.value);
+
   return (
     <div className="max-w-prose mx-auto bg-white h-full px-4 py-2 flex flex-col gap-3">
       <Heading>Feed</Heading>
       <PostInput />
-      <Post />
+      {posts.length > 0 &&
+        posts.map((post: TPostSchema, key: number) => (
+          <Post
+            key={key}
+            user={post.user as any as TUserSchema}
+            date={new Date(post.createdAt)}
+            content={post.content}
+            likes={post.likes}
+            comments={post.comments}
+            shares={post.shares}
+          />
+        ))}
     </div>
   );
 }

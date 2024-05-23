@@ -1,4 +1,4 @@
-import { TZodErrors } from "@val/types";
+import { TZodErrors } from "@_types/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";

@@ -7,7 +7,10 @@ import { registerUser } from "./register";
 import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
 import { UserSchemaRefined } from "../../validators/user.validation";
 import { LoginSchema } from "../../validators/login.validation";
-import postRouteHandler from "../post/handler";
+import { validateSession } from "../../middlewares/validateSession";
+import { PostSchema } from "../../validators/post.validation";
+import { createPost } from "../post/createPost";
+import { getAllUserPosts } from "./getAllUserPosts";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -29,6 +32,17 @@ export default function userRouteHandler(): Router {
   router.post("/isLoggedIn", validateUserLoggedIn, (req, res) => {
     return res.json({ message: "YOU ARE LOGGED IN" });
   });
+
+  /**USER POST FUNCTIONALITY */
+  router.post(
+    "/post",
+    validateSession,
+    validateRequestSchema(PostSchema),
+    createPost
+  );
+
+  /** GET ALL POSTS THE USER HAS POSTED TILL NOW */
+  router.get("/post", validateSession, getAllUserPosts);
 
   return router;
 }

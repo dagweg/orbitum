@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const postsSchema = new mongoose.Schema({
   user: {
@@ -51,4 +51,5 @@ const postsSchema = new mongoose.Schema({
   },
 });
 
-export const Posts = mongoose.model("Posts", postsSchema);
+export type TPosts = InferSchemaType<typeof postsSchema>;
+export const Posts = mongoose.model<TPosts>("Posts", postsSchema);
