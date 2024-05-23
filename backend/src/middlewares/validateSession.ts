@@ -23,6 +23,7 @@ export function validateSession(
     }
 
     req.user = decoded;
+    req.body.email = decoded.email;
 
     // Future todo : Implement location + device identification  for better session management
 

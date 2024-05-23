@@ -1,11 +1,13 @@
 import { Router } from "express";
 import express from "express";
 import { loginUser } from "./login";
-import { validateLoginCredentials } from "../../middlewares/validateLoginCredentials";
 import { logoutUser } from "./logout";
 import { validateUserLoggedIn } from "../../middlewares/validateUserLoggedIn";
-import { validateRegistrationCredentials } from "../../middlewares/validateRegistrationCredentials";
 import { registerUser } from "./register";
+import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
+import { UserSchemaRefined } from "../../validators/user.validation";
+import { LoginSchema } from "../../validators/login.validation";
+import postRouteHandler from "../post/handler";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -15,10 +17,10 @@ export default function userRouteHandler(): Router {
   });
 
   /**REGISTRATION */
-  router.post("/", validateRegistrationCredentials, registerUser);
+  router.post("/", validateRequestSchema(UserSchemaRefined), registerUser);
 
   /**LOGIN */
-  router.post("/login", validateLoginCredentials, loginUser);
+  router.post("/login", validateRequestSchema(LoginSchema), loginUser);
 
   /**LOGOUT*/
   router.post("/logout", logoutUser);
