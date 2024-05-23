@@ -5,6 +5,9 @@ import { validateUserLoggedIn } from "../../middlewares/validateUserLoggedIn";
 import { validateRegistrationCredentials } from "../../middlewares/validateRegistrationCredentials";
 import { validatePostRequest } from "../../middlewares/validatePostRequest";
 import { createPost } from "./createPost";
+import { validateSession } from "../session/validate";
+import { PostSchema } from "../../validators/post.validation";
+import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
 
 export default function postRouteHandler(): Router {
   const router = express.Router();
@@ -13,7 +16,12 @@ export default function postRouteHandler(): Router {
     res.send("hi");
   });
 
-  router.post("/", validatePostRequest, createPost);
+  router.post(
+    "/",
+    validateSession,
+    validateRequestSchema(PostSchema),
+    createPost
+  );
 
   return router;
 }
