@@ -5,8 +5,10 @@ import { generateOTP } from "../../utils/otp";
 
 export async function sendOtp(req: Request, res: Response) {
   try {
-    const { email } = req.body.decoded;
+    console.log("THE USER IS:" + req.user);
+    const { email } = req.user;
 
+    console.log("THE EMAIL IS:" + email);
     const { otp, otpExpiry } = generateOTP();
 
     const user = await User.findOneAndUpdate(
