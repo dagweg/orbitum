@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "nodemon --files src/index.ts",
     "build": "typescript src/index.ts --outDir dist",
     "serve": "node dist/index.js"
   },

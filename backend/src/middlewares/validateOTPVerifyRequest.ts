@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { OTPVerifySchema } from "../validators/otpVerify.validation";
+import { verifyJWT } from "../utils/jwt";
 
 export async function validateOtpVerifyRequest(
   req: Request,
@@ -16,16 +17,13 @@ export async function validateOtpVerifyRequest(
     }
     const body: z.infer<typeof OTPVerifySchema> = req.body;
 
-    const decoded = jwt.verify(
-      body.token,
-      process.env.JWT_SECRET_KEY as string
-    );
+    const decoded = verifyJWT(body.token);
 
     if (!decoded) {
       return res.status(403).json({ message: "Invalid token. Unauthorized." });
     }
 
-    req.body.decoded = decoded;
+    req.user = decoded;
     next();
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });

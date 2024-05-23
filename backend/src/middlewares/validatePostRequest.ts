@@ -12,18 +12,6 @@ export function validatePostRequest(
   next: NextFunction
 ) {
   try {
-    const sessionId = req.cookies[SESSION_TOKEN];
-
-    const decoded = verifyJWT(sessionId);
-
-    if (!decoded) {
-      return res
-        .status(400)
-        .json({ message: "Session id is not valid. Couldn't resolve email" });
-    }
-
-    req.body.email = (decoded as { email: string }).email;
-
     const validation = PostSchema.safeParse(req.body);
 
     if (!validation.success) {

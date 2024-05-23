@@ -1,17 +1,12 @@
 import { Request, Response } from "express";
-import { z } from "zod";
 import { User } from "../../models/user.model";
-import { OTPVerifySchema } from "../../validators/otpVerify.validation";
 
 export async function verifyOTP(req: Request, res: Response) {
   try {
-    type Td = {
-      decoded: { email: string };
-    };
     const {
-      decoded: { email },
-      inputOtp,
-    }: z.infer<typeof OTPVerifySchema> & Td = req.body;
+      user: { email },
+      body: { inputOtp },
+    } = req;
 
     let user = await User.findOne({ email });
 
@@ -21,25 +16,15 @@ export async function verifyOTP(req: Request, res: Response) {
       });
     }
 
-    // Expire the otp and change user status to verified
-    user = await User.findOneAndUpdate(
-      { email },
-      {
-        $set: {
-          otpExpiry: new Date(Date.now() - 1000 * 60 * 60 * 24),
-          emailVerified: true,
-        },
-      }
-    );
+    if (user.otp === inputOtp) {
+      user.otpExpiry = new Date(0);
+      user.emailVerified = true;
 
-    if (!user) {
+      await user.save();
       return res
-        .status(500)
-        .json({ message: "Problem with otp expiry & verification" });
+        .status(200)
+        .json({ message: "OTP verified successfully. Email is now verified." });
     }
-
-    if (user.otp === inputOtp)
-      return res.status(200).json({ message: "OTP verified successfully" });
 
     return res.status(401).json({ message: "Incorrect OTP" });
   } catch (error) {

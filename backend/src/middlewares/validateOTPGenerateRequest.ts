@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
+import { verifyJWT } from "../utils/jwt";
+import { JwtPayload } from "jsonwebtoken";
 /**
  *
  * @param req {token}
@@ -25,17 +26,17 @@ export async function validateOTPGenerateRequest(
       return res.status(400).json({ errors: validation.error.errors });
     }
 
-    const { token } = req.body;
-    let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
+    const { token } = validation.data;
+    let decoded = verifyJWT(token);
 
     if (!decoded) {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    decoded = decoded as { email: string };
-    console.log(decoded);
+    const email = (decoded as { email: string }).email;
+
     let user = await User.findOne({
-      email: decoded.email,
+      email,
     });
 
     if (!user) {
@@ -44,7 +45,7 @@ export async function validateOTPGenerateRequest(
       });
     }
 
-    req.body.decoded = decoded;
+    req.user = { email };
     next();
   } catch (e) {
     return res.status(500).json(e);
