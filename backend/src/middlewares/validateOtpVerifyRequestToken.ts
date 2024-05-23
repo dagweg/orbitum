@@ -3,19 +3,15 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { OTPVerifySchema } from "../validators/otpVerify.validation";
 import { verifyJWT } from "../utils/jwt";
+import { TOTPVerifySchema } from "../types/schema";
 
-export async function validateOtpVerifyRequest(
+export async function validateOtpVerifyRequestToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const validation = OTPVerifySchema.safeParse(req.body);
-
-    if (!validation.success) {
-      return res.status(400).json({ errors: validation.error.errors });
-    }
-    const body: z.infer<typeof OTPVerifySchema> = req.body;
+    const body: TOTPVerifySchema = req.body;
 
     const decoded = verifyJWT(body.token);
 

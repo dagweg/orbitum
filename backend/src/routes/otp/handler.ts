@@ -1,15 +1,10 @@
-import express, { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { z } from "zod";
-import { User } from "../../models/user.model";
-import { validateToken } from "../token/handler";
-import { sendEmail } from "../../utils/email";
-import { sendOtpEmail } from "../../utils/email";
-import { generateOTP } from "../../utils/otp";
+import express from "express";
 import { verifyOTP } from "./verify";
 import { validateOTPGenerateRequest } from "../../middlewares/validateOTPGenerateRequest";
-import { validateOtpVerifyRequest } from "../../middlewares/validateOTPVerifyRequest";
+import { validateOtpVerifyRequestToken } from "../../middlewares/validateOtpVerifyRequestToken";
 import { sendOtp } from "./send";
+import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
+import { OTPVerifySchema } from "../../validators/otpVerify.validation";
 
 /**
  *  /generate
@@ -18,6 +13,11 @@ import { sendOtp } from "./send";
 export function otpRouteHandler() {
   const router = express.Router();
   router.post("/send", validateOTPGenerateRequest, sendOtp);
-  router.post("/verify", validateOtpVerifyRequest, verifyOTP);
+  router.post(
+    "/verify",
+    validateRequestSchema(OTPVerifySchema),
+    validateOtpVerifyRequestToken,
+    verifyOTP
+  );
   return router;
 }
