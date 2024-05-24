@@ -46,7 +46,7 @@ function Register() {
       firstName: "Dagmawi",
       lastName: "Tefera",
       passWord: "abcd1234@A",
-      phoneNumber: "+251993508272",
+      // phoneNumber: "+251993508272",
       confirmPassWord: "abcd1234@A",
       email: "dagtef@gmail.com",
     },
@@ -74,7 +74,6 @@ function Register() {
         const data = await res.json();
         setLoading(false);
         tokenRef.current = data.token;
-        console.log(data);
         setErrors({});
         switch (res.status) {
           case 200:
@@ -91,7 +90,7 @@ function Register() {
             }
             break;
           case 400:
-            let errz: TZodErrors = getMappedZodErrors(data.errors);
+            let errz: TZodErrors = getMappedZodErrors(data);
             if (errz["confirmPassword"]) {
               if (formValues.passWord !== formValues.confirmPassWord)
                 errz["confirmPassWord"].message = "Passwords don't match";
@@ -113,106 +112,110 @@ function Register() {
   };
 
   return (
-    <div className="flex flex-col items-center mx-auto h-full p-4 w-full sm:w-fit">
-      <div className="w-full sm:w-fit border-2  duration-300 border-neutral-200 p-10 mx-auto rounded-md">
-        <h1 className="text-4xl font-bold  mb-4">Register</h1>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(register)}
-            className="relative flex flex-col px-2  woverflow-y-scroll no-scrollbar"
-          >
-            <FormField
-              control={form.control}
-              name="userName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Username" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors?.userName?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Firstname</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Firstname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage>{errors?.firstName?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Lastname</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Lastname" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage>{errors?.lastName?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Your email won&apos;t be displayed
-                  </FormDescription>
-                  <FormMessage>{errors?.email?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="passWord"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors?.passWord?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassWord"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Confirm Password"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>{errors?.confirmPassWord?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
+    <div className="w-full sm:min-w-fit sm:w-[450px]  my-4 duration-300  p-10 mx-auto rounded-md">
+      <h1 className="text-4xl font-bold  mb-4 font-lemonMilk flex w-full justify-center flex-col items-center">
+        <span className="flex items-start">
+          Orbitum<span className="font-light text-[11pt]">&trade;</span>
+        </span>{" "}
+        <span className="text-sm font-light">Register</span>
+      </h1>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(register)}
+          className="relative flex flex-col px-2  woverflow-y-scroll no-scrollbar"
+        >
+          <FormField
+            control={form.control}
+            name="userName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="Username" {...field} />
+                </FormControl>
+                <FormMessage>{errors?.userName?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Firstname</FormLabel>
+                <FormControl>
+                  <Input placeholder="Firstname" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display name.
+                </FormDescription>
+                <FormMessage>{errors?.firstName?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Lastname</FormLabel>
+                <FormControl>
+                  <Input placeholder="Lastname" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display name.
+                </FormDescription>
+                <FormMessage>{errors?.lastName?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Your email won&apos;t be displayed
+                </FormDescription>
+                <FormMessage>{errors?.email?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="passWord"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="Password" type="password" {...field} />
+                </FormControl>
+                <FormMessage>{errors?.passWord?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassWord"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Confirm Password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage>{errors?.confirmPassWord?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          {/* <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
@@ -228,44 +231,43 @@ function Register() {
                   <FormMessage>{errors?.phoneNumber?.message}</FormMessage>
                 </FormItem>
               )}
-            ></FormField>
-            <div className="flex flex-col gap-2">
-              <Button type="button" onClick={register}>
-                {loading ? <Spinner /> : "Register"}
-              </Button>
-              <p>
-                Already have an account? <Link href="/auth/login">Login</Link>
-              </p>
-            </div>
-          </form>
-        </Form>
-        <div className="sr-only">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="outline" ref={dialogRef}>
-                Show Dialog
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  An unverified account has been found!
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  We have found an account with the following credentials. Click
-                  continue if you want us to send you an otp so that you get
-                  verified and start using our platform.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={redirectToOtpPage}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
+            ></FormField> */}
+          <div className="flex flex-col gap-2 my-5">
+            <Button type="button" onClick={register}>
+              {loading ? <Spinner /> : "Register"}
+            </Button>
+            <p>
+              Already have an account? <Link href="/auth/login">Login</Link>
+            </p>
+          </div>
+        </form>
+      </Form>
+      <div className="sr-only">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" ref={dialogRef}>
+              Show Dialog
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                An unverified account has been found!
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                We have found an account with the following credentials. Click
+                continue if you want us to send you an otp so that you get
+                verified and start using our platform.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={redirectToOtpPage}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
