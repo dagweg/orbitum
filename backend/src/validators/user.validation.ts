@@ -11,9 +11,12 @@ export const UserSchema = z.object({
   lastName: z
     .string()
     .min(3, { message: "Last name must be at least 3 characters long" }),
-  phoneNumber: z.string().regex(/^\+\d{12}$/, {
-    message: "Must be a valid phone number",
-  }),
+  phoneNumber: z
+    .string()
+    .regex(/^\+\d{12}$/, {
+      message: "Must be a valid phone number",
+    })
+    .optional(),
   email: z
     .string()
     .regex(
