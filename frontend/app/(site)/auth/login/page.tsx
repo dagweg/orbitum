@@ -90,48 +90,51 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col justify-center h-full">
-      <div className="min-w-[400px] max-w-[500px] border-2 border-neutral-400 p-10 mx-auto rounded-lg">
-        <h1 className="text-4xl font-bold  mb-4">Login</h1>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors?.email?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="passWord"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors?.passWord?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-col gap-2">
-              <Button type="submit" onClick={onSubmit}>
-                {loading ? <Spinner /> : "Login"}
-              </Button>
-              <p>
-                New to Orbitum? <Link href="/auth/register">Register</Link>
-              </p>
-            </div>
-          </form>
-        </Form>
-      </div>
+    <div className="w-[450px] max-w-[500px] px-10 py-20 mx-auto rounded-lg">
+      <h1 className="text-4xl font-bold  mb-4 font-lemonMilk flex w-full justify-center flex-col items-center">
+        <span className="flex items-start">
+          Orbitum<span className="font-light text-[11pt]">&trade;</span>
+        </span>{" "}
+        <span className="text-sm font-light">Login</span>
+      </h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage>{errors?.email?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="passWord"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="Password" type="password" {...field} />
+                </FormControl>
+                <FormMessage>{errors?.passWord?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <div className="flex flex-col gap-2">
+            <Button type="submit" onClick={onSubmit}>
+              {loading ? <Spinner /> : "Login"}
+            </Button>
+            <p>
+              New to Orbitum? <Link href="/auth/register">Register</Link>
+            </p>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }
