@@ -29,9 +29,6 @@ export async function loginUser(req: Request, res: Response) {
         .json({ message: "Password is incorrect. Please try again!" });
     }
 
-    // If the user is not logged in, then create a session
-    // and set the cookie
-
     const expireDuration = 24 * 3; // 3 days
     const expires: Date = dateHoursFromNow(expireDuration); // Date repr
 

@@ -14,6 +14,10 @@ function Logout() {
         },
         credentials: "include",
       });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     })();
   }, []);
 
