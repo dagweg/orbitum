@@ -3,7 +3,6 @@ import { UserSchema } from "./user.validation";
 import { TUserSchema } from "../types/schema";
 
 export const PostSchema = z.object({
-  email: z.string(),
   content: z.string().min(1, "Post cannot be empty"),
 });
 

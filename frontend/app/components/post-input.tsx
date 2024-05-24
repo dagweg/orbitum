@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Image, Video } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -17,12 +18,34 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { API_ORIGIN } from "../config/apiConfig";
 
 export default function PostInput() {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
+  const [content, setContent] = useState("");
+
   function openDialog() {
     triggerRef.current?.click();
+  }
+
+  function handlePost() {
+    const formData = JSON.stringify({
+      content,
+    });
+
+    console.log(formData);
+    fetch(`${API_ORIGIN}/api/v1/user/post`, {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {
+      const data = await res.json();
+      console.log(data);
+    });
   }
 
   return (
@@ -52,6 +75,8 @@ export default function PostInput() {
               placeholder="Share your thoughts"
               rows={5}
               className="w-full"
+              value={content}
+              onChangeCapture={(e) => setContent(e.currentTarget.value)}
             ></Textarea>
             <div className="flex gap-3 ">
               <Button variant={"outline"}>Upload Image</Button>
@@ -59,7 +84,11 @@ export default function PostInput() {
             </div>
           </Card>
           <DialogFooter>
-            <Button type="submit">Post</Button>
+            <DialogClose>
+              <Button type="submit" onClick={handlePost}>
+                Post
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>

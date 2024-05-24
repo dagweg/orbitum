@@ -1,7 +1,7 @@
-import { API_HOST } from "@/app/config/apiConfig";
+import { API_ORIGIN } from "@/app/config/apiConfig";
 
 export async function isUserLoggedIn(authToken: string) {
-  const response = await fetch(`${API_HOST}/api/v1/user/isLoggedIn`, {
+  const response = await fetch(`${API_ORIGIN}/api/v1/user/isLoggedIn`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${authToken}`,

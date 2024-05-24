@@ -3,7 +3,7 @@
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { redirect } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { API_HOST } from "../config/apiConfig";
+import { API_ORIGIN } from "../config/apiConfig";
 import { SESSION_TOKEN } from "../config/constants";
 import { setUser, setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { useState } from "react";
@@ -25,7 +25,7 @@ function useSession() {
 
   (async () => {
     // Validate the sessionId
-    const response = await fetch(`${API_HOST}/api/v1/session/validate`, {
+    const response = await fetch(`${API_ORIGIN}/api/v1/session/validate`, {
       method: "POST",
       body: JSON.stringify({ sessionId }),
     });

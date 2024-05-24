@@ -27,8 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { SESSION_TOKEN } from "@/app/config/constants";
-import { API_HOST } from "@/app/config/apiConfig";
-import { AUTH_TOKEN } from "../../../../../backend/src/config/apiConfig";
+import { API_ORIGIN } from "@/app/config/apiConfig";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 
@@ -48,7 +47,7 @@ export default function Login() {
   async function onSubmit() {
     setLoading(true);
     try {
-      const loginResponse = await fetch(`${API_HOST}/api/v1/user/login`, {
+      const loginResponse = await fetch(`${API_ORIGIN}/api/v1/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

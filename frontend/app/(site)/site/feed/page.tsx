@@ -5,15 +5,17 @@ import PostInput from "@/app/components/post-input";
 import { SESSION_TOKEN } from "@/app/config/constants";
 import { TPostSchema, TUserSchema } from "@_types/schema";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 async function FeedPage() {
   const cookieStore = cookies();
 
-  const posts: TPostSchema[] = await getPosts(
-    cookieStore.get(SESSION_TOKEN)?.value
-  );
+  const sessionToken = cookieStore.get(SESSION_TOKEN)?.value;
+  const posts: TPostSchema[] = await getPosts(sessionToken);
 
-  console.log(cookieStore.get(SESSION_TOKEN)?.value);
+  if (!sessionToken) {
+    redirect("/auth/login");
+  }
 
   return (
     <div className="max-w-prose mx-auto bg-white h-full px-4 py-2 flex flex-col gap-3">

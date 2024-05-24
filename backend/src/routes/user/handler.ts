@@ -1,8 +1,7 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import express from "express";
 import { loginUser } from "./login";
 import { logoutUser } from "./logout";
-import { validateUserLoggedIn } from "../../middlewares/validateUserLoggedIn";
 import { registerUser } from "./register";
 import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
 import { UserSchemaRefined } from "../../validators/user.validation";
@@ -11,6 +10,7 @@ import { validateSession } from "../../middlewares/validateSession";
 import { PostSchema } from "../../validators/post.validation";
 import { createPost } from "../post/createPost";
 import { getAllUserPosts } from "./getAllUserPosts";
+import { checkLoginStatus } from "../../middlewares/checkLoginStatus";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -28,9 +28,9 @@ export default function userRouteHandler(): Router {
   /**LOGOUT*/
   router.post("/logout", logoutUser);
 
-  /**LOGGED IN CHECKER */
-  router.post("/isLoggedIn", validateUserLoggedIn, (req, res) => {
-    return res.json({ message: "YOU ARE LOGGED IN" });
+  /**Check if User logged in */
+  router.get("/status", checkLoginStatus, (req: Request, res: Response) => {
+    res.status(200).json({ loggedIn: true });
   });
 
   /**USER POST FUNCTIONALITY */

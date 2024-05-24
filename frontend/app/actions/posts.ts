@@ -1,9 +1,9 @@
-import { API_HOST } from "../config/apiConfig";
+import { API_ORIGIN } from "../config/apiConfig";
 import { SESSION_TOKEN } from "../config/constants";
 
 export async function getUserPosts() {
   try {
-    const response = await fetch(`${API_HOST}/api/v1/user/post`, {
+    const response = await fetch(`${API_ORIGIN}/api/v1/user/post`, {
       credentials: "include",
     });
     if (!response.ok) {
@@ -18,7 +18,7 @@ export async function getUserPosts() {
 
 export async function getPosts(sessionToken: string | undefined) {
   try {
-    const response = await fetch(`${API_HOST}/api/v1/posts`, {
+    const response = await fetch(`${API_ORIGIN}/api/v1/posts`, {
       credentials: "include",
       headers: {
         Cookie: `${SESSION_TOKEN}=${sessionToken}`,

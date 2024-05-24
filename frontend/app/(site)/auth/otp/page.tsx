@@ -1,7 +1,7 @@
 "use client";
 
 import Spinner from "@/app/components/spinner";
-import { API_HOST } from "@/app/config/apiConfig";
+import { API_ORIGIN } from "@/app/config/apiConfig";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -46,7 +46,7 @@ export default function OtpPage() {
    */
   useLayoutEffect(() => {
     async function fetchToken() {
-      const response = await fetch(`${API_HOST}/api/v1/token`, {
+      const response = await fetch(`${API_ORIGIN}/api/v1/token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function OtpPage() {
       goBackRef.current?.setAttribute("disabled", "");
       resendRef.current?.setAttribute("disabled", "");
 
-      fetch(`${API_HOST}/api/v1/otp/verify`, {
+      fetch(`${API_ORIGIN}/api/v1/otp/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export default function OtpPage() {
   }
 
   function resendOTP() {
-    fetch(`${API_HOST}/api/v1/otp/generate`, {
+    fetch(`${API_ORIGIN}/api/v1/otp/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

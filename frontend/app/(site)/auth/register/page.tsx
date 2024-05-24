@@ -17,7 +17,7 @@ import Link from "@/app/components/link";
 import { z } from "zod";
 import { TUserSchema } from "@_types/schema";
 import { TZodErrors } from "@_types/types";
-import { API_HOST } from "@/app/config/apiConfig";
+import { API_ORIGIN } from "@/app/config/apiConfig";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import Spinner from "@/app/components/spinner";
@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { getMappedZodErrors } from "@/lib/utils";
 import { SESSION_TOKEN } from "@/app/config/constants";
+import { checkLoginStatus } from "@/app/actions/user";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
@@ -57,14 +58,12 @@ function Register() {
   const dialogRef = useRef<HTMLButtonElement>(null);
   const tokenRef = useRef("");
 
-  useLayoutEffect(() => {});
-
   function register() {
     setLoading(true);
 
     const formValues = form.getValues();
 
-    fetch(`${API_HOST}/api/v1/user`, {
+    fetch(`${API_ORIGIN}/api/v1/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
