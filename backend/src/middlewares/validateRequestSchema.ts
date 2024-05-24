@@ -9,7 +9,7 @@ export const validateRequestSchema =
   (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     try {
       const validation = schema.safeParse(req.body);
-      console.log(req.body);
+      // console.log(req.body);
       if (!validation.success) {
         return res.status(400).json(validation.error.errors);
       }
