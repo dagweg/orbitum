@@ -1,0 +1,26 @@
+# Use Node.js image
+FROM node:latest
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies using pnpm
+RUN pnpm install
+
+# Copy source code
+COPY . .
+
+# Build TypeScript
+RUN pnpm run build
+
+# Expose port
+EXPOSE 3000
+
+# Command to run the application
+CMD ["pnpm", "run", "serve"]

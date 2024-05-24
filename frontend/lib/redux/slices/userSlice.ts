@@ -3,12 +3,12 @@ import { TUserSchema } from "@_types/schema";
 
 type TUserSession = {
   email?: string;
-  sessionId?: string;
+  sessionToken?: string;
 };
 
 const userSessionInitialState: TUserSession = {
   email: undefined,
-  sessionId: undefined,
+  sessionToken: undefined,
 };
 
 const userSessionSlice = createSlice({
@@ -20,7 +20,7 @@ const userSessionSlice = createSlice({
     },
     setUserSessionId(state, action: PayloadAction<string | undefined>) {
       console.log(action);
-      state.sessionId = action.payload;
+      state.sessionToken = action.payload;
     },
   },
 });

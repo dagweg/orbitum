@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
 import { ChangeEvent, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.chatAreaReducer);
@@ -27,39 +28,38 @@ function ChatArea() {
   }
 
   return (
-    <div
-      className={cn(
-        "flex-1 flex flex-col h-full w-full max-w-[1000px] mx-auto bg-neutral-100 p-4",
-        chatArea.enabled
-          ? `${chatArea.enabledStyle}`
-          : `${chatArea.disabledStyle}`
-      )}
-    >
-      <section className="flex-1">
-        <ChatMessage
-          name="Dagmawi Tefera"
-          message="Hey how are you doing Hey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doing Hey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doingHey how are you doing"
-        />
-        <ChatMessage
-          name="You"
-          sender="you"
-          message="I'm doing great. You? 😁"
-        />
-      </section>
-      <section className="h-fit sticky bottom-0 w-full flex flex-col-reverse">
-        <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
-          <Paperclip className="" />
-          <TextAreaAutoSize
-            maxRows={10}
-            className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
-            placeholder="Type a message"
-            onChange={(e) => handleTextAreaChange(e)}
-          />
-          <Smile />
-          {hasStartedTyping ? <SendHorizontal /> : <Mic />}
-        </div>
-      </section>
-    </div>
+    <>
+      <div className="flex-1 p-4 w-full max-w-[1000px] flex flex-col items-center  justify-center mx-auto">
+        <Badge className="mx-auto text-base">
+          Get started by selecting a chat
+        </Badge>
+        {/* <div
+          className={cn(
+            " flex flex-col h-full  mx-auto bg-neutral-100 ",
+            chatArea.enabled
+              ? `${chatArea.enabledStyle}`
+              : `${chatArea.disabledStyle}`
+          )}
+        >
+          <section className="flex-1">
+            <p className="sr-only">This is where you populate the chat</p>
+          </section>
+          <section className="h-fit sticky bottom-0 w-full flex flex-col-reverse">
+            <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
+              <Paperclip className="" />
+              <TextAreaAutoSize
+                maxRows={10}
+                className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
+                placeholder="Type a message"
+                onChange={(e) => handleTextAreaChange(e)}
+              />
+              <Smile />
+              {hasStartedTyping ? <SendHorizontal /> : <Mic />}
+            </div>
+          </section>
+        </div> */}
+      </div>
+    </>
   );
 }
 

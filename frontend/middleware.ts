@@ -17,8 +17,6 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/login", CLIENT_ORIGIN));
   }
 
-  console.log("LOGGED IN" + loggedIn);
-
   return NextResponse.next();
 }
 
@@ -27,6 +25,7 @@ const loginRequiringRoutes = [
   "/site/feed",
   "/site/chat",
   "/site/notifications",
+  "/site/logout",
 ];
 
 const logoutRequiringRoutes = ["/auth/register", "/auth/otp", "auth/login"];

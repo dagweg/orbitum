@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function NotificationsPage() {
   return (
-    <div className="max-w-prose mx-auto bg-white h-full px-4 py-2">
+    <div className="max-w-prose mx-auto bg-white h-screen px-4 py-2">
       <Heading>Notifications</Heading>
       <div className="h-full w-full flex flex-col justify-center items-center">
         <Image

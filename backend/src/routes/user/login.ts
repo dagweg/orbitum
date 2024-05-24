@@ -51,7 +51,7 @@ export async function loginUser(req: Request, res: Response) {
       },
       {
         $set: {
-          sessionId: sessionToken,
+          sessionToken: sessionToken,
           expires,
         },
       },

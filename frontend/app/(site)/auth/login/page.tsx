@@ -38,8 +38,8 @@ export default function Login() {
   const [errors, setErrors] = useState<TLoginError>();
   const router = useRouter();
 
-  const sessionId = useSelector(
-    (state: RootState) => state.userSessionReducer.sessionId
+  const sessionToken = useSelector(
+    (state: RootState) => state.userSessionReducer.sessionToken
   );
 
   const dispatch = useDispatch<AppDispatch>();

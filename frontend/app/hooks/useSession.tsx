@@ -9,7 +9,7 @@ import { setUser, setUserSessionId } from "@/lib/redux/slices/userSlice";
 import { useState } from "react";
 
 function useSession() {
-  const { email, sessionId } = useSelector(
+  const { email, sessionToken } = useSelector(
     (state: RootState) => state.userSessionReducer
   );
   const user = useSelector((state: RootState) => state.userReducer);
@@ -19,15 +19,15 @@ function useSession() {
   const _sessionId = localStorage.getItem(SESSION_TOKEN);
   dispatch(setUserSessionId(_sessionId ?? undefined));
 
-  if (sessionId?.trim() === "") {
+  if (sessionToken?.trim() === "") {
     return;
   }
 
   (async () => {
-    // Validate the sessionId
+    // Validate the sessionToken
     const response = await fetch(`${API_ORIGIN}/api/v1/session/validate`, {
       method: "POST",
-      body: JSON.stringify({ sessionId }),
+      body: JSON.stringify({ sessionToken }),
     });
     const data = await response.json();
     if (response.ok) {

@@ -6,6 +6,6 @@ import LoaderPage from "../components/loader-page";
 
 export default function Home() {
   const router = useRouter();
-  router.push("/auth/register");
+  router.push("/site/feed");
   return <LoaderPage />;
 }

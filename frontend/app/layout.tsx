@@ -31,9 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} ${lemonMilk.variable} h-screen w-screen`}
-      >
+      <body className={`${inter.className} ${lemonMilk.variable} `}>
         <ReduxProvider>
           <main className="h-full w-full">{children}</main>
           <Toaster />

@@ -18,21 +18,23 @@ async function FeedPage() {
   }
 
   return (
-    <div className="max-w-prose mx-auto bg-white h-full px-4 py-2 flex flex-col gap-3">
-      <Heading>Feed</Heading>
-      <PostInput />
-      {posts.length > 0 &&
-        posts.map((post: TPostSchema, key: number) => (
-          <Post
-            key={key}
-            user={post.user as any as TUserSchema}
-            date={new Date(post.createdAt)}
-            content={post.content}
-            likes={post.likes}
-            comments={post.comments}
-            shares={post.shares}
-          />
-        ))}
+    <div className="fixed overflow-y-scroll flex w-full justify-center bg-white">
+      <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
+        <Heading>Feed</Heading>
+        <PostInput />
+        {posts.length > 0 &&
+          posts.map((post: TPostSchema, key: number) => (
+            <Post
+              key={key}
+              user={post.user as any as TUserSchema}
+              date={new Date(post.createdAt)}
+              content={post.content}
+              likes={post.likes}
+              comments={post.comments}
+              shares={post.shares}
+            />
+          ))}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import { Search } from "lucide-react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SelectContact from "./select-contact";
+import { Badge } from "@/components/ui/badge";
 
 function ChatSideBar() {
   const sideBar = useSelector((state: RootState) => state.chatSideBarReducer);
@@ -65,12 +66,15 @@ function ChatSideBar() {
         <Search />
         <Input placeholder="Search people, groups or channels"></Input>
       </section>
+      <div className="h-full flex items-center ">
+        <Badge variant={"outline"}></Badge>
+      </div>
       <section className="mt-2 flex flex-col gap-2">
-        <SelectContact
+        {/* <SelectContact
           name="Dagmawi Wegayehu"
           lastMessage="Hey bro how are you doing"
           onClick={handleContactSelect}
-        />
+        /> */}
       </section>
     </div>
   );
