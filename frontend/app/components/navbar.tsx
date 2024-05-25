@@ -93,6 +93,7 @@ export default function Navbar() {
             <User />
           </NavigationMenuTrigger>
           <NavigationMenuContent>
+            Logged in as :
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               {user.map((items) => (
                 <NavItem key={items.title}>

@@ -15,10 +15,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { z } from "zod";
-import { TUserSchema } from "@_types/schema";
-import { TZodErrors } from "@_types/types";
 import { API_ORIGIN } from "@/app/config/apiConfig";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import Spinner from "@/app/components/spinner";
 import { useToast } from "@/components/ui/use-toast";
@@ -34,8 +32,8 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { getMappedZodErrors } from "@/lib/utils";
-import { SESSION_TOKEN } from "@/app/config/constants";
-import { checkLoginStatus } from "@/app/actions/user";
+import { TUserSchema } from "@/lib/types/schema";
+import { TZodErrors } from "@/lib/types/types";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 

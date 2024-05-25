@@ -3,7 +3,7 @@ import Heading from "@/app/components/heading";
 import Post from "@/app/components/post";
 import PostInput from "@/app/components/post-input";
 import { SESSION_TOKEN } from "@/app/config/constants";
-import { TPostSchema, TUserSchema } from "@_types/schema";
+import { TPostSchema, TUserSchema } from "@/lib/types/schema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

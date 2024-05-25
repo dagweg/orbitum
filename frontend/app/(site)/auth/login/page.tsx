@@ -1,6 +1,4 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -8,26 +6,20 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { env } from "process";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "@/app/components/link";
 import { useToast } from "@/components/ui/use-toast";
-import { TLoginSchema } from "@_types/schema";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { getCookie, getMappedZodErrors } from "@/lib/utils";
+import { useState } from "react";
+import { getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState, store } from "@/lib/redux/store";
-import { setUserSessionId } from "@/lib/redux/slices/userSlice";
-import { SESSION_TOKEN } from "@/app/config/constants";
 import { API_ORIGIN } from "@/app/config/apiConfig";
+import { TLoginSchema } from "@/lib/types/schema";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 
@@ -37,12 +29,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<TLoginError>();
   const router = useRouter();
-
-  const sessionToken = useSelector(
-    (state: RootState) => state.userSessionReducer.sessionToken
-  );
-
-  const dispatch = useDispatch<AppDispatch>();
 
   async function onSubmit() {
     setLoading(true);

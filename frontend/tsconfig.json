@@ -18,9 +18,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@_validators/*": ["../backend/src/validators/*"],
-      "@_types/*": ["../backend/src/types/*"]
+      "@/*": ["./*"]
+      // "@_validators/*": ["../backend/src/validators/*"],
+      // "@_types/*": ["../backend/src/types/*"]
     }
   },
   "include": [

@@ -4,7 +4,7 @@ import { Ellipsis, ThumbsUp, MessageSquareText, Share2 } from "lucide-react";
 import React from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import Image from "next/image";
-import { TUserSchema } from "@_types/schema";
+import { TUserSchema } from "@/lib/types/schema";
 
 type TComment = {
   name: string;
@@ -38,16 +38,7 @@ export default function Post({
           <Ellipsis />
         </Button>
       </section>
-      <section className="w-full">
-        {/* <Image
-            href=""
-            alt=""
-            width={200}
-            height={300}
-            className="w-full h-[400px] bg-neutral-100"
-          ></Image> */}
-        {content}
-      </section>
+      <section className="w-full">{content}</section>
       <section className="w-full space-y-3">
         <div className="flex -space-x-2 border-b-2 pb-2">
           {["😂", "👍", "😔"].map((em, i) => {
