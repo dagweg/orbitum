@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { tokenRouteHandler } from "./routes/token/handler";
 import { otpRouteHandler } from "./routes/otp/handler";
 import postRouteHandler from "./routes/post/handler";
+import { searchHandler } from "./routes/search/handler";
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +37,7 @@ app.use("/api/v1/user", userRouteHandler());
 app.use("/api/v1/posts", postRouteHandler());
 app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
+app.use("/api/v1/search", searchHandler());
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

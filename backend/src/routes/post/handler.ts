@@ -2,7 +2,7 @@ import { Router } from "express";
 import express from "express";
 import { createPost } from "./createPost";
 import { PostSchema } from "../../validators/post.validation";
-import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
+import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
 import { validateSession } from "../../middlewares/validateSession";
 import { getAllPosts } from "./getAllPosts";
 import { getAllUserPosts } from "../user/getAllUserPosts";

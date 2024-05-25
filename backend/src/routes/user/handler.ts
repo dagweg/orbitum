@@ -3,7 +3,7 @@ import express from "express";
 import { loginUser } from "./login";
 import { logoutUser } from "./logout";
 import { registerUser } from "./register";
-import { validateRequestSchema } from "../../middlewares/validateRequestSchema";
+import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
 import { UserSchemaRefined } from "../../validators/user.validation";
 import { LoginSchema } from "../../validators/login.validation";
 import { validateSession } from "../../middlewares/validateSession";
@@ -20,10 +20,10 @@ export default function userRouteHandler(): Router {
   });
 
   /**REGISTRATION */
-  router.post("/", validateRequestSchema(UserSchemaRefined), registerUser);
+  router.post("/", validatePOSTRequestSchema(UserSchemaRefined), registerUser);
 
   /**LOGIN */
-  router.post("/login", validateRequestSchema(LoginSchema), loginUser);
+  router.post("/login", validatePOSTRequestSchema(LoginSchema), loginUser);
 
   /**LOGOUT*/
   router.post("/logout", logoutUser);
@@ -37,7 +37,7 @@ export default function userRouteHandler(): Router {
   router.post(
     "/post",
     validateSession,
-    validateRequestSchema(PostSchema),
+    validatePOSTRequestSchema(PostSchema),
     createPost
   );
 
