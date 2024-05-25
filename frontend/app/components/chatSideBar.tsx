@@ -10,18 +10,33 @@ import {
 import { RootState, AppDispatch } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SelectContact from "./select-contact";
 import { Badge } from "@/components/ui/badge";
+import { API_ORIGIN } from "../config/apiConfig";
 
 function ChatSideBar() {
   const sideBar = useSelector((state: RootState) => state.chatSideBarReducer);
 
   const dispatch = useDispatch<AppDispatch>();
+  const [people, setPeople] = useState();
+  let query: string = "";
+
+  const handleSearch = (e: FormEvent<HTMLInputElement>) => {
+    // console.log(e.currentTarget?.value);
+    query = e.currentTarget?.value;
+    fetch(`${API_ORIGIN}/api/v1/search/chat/sidebar?query=${query}`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((dat) => {
+        setPeople(dat);
+        console.log(dat);
+      });
+  };
 
   useEffect(() => {
-    console.log("Helo");
     window.addEventListener("resize", handleResize);
 
     function handleResize(e: Event) {
@@ -64,17 +79,24 @@ function ChatSideBar() {
     >
       <section className="flex items-center gap-2">
         <Search />
-        <Input placeholder="Search people, groups or channels"></Input>
+        <Input
+          placeholder="Search people, groups or channels"
+          onChangeCapture={(e) => handleSearch(e)}
+        ></Input>
       </section>
-      <div className="h-full flex items-center ">
+      {/* <div className="h-full flex items-center ">
         <Badge variant={"outline"}></Badge>
-      </div>
+      </div> */}
       <section className="mt-2 flex flex-col gap-2">
-        {/* <SelectContact
-          name="Dagmawi Wegayehu"
-          lastMessage="Hey bro how are you doing"
-          onClick={handleContactSelect}
-        /> */}
+        {people &&
+          (people as []).map((people: any, key: any) => (
+            <SelectContact
+              key={key}
+              name="Dagmawi Wegayehu"
+              lastMessage="Hey bro how are you doing"
+              onClick={handleContactSelect}
+            />
+          ))}
       </section>
     </div>
   );

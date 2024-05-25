@@ -24,7 +24,8 @@ export function validateSession(
 
     req.user = decoded;
     req.body.email = decoded.email;
-    console.log("validating sesion" + req.body.content);
+    console.log(req.user);
+    // console.log("validating sesion" + req.body.content);
 
     // Future todo : Implement location + device identification  for better session management
 
