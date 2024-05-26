@@ -54,3 +54,7 @@ export const UserSchemaRefined = UserSchema.refine(
     path: ["confirmPassWord"],
   }
 );
+
+export const GetUserSchema = z.object({
+  userId: z.string().min(1, "Cannot be empty"),
+});

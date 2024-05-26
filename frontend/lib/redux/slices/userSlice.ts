@@ -1,5 +1,12 @@
+import { API_ORIGIN } from "@/app/config/apiConfig";
+import { TUserSchema } from "./../../../../backend/src/types/schema.d";
 import { TUserSchema } from "@/lib/types/schema";
-import { PayloadAction, Tuple, createSlice } from "@reduxjs/toolkit";
+import {
+  PayloadAction,
+  Tuple,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 
 // type TUserSession = {
 //   email?: string;
@@ -27,9 +34,11 @@ import { PayloadAction, Tuple, createSlice } from "@reduxjs/toolkit";
 // export const { setUserEmail, setUserSessionId } = userSessionSlice.actions;
 // export const userSessionReducer = userSessionSlice.reducer;
 
-type TUserType = Pick<
+export const fetchUser = createAsyncThunk(`${API_ORIGIN}/api/v1/user`);
+
+type TUserType = Omit<
   TUserSchema,
-  "firstName" | "lastName" | "email" | "userName" | "phoneNumber"
+  "password" | "confirmPassword" | "otpExpiry" | "otp"
 >;
 
 const userInitialState: TUserType = {
@@ -38,6 +47,14 @@ const userInitialState: TUserType = {
   email: "",
   userName: "",
   phoneNumber: "",
+  stories: [],
+  posts: [],
+  settings: "",
+  channelMemberships: [],
+  groupMemberships: [],
+  profileUrl: "",
+  friends: [],
+  confirmPassWord: "",
 };
 
 const userSlice = createSlice({
@@ -45,8 +62,14 @@ const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     setUser(state, action: PayloadAction<TUserType>) {
-      state = action.payload;
+      return action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchUser.fullfilled,
+      (state, action: PayloadAction<TUserSchema>) => {}
+    );
   },
 });
 

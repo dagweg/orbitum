@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { API_ORIGIN } from "../config/apiConfig";
 import { SESSION_TOKEN } from "../config/constants";
-import { setUser, setUserSessionId } from "@/lib/redux/slices/userSlice";
+import { setUser } from "@/lib/redux/slices/userSlice";
 import { useState } from "react";
 
 function useSession() {
@@ -41,3 +41,4 @@ function useSession() {
 }
 
 export default useSession;
+setUserSessionId;
