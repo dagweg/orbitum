@@ -16,7 +16,7 @@ export async function loginUser(req: Request, res: Response) {
     console.log(user);
     if (!user) {
       return res.status(401).json({
-        message: "Invalid email or password. Please try again!",
+        message: "Please create an account.",
       });
     }
 
@@ -27,11 +27,19 @@ export async function loginUser(req: Request, res: Response) {
         .json({ message: "Invalid email or password. Please try again!" });
     }
 
+    if (!user.emailVerified) {
+      return res.status(403).json({
+        message:
+          "You must verify your account before logging in. We've sent an otp. Check your email.",
+      });
+    }
+
     const expireDuration = 24 * 3; // 3 days
     const expires: Date = dateHoursFromNow(expireDuration);
 
     const sessionToken = jwt.sign(
       {
+        userId: user._id,
         email,
       },
       process.env.JWT_SECRET_KEY as string,
@@ -41,14 +49,12 @@ export async function loginUser(req: Request, res: Response) {
     );
 
     const session = await Session.findOneAndUpdate(
-      {
-        email,
-      },
+      { userId: user._id }, // Use email as the unique identifier
       {
         $set: {
           sessionToken,
           expires,
-          email,
+          userId: user._id,
         },
       },
       { upsert: true, new: true }

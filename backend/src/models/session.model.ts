@@ -4,8 +4,9 @@ import { optional } from "zod";
 import { dateHoursFromNow } from "../utils/date";
 
 const sessionSchema = new mongoose.Schema({
-  email: { type: String, unique: true, ref: "User" },
-  sessionToken: { type: String, required: true },
+  userId: { type: ObjectId, unique: true, ref: "User", require },
+  // email: { type: String, unique: true, ref: "User", require },
+  sessionToken: { type: String, require },
   expires: { type: Date, optional: true, default: dateHoursFromNow(24) },
 });
 

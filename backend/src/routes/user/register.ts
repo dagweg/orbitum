@@ -20,16 +20,12 @@ export async function registerUser(req: Request, res: Response) {
     );
 
     let user = await User.findOne({
-      $or: [
-        { email: userData.email },
-        { userName: userData.userName },
-        { phoneNumber: userData.phoneNumber },
-      ],
+      $or: [{ email: userData.email }, { userName: userData.userName }],
     });
 
     if (user) {
       let response = {
-        message: "",
+        message: "Conflict",
         verified: user.emailVerified,
         token,
       };
@@ -39,9 +35,6 @@ export async function registerUser(req: Request, res: Response) {
       } else if (user.userName === userData.userName) {
         response.message =
           "User with the specified username already exists. Please login!";
-      } else if (user.phoneNumber === userData.phoneNumber) {
-        response.message =
-          "User with the specified phone number already exists. Please login!";
       }
 
       return res.status(409).json(response);

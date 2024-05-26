@@ -21,14 +21,14 @@ export async function checkLoginStatus(
       return res.status(401).json({ loggedIn: false });
     }
 
-    const email = (decoded as { email: string }).email;
-    const user = await User.findOne({ email });
+    const { email, userId } = decoded as { email: string; userId: string };
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(401).json({ loggedIn: false });
     }
 
-    const session = await Session.findOne({ email, sessionToken });
+    const session = await Session.findOne({ userId, sessionToken });
 
     if (!session || session.expires < new Date()) {
       return res.status(401).json({

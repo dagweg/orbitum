@@ -20,6 +20,7 @@ export async function logoutUser(req: Request, res: Response) {
 
     // Verify the validity of the session id
     const decoded = verifyJWT(sessionToken);
+    const { email, userId } = decoded as { email: string; userId: string };
 
     if (!decoded) {
       return res.status(400).json("Invalid sessionToken!");
@@ -27,13 +28,19 @@ export async function logoutUser(req: Request, res: Response) {
 
     // The sessionToken is a jwt so parse it to get the email
     const sess = await Session.findOneAndUpdate(
-      { email: (decoded as { email: string }).email },
+      { userId },
       {
         $set: {
           expires: new Date(0),
         },
       }
     );
+
+    if (!sess) {
+      return res
+        .status(500)
+        .json({ message: "There was a problem finding the session." });
+    }
 
     return res.json({ message: "Successully Logged out!" });
   } catch (error) {

@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 import mongoose, { InferSchemaType } from "mongoose";
 import { Settings } from "./settings.model";
-import { boolean } from "zod";
 
 const userSchema = new mongoose.Schema({
   userName: { type: String, unique: true, require: true },
@@ -9,7 +8,7 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, require: true },
   password: { type: String, required: true },
-  phoneNumber: { type: String, unique: true },
+  phoneNumber: { type: String },
   profileUrl: { type: String },
   otp: { type: String, default: null },
   otpExpiry: { type: Date },
