@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatAreaReducer, chatSideBarReducer } from "./slices/chatSlice";
-import { userReducer, userSessionReducer } from "./slices/userSlice";
+import { userReducer } from "./slices/userSlice";
 import { SESSION_TOKEN } from "@/app/config/constants";
 import { string } from "zod";
 
@@ -14,7 +14,6 @@ const persistedState =
 export const store = configureStore({
   reducer: {
     userReducer,
-    userSessionReducer,
     chatSideBarReducer,
     chatAreaReducer,
   },

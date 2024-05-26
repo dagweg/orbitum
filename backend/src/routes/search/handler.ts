@@ -6,10 +6,9 @@ import { validateGETRequestSchema } from "../../middlewares/validateGETRequestSc
 
 export function searchHandler() {
   const router = express.Router();
-
+  router.use(validateSession);
   router.get(
     "/chat/sidebar",
-    validateSession,
     validateGETRequestSchema(SearchSchema),
     searchChatSidebar
   );

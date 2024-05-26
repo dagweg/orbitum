@@ -6,7 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { tokenRouteHandler } from "./routes/token/handler";
 import { otpRouteHandler } from "./routes/otp/handler";
-import postRouteHandler from "./routes/post/handler";
+import postsRouterHandler from "./routes/post/handler";
 import { searchHandler } from "./routes/search/handler";
 
 // Load environment variables
@@ -34,7 +34,7 @@ app.use(cookieParser());
 // Define routes
 app.use("/", router);
 app.use("/api/v1/user", userRouteHandler());
-app.use("/api/v1/posts", postRouteHandler());
+app.use("/api/v1/posts", postsRouterHandler());
 app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
 app.use("/api/v1/search", searchHandler());

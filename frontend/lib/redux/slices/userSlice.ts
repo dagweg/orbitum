@@ -1,31 +1,31 @@
+import { TUserSchema } from "@/lib/types/schema";
 import { PayloadAction, Tuple, createSlice } from "@reduxjs/toolkit";
-import { TUserSchema } from "@_types/schema";
 
-type TUserSession = {
-  email?: string;
-  sessionToken?: string;
-};
+// type TUserSession = {
+//   email?: string;
+//   sessionToken?: string;
+// };
 
-const userSessionInitialState: TUserSession = {
-  email: undefined,
-  sessionToken: undefined,
-};
+// const userSessionInitialState: TUserSession = {
+//   email: undefined,
+//   sessionToken: undefined,
+// };
 
-const userSessionSlice = createSlice({
-  name: "userSession",
-  initialState: userSessionInitialState,
-  reducers: {
-    setUserEmail(state, action: PayloadAction<string | undefined>) {
-      state.email = action.payload;
-    },
-    setUserSessionId(state, action: PayloadAction<string | undefined>) {
-      state.sessionToken = action.payload;
-    },
-  },
-});
+// const userSessionSlice = createSlice({
+//   name: "userSession",
+//   initialState: userSessionInitialState,
+//   reducers: {
+//     setUserEmail(state, action: PayloadAction<string | undefined>) {
+//       state.email = action.payload;
+//     },
+//     setUserSessionId(state, action: PayloadAction<string | undefined>) {
+//       state.sessionToken = action.payload;
+//     },
+//   },
+// });
 
-export const { setUserEmail, setUserSessionId } = userSessionSlice.actions;
-export const userSessionReducer = userSessionSlice.reducer;
+// export const { setUserEmail, setUserSessionId } = userSessionSlice.actions;
+// export const userSessionReducer = userSessionSlice.reducer;
 
 type TUserType = Pick<
   TUserSchema,

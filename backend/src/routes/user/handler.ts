@@ -8,7 +8,7 @@ import { UserSchemaRefined } from "../../validators/user.validation";
 import { LoginSchema } from "../../validators/login.validation";
 import { validateSession } from "../../middlewares/validateSession";
 import { PostSchema } from "../../validators/post.validation";
-import { createPost } from "../post/createPost";
+import { createPost } from "./createPost";
 import { getAllUserPosts } from "./getAllUserPosts";
 import { checkLoginStatus } from "../../middlewares/checkLoginStatus";
 

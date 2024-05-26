@@ -1,7 +1,7 @@
-import { TZodErrors } from "@_types/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
+import { TZodErrors } from "./types/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
