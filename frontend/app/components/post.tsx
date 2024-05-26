@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Ellipsis, ThumbsUp, MessageSquareText, Share2 } from "lucide-react";
@@ -5,6 +7,9 @@ import React from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import Image from "next/image";
 import { TUserSchema } from "@/lib/types/schema";
+import { useDispatch } from "react-redux";
+import { AppDispatch, store } from "@/lib/redux/store";
+import { fetchUser } from "@/lib/redux/slices/userSlice";
 
 type TComment = {
   name: string;
@@ -30,6 +35,11 @@ export default function Post({
   comments,
   shares,
 }: TPost) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  dispatch(fetchUser());
+  console.log(store.getState().userReducer);
+
   return (
     <Card className="flex flex-col gap-3 items-center p-3 ">
       <section className="flex justify-between w-full">

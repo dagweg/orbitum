@@ -1,5 +1,4 @@
 import { API_ORIGIN } from "@/app/config/apiConfig";
-import { TUserSchema } from "./../../../../backend/src/types/schema.d";
 import { TUserSchema } from "@/lib/types/schema";
 import {
   PayloadAction,
@@ -34,7 +33,22 @@ import {
 // export const { setUserEmail, setUserSessionId } = userSessionSlice.actions;
 // export const userSessionReducer = userSessionSlice.reducer;
 
-export const fetchUser = createAsyncThunk(`${API_ORIGIN}/api/v1/user`);
+const fetchUser = createAsyncThunk(
+  "user/fetchUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_ORIGIN}/api/v1/user`, {
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
 
 type TUserType = Omit<
   TUserSchema,
@@ -67,11 +81,14 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(
-      fetchUser.fullfilled,
-      (state, action: PayloadAction<TUserSchema>) => {}
+      fetchUser.fulfilled,
+      (state, action: PayloadAction<TUserSchema>) => {
+        return action.payload;
+      }
     );
   },
 });
 
 export const { setUser } = userSlice.actions;
+export { fetchUser };
 export const userReducer = userSlice.reducer;
