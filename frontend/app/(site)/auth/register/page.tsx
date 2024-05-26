@@ -43,7 +43,7 @@ function Register() {
       userName: "Dagmawi",
       firstName: "Dagmawi",
       lastName: "Tefera",
-      passWord: "abcd1234@A",
+      password: "abcd1234@A",
       // phoneNumber: "+251993508272",
       confirmPassWord: "abcd1234@A",
       email: "dagtef@gmail.com",
@@ -75,7 +75,6 @@ function Register() {
         setErrors({});
         switch (res.status) {
           case 200:
-            console.log("Success" + data.token);
             redirectToOtpPage();
             break;
           case 409:
@@ -90,7 +89,7 @@ function Register() {
           case 400:
             let errz: TZodErrors = getMappedZodErrors(data);
             if (errz["confirmPassword"]) {
-              if (formValues.passWord !== formValues.confirmPassWord)
+              if (formValues.password !== formValues.confirmPassWord)
                 errz["confirmPassWord"].message = "Passwords don't match";
               else errz["confirmPassWord"].message = "";
             }
@@ -100,9 +99,7 @@ function Register() {
             break;
         }
       })
-      .catch((e: Error) => {
-        console.log("Error" + e);
-      });
+      .catch((e: Error) => {});
   }
 
   const redirectToOtpPage = () => {
@@ -185,14 +182,14 @@ function Register() {
           />
           <FormField
             control={form.control}
-            name="passWord"
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input placeholder="Password" type="password" {...field} />
                 </FormControl>
-                <FormMessage>{errors?.passWord?.message}</FormMessage>
+                <FormMessage>{errors?.password?.message}</FormMessage>
               </FormItem>
             )}
           />

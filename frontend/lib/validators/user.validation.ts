@@ -23,7 +23,7 @@ export const UserSchema = z.object({
       /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
       { message: "Must be a valid email" }
     ),
-  passWord: z
+  password: z
     .string()
     .min(8, { message: " Password must be at least 8 characters long" })
     .regex(/^.*\d+.*$/, {
@@ -48,7 +48,7 @@ export const UserSchema = z.object({
 });
 
 export const UserSchemaRefined = UserSchema.refine(
-  (data) => data.passWord === data.confirmPassWord,
+  (data) => data.password === data.confirmPassWord,
   {
     message: "Passwords do not match.",
     path: ["confirmPassWord"],

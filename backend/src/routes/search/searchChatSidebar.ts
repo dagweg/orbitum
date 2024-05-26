@@ -5,8 +5,7 @@ export async function searchChatSidebar(req: Request, res: Response) {
   try {
     const { query } = req.query;
     const { email } = req.user;
-    console.log(query);
-    console.log(email);
+
     const users = await User.find({
       $and: [
         {

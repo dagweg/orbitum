@@ -34,7 +34,6 @@ export default function PostInput() {
       content,
     });
 
-    console.log(formData);
     fetch(`${API_ORIGIN}/api/v1/user/post`, {
       method: "POST",
       credentials: "include",
@@ -44,7 +43,6 @@ export default function PostInput() {
       },
     }).then(async (res) => {
       const data = await res.json();
-      console.log(data);
     });
   }
 

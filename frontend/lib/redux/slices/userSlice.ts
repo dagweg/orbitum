@@ -19,7 +19,6 @@ const userSessionSlice = createSlice({
       state.email = action.payload;
     },
     setUserSessionId(state, action: PayloadAction<string | undefined>) {
-      console.log(action);
       state.sessionToken = action.payload;
     },
   },

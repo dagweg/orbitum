@@ -25,7 +25,7 @@ export async function getPosts(sessionToken: string | undefined) {
       },
     });
     const data = await response.json();
-    console.log(data);
+
     return data;
   } catch (error) {
     console.error(`Error fetching posts:`, error);

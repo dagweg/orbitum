@@ -39,6 +39,4 @@ app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
 app.use("/api/v1/search", searchHandler());
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => {});

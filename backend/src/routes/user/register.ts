@@ -54,8 +54,6 @@ export async function registerUser(req: Request, res: Response) {
       otpExpiry,
     });
 
-    console.log(user);
-
     await sendOtpEmail(userData.email, otp, otpExpiry);
 
     return res.status(200).json({
@@ -63,7 +61,6 @@ export async function registerUser(req: Request, res: Response) {
       token,
     });
   } catch (error) {
-    console.log("ERROR", error);
     return res.status(400).send({ error });
   }
 }

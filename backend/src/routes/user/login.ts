@@ -1,36 +1,34 @@
-import { NextFunction, Request, Response } from "express";
-import { ZodObject, z } from "zod";
-import { UserSchema } from "../../validators/user.validation";
+import { Request, Response } from "express";
 import { User } from "../../models/user.model";
 import { Session } from "../../models/session.model";
-import { generateToken } from "../../utils/token";
-import { dateHoursFromNow, getHourGap } from "../../utils/date";
+import { dateHoursFromNow } from "../../utils/date";
 import jwt from "jsonwebtoken";
 import { PRODUCTION, SESSION_TOKEN } from "../../config/apiConfig";
 
 export async function loginUser(req: Request, res: Response) {
   try {
-    const { email, passWord } = req.body;
+    const { email, password } = req.body;
 
     // Check if user exists
     let user = await User.findOne({ email });
 
+    console.log("👤 USER IS");
+    console.log(user);
     if (!user) {
       return res.status(401).json({
-        message:
-          "User with the specified email doesn't exist. Please register.",
+        message: "Invalid email or password. Please try again!",
       });
     }
 
-    // Check if password is correct
-    if (user.passWord !== passWord) {
+    // Check if password is incorrect
+    if (user.password !== password) {
       return res
         .status(401)
-        .json({ message: "Password is incorrect. Please try again!" });
+        .json({ message: "Invalid email or password. Please try again!" });
     }
 
     const expireDuration = 24 * 3; // 3 days
-    const expires: Date = dateHoursFromNow(expireDuration); // Date repr
+    const expires: Date = dateHoursFromNow(expireDuration);
 
     const sessionToken = jwt.sign(
       {
@@ -48,12 +46,16 @@ export async function loginUser(req: Request, res: Response) {
       },
       {
         $set: {
-          sessionToken: sessionToken,
+          sessionToken,
           expires,
+          email,
         },
       },
-      { upsert: true }
+      { upsert: true, new: true }
     );
+
+    console.log("🏠 SESSION IS");
+    console.log(session);
 
     if (!session) {
       return res.status(500).json({ message: "Session creation failed!" });

@@ -5,10 +5,8 @@ import { generateOTP } from "../../utils/otp";
 
 export async function sendOtp(req: Request, res: Response) {
   try {
-    console.log("THE USER IS:" + req.user);
     const { email } = req.user;
 
-    console.log("THE EMAIL IS:" + email);
     const { otp, otpExpiry } = generateOTP();
 
     const user = await User.findOneAndUpdate(
@@ -26,8 +24,6 @@ export async function sendOtp(req: Request, res: Response) {
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
-
-    console.log(user);
 
     await sendOtpEmail(email, otp, otpExpiry);
     res.status(200).json({ message: "OTP sent successfully", otp });

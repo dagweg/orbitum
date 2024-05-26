@@ -100,14 +100,14 @@ export default function Login() {
           />
           <FormField
             control={form.control}
-            name="passWord"
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input placeholder="Password" type="password" {...field} />
                 </FormControl>
-                <FormMessage>{errors?.passWord?.message}</FormMessage>
+                <FormMessage>{errors?.password?.message}</FormMessage>
               </FormItem>
             )}
           />

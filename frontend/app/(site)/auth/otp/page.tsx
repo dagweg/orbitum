@@ -74,11 +74,9 @@ export default function OtpPage() {
    * @param inputOtp
    */
   function handleOtpChange(inputOtp: string) {
-    console.log(inputOtp);
     setOtp(inputOtp);
 
     if (inputOtp.length === 6) {
-      console.log(otp);
       setLoading(true);
       goBackRef.current?.setAttribute("disabled", "");
       resendRef.current?.setAttribute("disabled", "");

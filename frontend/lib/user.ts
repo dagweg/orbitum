@@ -19,7 +19,6 @@ export async function isUserLoggedIn(authToken: string) {
   }
 
   const data = await response.json();
-  console.log(data);
 
   return true;
 }

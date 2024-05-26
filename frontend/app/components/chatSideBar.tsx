@@ -24,7 +24,7 @@ function ChatSideBar() {
   let query: string = "";
 
   const handleSearch = (e: FormEvent<HTMLInputElement>) => {
-    // console.log(e.currentTarget?.value);
+    //
     query = e.currentTarget?.value;
     fetch(`${API_ORIGIN}/api/v1/search/chat/sidebar?query=${query}`, {
       credentials: "include",
@@ -32,7 +32,6 @@ function ChatSideBar() {
       .then((res) => res.json())
       .then((dat) => {
         setPeople(dat);
-        console.log(dat);
       });
   };
 
