@@ -1,5 +1,6 @@
 import { TChatArea, TChatSideBar } from "@/app/types";
 import { createSlice } from "@reduxjs/toolkit";
+import { chatSideBarSearch } from "./chatThunks";
 
 const chatSideBarInitialState: TChatSideBar = {
   enabled: true,
@@ -17,6 +18,11 @@ const chatSideBarSlice = createSlice({
     openChatSideBar(state) {
       state.enabled = true;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(chatSideBarSearch.fulfilled, (state, action) => {
+      console.log(action.payload);
+    });
   },
 });
 

@@ -30,7 +30,10 @@ import {
 import NavItem from "./navitem";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { closeChatArea, openChatSideBar } from "@/lib/redux/slices/chatSlice";
+import {
+  closeChatArea,
+  openChatSideBar,
+} from "@/lib/redux/slices/chat/chatSlice";
 
 const user: { title: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -56,7 +59,8 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Navbar() {
-  const store = useSelector((state: RootState) => state.ChatSideBar);
+  // const store = useSelector((state: RootState) => state.ChatSideBar);
+
   const dispatch = useDispatch<AppDispatch>();
 
   function handleChatClick() {
@@ -93,7 +97,6 @@ export default function Navbar() {
             <User />
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            Logged in as :
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               {user.map((items) => (
                 <NavItem key={items.title}>

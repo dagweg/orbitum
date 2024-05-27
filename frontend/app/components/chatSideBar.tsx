@@ -6,7 +6,7 @@ import {
   closeChatSideBar,
   openChatArea,
   openChatSideBar,
-} from "@/lib/redux/slices/chatSlice";
+} from "@/lib/redux/slices/chat/chatSlice";
 import { RootState, AppDispatch } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
@@ -15,6 +15,16 @@ import { useSelector, useDispatch } from "react-redux";
 import SelectContact from "./select-contact";
 import { Badge } from "@/components/ui/badge";
 import { API_ORIGIN } from "../config/apiConfig";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import { chatSideBarSearch } from "@/lib/redux/slices/chat/chatThunks";
 
 function ChatSideBar() {
   const sideBar = useSelector((state: RootState) => state.ChatSideBar);
@@ -24,15 +34,8 @@ function ChatSideBar() {
   let query: string = "";
 
   const handleSearch = (e: FormEvent<HTMLInputElement>) => {
-    //
     query = e.currentTarget?.value;
-    fetch(`${API_ORIGIN}/api/v1/search/chat/sidebar?query=${query}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((dat) => {
-        setPeople(dat);
-      });
+    dispatch(chatSideBarSearch({ query }));
   };
 
   useEffect(() => {
@@ -77,16 +80,39 @@ function ChatSideBar() {
       )}
     >
       <section className="flex items-center gap-2">
-        <Search />
-        <Input
+        <Command>
+          <CommandInput
+            placeholder="Type a command or search..."
+            onChangeCapture={(e) => handleSearch(e)}
+          />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            {people &&
+              (people as []).map((people: any, key: any) => (
+                <>
+                  <CommandGroup heading="Suggestions">
+                    <CommandItem>Calendar</CommandItem>
+                  </CommandGroup>
+                  {/* <SelectContact
+                    key={key}
+                    name="Dagmawi Wegayehu"
+                    lastMessage="Hey bro how are you doing"
+                    onClick={handleContactSelect}
+                  /> */}
+                </>
+              ))}
+          </CommandList>
+        </Command>
+
+        {/* <Input
           placeholder="Search people, groups or channels"
           onChangeCapture={(e) => handleSearch(e)}
-        ></Input>
+        ></Input> */}
       </section>
       {/* <div className="h-full flex items-center ">
         <Badge variant={"outline"}></Badge>
       </div> */}
-      <section className="mt-2 flex flex-col gap-2">
+      {/* <section className="mt-2 flex flex-col gap-2">
         {people &&
           (people as []).map((people: any, key: any) => (
             <SelectContact
@@ -96,7 +122,7 @@ function ChatSideBar() {
               onClick={handleContactSelect}
             />
           ))}
-      </section>
+      </section> */}
     </div>
   );
 }

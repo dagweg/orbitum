@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { ChatArea, ChatSideBar } from "./slices/chatSlice";
+import { ChatArea, ChatSideBar } from "./slices/chat/chatSlice";
 import { User } from "./slices/user/userSlice";
 import { Posts } from "./slices/post/postSlice";
 
