@@ -1,21 +1,21 @@
-import { getPosts } from "@/app/actions/posts";
+"use client";
+
 import Heading from "@/app/components/heading";
 import Post from "@/app/components/post";
 import PostInput from "@/app/components/post-input";
-import { SESSION_TOKEN } from "@/app/config/constants";
+import { getAllPosts } from "@/lib/redux/slices/post/postThunks";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { TPostSchema, TUserSchema } from "@/lib/types/schema";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-async function FeedPage() {
-  const cookieStore = cookies();
+function FeedPage() {
+  const posts: TPostSchema[] = useSelector((state: RootState) => state.Posts);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const sessionToken = cookieStore.get(SESSION_TOKEN)?.value;
-  const posts: TPostSchema[] = await getPosts(sessionToken);
-
-  if (!sessionToken) {
-    redirect("/auth/login");
-  }
+  useEffect(() => {
+    dispatch(getAllPosts());
+  }, [dispatch]);
 
   return (
     <div className="flex w-full justify-center bg-white">
@@ -31,6 +31,7 @@ async function FeedPage() {
               date={new Date(post.createdAt)}
               content={post.content}
               likes={post.likes}
+              liked={post.liked}
               comments={post.comments}
               shares={post.shares}
             />

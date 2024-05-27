@@ -13,7 +13,7 @@ import { ChangeEvent, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 function ChatArea() {
-  const chatArea = useSelector((state: RootState) => state.chatAreaReducer);
+  const chatArea = useSelector((state: RootState) => state.ChatArea);
 
   const dispatch = useDispatch<AppDispatch>();
 

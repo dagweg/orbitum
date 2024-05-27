@@ -15,7 +15,7 @@ export async function checkLoginStatus(sessionToken: string) {
 
     return data.loggedIn;
   } catch (error) {
-    console.log((error as Error).message);
+    console.log("ERROR CHECKING LOGGED IN STATUS: ", (error as Error).message);
     return false;
   }
 }

@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { chatAreaReducer, chatSideBarReducer } from "./slices/chatSlice";
-import { userReducer } from "./slices/user/userSlice";
+import { ChatArea, ChatSideBar } from "./slices/chatSlice";
+import { User } from "./slices/user/userSlice";
+import { Posts } from "./slices/post/postSlice";
 
 export const store = configureStore({
   reducer: {
-    userReducer,
-    chatSideBarReducer,
-    chatAreaReducer,
+    User,
+    ChatSideBar,
+    ChatArea,
+    Posts,
   },
 });
 

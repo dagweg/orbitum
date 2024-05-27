@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { API_ORIGIN } from "../config/apiConfig";
 
 function ChatSideBar() {
-  const sideBar = useSelector((state: RootState) => state.chatSideBarReducer);
+  const sideBar = useSelector((state: RootState) => state.ChatSideBar);
 
   const dispatch = useDispatch<AppDispatch>();
   const [people, setPeople] = useState();

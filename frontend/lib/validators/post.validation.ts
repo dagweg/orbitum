@@ -12,6 +12,7 @@ export const PostSchemaRefined = z.object({
   content: z.string(),
   createdAt: z.string(),
   likes: z.array(z.string()),
+  liked: z.boolean().optional(),
   comments: z.array(z.string()),
   shares: z.array(z.string()),
   postType: z.string(),

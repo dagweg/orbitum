@@ -40,7 +40,7 @@ const chatAreaSlice = createSlice({
 });
 
 export const { closeChatSideBar, openChatSideBar } = chatSideBarSlice.actions;
-export const chatSideBarReducer = chatSideBarSlice.reducer;
+export const ChatSideBar = chatSideBarSlice.reducer;
 
 export const { closeChatArea, openChatArea } = chatAreaSlice.actions;
-export const chatAreaReducer = chatAreaSlice.reducer;
+export const ChatArea = chatAreaSlice.reducer;

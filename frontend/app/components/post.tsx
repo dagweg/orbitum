@@ -2,14 +2,22 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Ellipsis, ThumbsUp, MessageSquareText, Share2 } from "lucide-react";
-import React, { useEffect } from "react";
+import {
+  Ellipsis,
+  ThumbsUp,
+  MessageSquareText,
+  Share2,
+  LucideThumbsUp,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import Image from "next/image";
 import { TUserSchema } from "@/lib/types/schema";
 import { useDispatch } from "react-redux";
 import { AppDispatch, store } from "@/lib/redux/store";
-import { fetchUser, likePost } from "@/lib/redux/slices/user/userThunks";
+import { fetchUser } from "@/lib/redux/slices/user/userThunks";
+import { likePost } from "@/lib/redux/slices/post/postThunks";
+import { cn } from "@/lib/utils";
 
 type TComment = {
   name: string;
@@ -24,6 +32,7 @@ type TPost = {
   date: Date;
   content: string;
   likes: Object[];
+  liked: boolean;
   comments: Object[];
   shares: Object[];
 };
@@ -34,17 +43,18 @@ export default function Post({
   date,
   content,
   likes,
+  liked,
   comments,
   shares,
 }: TPost) {
   const dispatch = useDispatch<AppDispatch>();
 
   dispatch(fetchUser());
-  console.log(store.getState().userReducer);
+  console.log(store.getState().User);
 
-  // useEffect(()=>{
-
-  // },[likePost])
+  const handleLike = () => {
+    dispatch(likePost({ postId }));
+  };
 
   return (
     <Card className="flex flex-col gap-3 items-center p-3 ">
@@ -79,13 +89,16 @@ export default function Post({
 
         <div className="flex gap-3 justify-between">
           <Button
-            variant={"ghost"}
+            variant={liked ? "selected" : "ghost"}
             className="flex items-center gap-3"
-            onClick={() => {
-              dispatch(likePost({ postId }));
-            }}
+            onClick={() => handleLike()}
           >
-            <ThumbsUp /> Like
+            <ThumbsUp
+              className={cn({
+                "text-green-700": liked,
+              })}
+            />
+            {liked ? "Liked" : "Like"}
           </Button>
           <Button variant={"ghost"} className="flex items-center gap-3">
             <MessageSquareText /> Comment

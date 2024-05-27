@@ -56,7 +56,7 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Navbar() {
-  const store = useSelector((state: RootState) => state.chatSideBarReducer);
+  const store = useSelector((state: RootState) => state.ChatSideBar);
   const dispatch = useDispatch<AppDispatch>();
 
   function handleChatClick() {

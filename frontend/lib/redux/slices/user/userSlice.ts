@@ -1,9 +1,10 @@
 import { TUserSchema } from "@/lib/types/schema";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchUser, likePost } from "./userThunks";
+import { fetchUser } from "./userThunks";
 
 type TUserType = Pick<
   TUserSchema,
+  | "_id"
   | "userName"
   | "email"
   | "firstName"
@@ -14,6 +15,7 @@ type TUserType = Pick<
 >;
 
 const userInitialState: TUserType = {
+  _id: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -35,11 +37,8 @@ const userSlice = createSlice({
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       return action.payload;
     });
-    builder.addCase(likePost.fulfilled, (state, action) => {
-      state = action.payload;
-    });
   },
 });
 
 export const { setUser } = userSlice.actions;
-export const userReducer = userSlice.reducer;
+export const User = userSlice.reducer;
