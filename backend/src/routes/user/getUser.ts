@@ -5,7 +5,10 @@ export async function getUser(req: Request, res: Response) {
   try {
     let { userId } = req.user;
 
-    let user = await User.findById(userId);
+    let user = await User.findById(
+      userId,
+      "userName email firstName lastName phoneNumber  profileUrl settings"
+    );
 
     if (!user) {
       return res

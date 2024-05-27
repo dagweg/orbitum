@@ -22,6 +22,7 @@ export default function userRouteHandler(): Router {
   const router = express.Router();
 
   router.get("/", validateSession, getUser);
+
   router.get(
     "/withId",
     validateSession,

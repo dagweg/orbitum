@@ -7,6 +7,7 @@ export const PostSchema = z.object({
 });
 
 export const PostSchemaRefined = z.object({
+  _id: z.string(),
   user: z.string(),
   content: z.string(),
   createdAt: z.string(),

@@ -3,12 +3,10 @@ import Navbar from "@/app/components/navbar";
 async function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className=" z-10  backdrop-blur-lg sticky top-0">
+      <div className="w-full bg-white sticky top-0">
         <Navbar />
       </div>
-      <div className="w-full min-h-full h-fit  bg-neutral-50  py-4">
-        {children}
-      </div>
+      <div className="w-full min-h-full     py-4">{children}</div>
     </>
   );
 }
