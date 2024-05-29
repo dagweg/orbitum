@@ -13,8 +13,15 @@ export const chatSideBarSearch = createAsyncThunk(
           credentials: "include",
         }
       );
+
+      if (!response.ok) {
+        return rejectWithValue(`Error: ${response.statusText}`);
+      }
+
       const data = await response.json();
       return data;
-    } catch (error) {}
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );

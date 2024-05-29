@@ -6,11 +6,12 @@ import {
   closeChatSideBar,
   openChatArea,
   openChatSideBar,
+  setChatSideBar,
 } from "@/lib/redux/slices/chat/chatSlice";
 import { RootState, AppDispatch } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { CalendarIcon, Search, User2 } from "lucide-react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SelectContact from "./select-contact";
 import { Badge } from "@/components/ui/badge";
@@ -25,21 +26,36 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { chatSideBarSearch } from "@/lib/redux/slices/chat/chatThunks";
+import { Avatar } from "@/components/ui/avatar";
+import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Button } from "@/components/ui/button";
 
 function ChatSideBar() {
   const sideBar = useSelector((state: RootState) => state.ChatSideBar);
 
   const dispatch = useDispatch<AppDispatch>();
-  const [people, setPeople] = useState();
+
+  const { searchResult, searchPanel } = useSelector(
+    (state: RootState) => state.ChatSideBar
+  );
+
+  const chatSideBar = useSelector((state: RootState) => state.ChatSideBar);
+
+  const sideBarSearchRef = useRef<HTMLDivElement>(null);
+
   let query: string = "";
 
   const handleSearch = (e: FormEvent<HTMLInputElement>) => {
     query = e.currentTarget?.value;
     dispatch(chatSideBarSearch({ query }));
+    dispatch(
+      setChatSideBar({ ...chatSideBar, searchPanel: { enabled: true } })
+    );
   };
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
+    window.addEventListener("click", handleClick);
 
     function handleResize(e: Event) {
       // @ts-ignore
@@ -54,10 +70,25 @@ function ChatSideBar() {
       }
     }
 
+    function handleClick(e: Event) {
+      // @ts-ignore
+      const target = e.target;
+      // @ts-ignore
+      if (!sideBarSearchRef.current?.contains(target)) {
+        dispatch(
+          setChatSideBar({
+            ...chatSideBar,
+            searchPanel: { enabled: false },
+          })
+        );
+      }
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("click", handleClick);
     };
-  }, [dispatch]);
+  }, [dispatch, chatSideBar]);
 
   function handleContactSelect() {
     const innerWidth = window.innerWidth;
@@ -68,61 +99,46 @@ function ChatSideBar() {
     }
 
     dispatch(openChatArea());
-
-    // TODO : fetch data for the selected contact & display in chat area
   }
 
   return (
     <div
       className={cn(
-        `h-full  bg-white p-2`,
+        `h-full  bg-white p-2 shadow-lg`,
         sideBar.enabled ? `${sideBar.enabledStyle}` : `${sideBar.disabledStyle}`
       )}
     >
-      <section className="flex items-center gap-2">
-        <Command>
-          <CommandInput
-            placeholder="Type a command or search..."
-            onChangeCapture={(e) => handleSearch(e)}
-          />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            {people &&
-              (people as []).map((people: any, key: any) => (
-                <>
-                  <CommandGroup heading="Suggestions">
-                    <CommandItem>Calendar</CommandItem>
-                  </CommandGroup>
-                  {/* <SelectContact
-                    key={key}
-                    name="Dagmawi Wegayehu"
-                    lastMessage="Hey bro how are you doing"
-                    onClick={handleContactSelect}
-                  /> */}
-                </>
-              ))}
-          </CommandList>
-        </Command>
-
-        {/* <Input
+      <div ref={sideBarSearchRef} className="flex flex-col items-center gap-2">
+        <Input
           placeholder="Search people, groups or channels"
           onChangeCapture={(e) => handleSearch(e)}
-        ></Input> */}
-      </section>
-      {/* <div className="h-full flex items-center ">
-        <Badge variant={"outline"}></Badge>
-      </div> */}
-      {/* <section className="mt-2 flex flex-col gap-2">
-        {people &&
-          (people as []).map((people: any, key: any) => (
-            <SelectContact
-              key={key}
-              name="Dagmawi Wegayehu"
-              lastMessage="Hey bro how are you doing"
-              onClick={handleContactSelect}
-            />
-          ))}
-      </section> */}
+        />
+        <div className="w-full bg-neutral-50 shadow-lg rounded-lg">
+          {searchPanel.enabled &&
+            searchResult &&
+            searchResult.map((result: any, key: any) => (
+              <>
+                <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
+                  <Avatar>
+                    <AvatarImage
+                      src="https://imgur.com/TUTGvNF.png"
+                      alt="@username"
+                      className="bg-center self-center "
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col flex-1">
+                    <span>{result.userName}</span>
+                    <span className="text-sm text-neutral-500">
+                      {result.bio ?? "This is a test Bio"}
+                    </span>
+                  </div>
+                  <Button variant={"ghost"}>Chat</Button>
+                </div>
+              </>
+            ))}
+        </div>
+      </div>
     </div>
   );
 }

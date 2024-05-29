@@ -2,10 +2,25 @@ import { TChatArea, TChatSideBar } from "@/app/types";
 import { createSlice } from "@reduxjs/toolkit";
 import { chatSideBarSearch } from "./chatThunks";
 
-const chatSideBarInitialState: TChatSideBar = {
+const chatSideBarInitialState: TChatSideBar & {
+  searchResult: [];
+  people: [];
+  groups: [];
+  channels: [];
+  searchPanel: {
+    enabled: boolean;
+  };
+} = {
   enabled: true,
   enabledStyle: "w-full md:w-[400px]",
   disabledStyle: "w-0 hidden",
+  searchPanel: {
+    enabled: false,
+  },
+  searchResult: [],
+  people: [],
+  groups: [],
+  channels: [],
 };
 
 const chatSideBarSlice = createSlice({
@@ -18,10 +33,14 @@ const chatSideBarSlice = createSlice({
     openChatSideBar(state) {
       state.enabled = true;
     },
+    setChatSideBar(state, action) {
+      return action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(chatSideBarSearch.fulfilled, (state, action) => {
       console.log(action.payload);
+      state.searchResult = action.payload;
     });
   },
 });
@@ -45,7 +64,8 @@ const chatAreaSlice = createSlice({
   },
 });
 
-export const { closeChatSideBar, openChatSideBar } = chatSideBarSlice.actions;
+export const { closeChatSideBar, openChatSideBar, setChatSideBar } =
+  chatSideBarSlice.actions;
 export const ChatSideBar = chatSideBarSlice.reducer;
 
 export const { closeChatArea, openChatArea } = chatAreaSlice.actions;

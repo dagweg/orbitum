@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, require: true },
   password: { type: String, required: true },
+  bio: { type: String },
   phoneNumber: { type: String },
   profileUrl: { type: String },
   otp: { type: String, default: null },
