@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const messageSchema = new mongoose.Schema({
   sender: {
@@ -16,4 +16,8 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-export const Message = mongoose.model("Message", messageSchema);
+export type MessageDocument = InferSchemaType<typeof messageSchema>;
+export const Message = mongoose.model<MessageDocument>(
+  "Message",
+  messageSchema
+);

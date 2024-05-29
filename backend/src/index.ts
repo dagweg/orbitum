@@ -8,6 +8,7 @@ import { tokenRouteHandler } from "./routes/token/handler";
 import { otpRouteHandler } from "./routes/otp/handler";
 import postsRouterHandler from "./routes/post/handler";
 import { searchHandler } from "./routes/search/handler";
+import chatRouteHandler from "./routes/chat/handler";
 
 // Load environment variables
 dotenv.config();
@@ -38,5 +39,6 @@ app.use("/api/v1/posts", postsRouterHandler());
 app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
 app.use("/api/v1/search", searchHandler());
+app.use("/api/v1/chat", chatRouteHandler());
 
 app.listen(port, () => {});
