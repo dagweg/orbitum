@@ -12,6 +12,16 @@ export async function searchChatSidebar(req: Request, res: Response) {
           $or: [
             { email: { $regex: query, $options: "i" } },
             { username: { $regex: query, $options: "i" } },
+            {
+              $or: [
+                {
+                  $or: [
+                    { firstName: { $regex: query, $options: "i" } },
+                    { lastName: { $regex: query, $options: "i" } },
+                  ],
+                },
+              ],
+            },
           ],
         },
         { email: { $ne: email } },

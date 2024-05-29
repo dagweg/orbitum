@@ -42,7 +42,9 @@ function SearchSideBar() {
     );
   };
 
-  const handleChatClick = (id: string) => {};
+  const handleChatClick = (id: string) => {
+    // Add the user to the chat
+  };
 
   return (
     <div ref={sideBarSearchRef} className="flex flex-col items-center gap-2">
@@ -58,14 +60,14 @@ function SearchSideBar() {
               <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
                 <Avatar>
                   <AvatarImage
-                    src="https://imgur.com/TUTGvNF.png"
+                    src="https://imgur.com/HdZ9ZqY.png"
                     alt="@username"
-                    className="bg-center self-center "
+                    className="bg-center self-center"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col flex-1">
-                  <span>{result.userName}</span>
+                  <span>{result.firstName + " " + result.lastName}</span>
                   <span className="text-sm text-neutral-500">
                     {result.bio ?? "This is a test Bio"}
                   </span>
