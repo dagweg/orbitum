@@ -64,7 +64,7 @@ export default function Login() {
           });
           break;
         case 400:
-          const _errors = getMappedZodErrors(loginData.errors);
+          const _errors = getMappedZodErrors(loginData);
           setErrors(_errors);
           break;
         default:
