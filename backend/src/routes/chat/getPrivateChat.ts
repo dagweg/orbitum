@@ -14,7 +14,16 @@ export async function getPrivateChat(req: Request, res: Response) {
         { user1: userId, user2: user2Id },
         { user2: userId, user1: user2Id },
       ],
-    }).populate("messages");
+    })
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+          select: "firstName lastName userName email _id profileUrl",
+        },
+      })
+      .populate("user1")
+      .populate("user2");
 
     return res.json(chat);
   } catch (error) {

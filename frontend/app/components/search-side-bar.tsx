@@ -4,7 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { setChatSideBar } from "@/lib/redux/slices/chat/chatSlice";
-import { chatSideBarSearch } from "@/lib/redux/slices/chat/chatThunks";
+import {
+  chatSideBarSearch,
+  setCurrentChat,
+} from "@/lib/redux/slices/chat/chatThunks";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import React, { FormEvent, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +47,7 @@ function SearchSideBar() {
 
   const handleChatClick = (id: string) => {
     // Add the user to the chat
+    dispatch(setCurrentChat({ id }));
   };
 
   return (

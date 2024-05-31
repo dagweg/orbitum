@@ -1,6 +1,6 @@
 import { TChatArea, TChatSideBar } from "@/app/types";
 import { createSlice } from "@reduxjs/toolkit";
-import { chatSideBarSearch } from "./chatThunks";
+import { chatSideBarSearch, setCurrentChat } from "./chatThunks";
 
 const chatSideBarInitialState: TChatSideBar & {
   searchResult: [];
@@ -49,6 +49,9 @@ const chatAreaInitialState: TChatArea = {
   enabled: true,
   enabledStyle: "w-full",
   disabledStyle: "w-0 hidden",
+  currentChat: {
+    messages: [],
+  },
 };
 
 const chatAreaSlice = createSlice({
@@ -61,6 +64,16 @@ const chatAreaSlice = createSlice({
     openChatArea(state) {
       state.enabled = true;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(setCurrentChat.fulfilled, (state, action) => {
+      state.currentChat.messages = action.payload.reduce(
+        (acc: any, curr: any) => {
+          return acc.concat(curr.messages);
+        },
+        []
+      );
+    });
   },
 });
 

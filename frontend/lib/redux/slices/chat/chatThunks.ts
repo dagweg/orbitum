@@ -25,3 +25,28 @@ export const chatSideBarSearch = createAsyncThunk(
     }
   }
 );
+
+export const setCurrentChat = createAsyncThunk(
+  "/chatArea/setCurrentChat",
+  async (param: { id: string }, { rejectWithValue }) => {
+    const { id } = param;
+    try {
+      const response = await fetch(
+        `${API_ORIGIN}/api/v1/chat/private/user?userId=${id}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        return rejectWithValue(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("FETCHED THIS ", data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);

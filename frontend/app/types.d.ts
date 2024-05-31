@@ -1,3 +1,5 @@
+import { TMessageSchema } from "@/lib/types/schema";
+
 export type TSize = "small" | "medium" | "large";
 
 export type TContactProps = {
@@ -61,6 +63,9 @@ export type TChatArea = {
   enabled: boolean;
   enabledStyle: string;
   disabledStyle: string;
+  currentChat: {
+    messages: TMessageSchema[];
+  };
 };
 
 // Zod Return Type
