@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SESSION_TOKEN } from "./app/config/constants";
 import { checkLoginStatus } from "./app/actions/user";
 import { CLIENT_ORIGIN } from "./app/config/apiConfig";
+import { contains } from "./lib/utils";
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -10,12 +11,9 @@ export default async function middleware(req: NextRequest) {
 
   const loggedIn = await checkLoginStatus(sessionToken as string);
 
-  console.log("LOGGED IN : " + loggedIn);
-  console.log("SESSION TOKEN : " + sessionToken);
-
-  if (logoutRequiringRoutes.includes(pathname) && loggedIn) {
+  if (contains(pathname, logoutRequiringRoutes) && loggedIn) {
     return NextResponse.redirect(new URL("/site/feed", CLIENT_ORIGIN));
-  } else if (loginRequiringRoutes.includes(pathname) && !loggedIn) {
+  } else if (contains(pathname, loginRequiringRoutes) && !loggedIn) {
     return NextResponse.redirect(new URL("/auth/login", CLIENT_ORIGIN));
   }
 
@@ -30,4 +28,4 @@ const loginRequiringRoutes = [
   "/site/logout",
 ];
 
-const logoutRequiringRoutes = ["/auth/register", "/auth/otp", "auth/login"];
+const logoutRequiringRoutes = ["/auth/register", "/auth/otp", "/auth/login"];

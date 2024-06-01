@@ -31,3 +31,7 @@ export function getCookie(cname: string, cookies: string) {
   }
   return "";
 }
+
+export function contains(str: string, arr: string[]) {
+  return arr.some((el) => str.includes(el));
+}
