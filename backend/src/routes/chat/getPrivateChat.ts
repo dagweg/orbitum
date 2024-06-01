@@ -26,6 +26,10 @@ export async function getPrivateChat(req: Request, res: Response) {
       .populate("user1")
       .populate("user2");
 
+    if (!chats) {
+      // Then
+    }
+
     let ret = chats.map((chat) =>
       chat.toObject().messages.map((message: any) => ({
         ...message,

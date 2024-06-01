@@ -3,6 +3,7 @@
 import Heading from "@/app/components/heading";
 import Post from "@/app/components/post";
 import PostInput from "@/app/components/post-input";
+import useSocket from "@/app/hooks/useSocket";
 import { getAllPosts } from "@/lib/redux/slices/post/postThunks";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { TPostSchema, TUserSchema } from "@/lib/types/schema";
@@ -12,6 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 function FeedPage() {
   const posts: TPostSchema[] = useSelector((state: RootState) => state.Posts);
   const dispatch = useDispatch<AppDispatch>();
+
+  useSocket("chat", (data) => {
+    console.log("recieved socketserver data ", data);
+  });
 
   useEffect(() => {
     dispatch(getAllPosts());
@@ -31,7 +36,7 @@ function FeedPage() {
               date={new Date(post.createdAt)}
               content={post.content}
               likes={post.likes}
-              liked={post.liked}
+              liked={post.liked as boolean}
               comments={post.comments}
               shares={post.shares}
             />

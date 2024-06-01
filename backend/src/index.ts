@@ -1,4 +1,5 @@
 import express from "express";
+import { Server } from "http";
 import connectDB from "./utils/db";
 import dotenv from "dotenv";
 import userRouteHandler from "./routes/user/handler";
@@ -10,6 +11,7 @@ import postsRouterHandler from "./routes/post/handler";
 import { searchHandler } from "./routes/search/handler";
 import chatRouteHandler from "./routes/chat/handler";
 import { createConversations } from "./models/mock/createConversations";
+import socketHandler from "./controllers/socket";
 
 // Load environment variables
 dotenv.config();
@@ -18,9 +20,13 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const server = new Server(app);
 const router = express.Router();
 
 const port = process.env.PORT || 5000;
+
+// Socket.IO
+socketHandler(server);
 
 // middlewares
 app.use(
@@ -46,4 +52,6 @@ app.get("/api/v1/mock/conversations", (req, res) => {
   return res.json(createConversations());
 });
 
-app.listen(port, () => {});
+server.listen(port, () => {
+  console.log("LISTENING ON PORT ", port);
+});

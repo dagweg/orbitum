@@ -11,7 +11,7 @@ import {
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import React, { FormEvent, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useClickOutsideObserver from "../hooks/clickOutsideObserver";
+import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 
 function SearchSideBar() {
   const dispatch = useDispatch<AppDispatch>();

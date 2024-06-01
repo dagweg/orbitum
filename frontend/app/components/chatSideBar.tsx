@@ -34,17 +34,6 @@ function ChatSideBar() {
     };
   }, [dispatch]);
 
-  // function handleContactSelect() {
-  //   const innerWidth = window.innerWidth;
-
-  //   // This is for mobile devices
-  //   if (innerWidth <= 950) {
-  //     dispatch(closeChatSideBar());
-  //   }
-
-  //   dispatch(openChatArea());
-  // }
-
   return (
     <div
       className={cn(
