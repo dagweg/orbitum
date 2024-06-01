@@ -31,7 +31,7 @@ function ChatArea() {
   }
 
   useEffect(() => {
-    console.log(messages);
+    console.log(chatArea.currentChat);
   });
 
   return (
@@ -54,13 +54,10 @@ function ChatArea() {
               <p className="sr-only">This is where you populate the chat</p>
               {messages &&
                 messages.map((message: TMessageSchema, index) => (
-                  <AvatarWrapper
+                  <ChatMessage
                     name={message.sender.userName}
-                    date={new Date(message.date as Date)}
-                    lineClamp="line-clamp-none"
-                    background="bg-neutral-200"
-                    className="w-full"
-                    summary={message.content as string}
+                    message={message.content as string}
+                    sender={message.you ? "you" : "default"}
                   />
                 ))}
             </section>

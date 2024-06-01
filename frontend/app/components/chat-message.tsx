@@ -12,7 +12,7 @@ function ChatMessage({
   return (
     <div
       className={cn(
-        "p-2 w-full flex",
+        "px-2  py-1 w-full flex",
         sender === "default" ? "justify-start" : "justify-end"
       )}
     >
@@ -21,7 +21,7 @@ function ChatMessage({
         name={name}
         lineClamp="line-clamp-none"
         summary={message}
-        className="p-4 !bg-white rounded-lg ring-neutral-200 w-fit shadow-md "
+        className="p-2 !bg-white rounded-lg ring-neutral-200 w-fit shadow-md "
         chatType={chatType}
         sender={sender}
       />
