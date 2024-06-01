@@ -67,12 +67,7 @@ const chatAreaSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(setCurrentChat.fulfilled, (state, action) => {
-      state.currentChat.messages = action.payload.reduce(
-        (acc: any, curr: any) => {
-          return acc.concat(curr.messages);
-        },
-        []
-      );
+      state.currentChat.messages = action.payload;
     });
   },
 });

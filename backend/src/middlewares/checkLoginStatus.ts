@@ -13,19 +13,25 @@ export async function checkLoginStatus(
     const sessionToken = req.cookies[SESSION_TOKEN];
 
     if (!sessionToken) {
-      return res.status(401).json({ loggedIn: false });
+      return res
+        .status(401)
+        .json({ loggedIn: false, message: "No session token" });
     }
 
     const decoded = verifyJWT(sessionToken);
     if (!decoded) {
-      return res.status(401).json({ loggedIn: false });
+      return res
+        .status(401)
+        .json({ loggedIn: false, message: "Invalid session token" });
     }
 
     const { email, userId } = decoded as { email: string; userId: string };
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(401).json({ loggedIn: false });
+      return res
+        .status(401)
+        .json({ loggedIn: false, message: "User not found" });
     }
 
     const session = await Session.findOne({ userId, sessionToken });

@@ -10,10 +10,12 @@ export default async function middleware(req: NextRequest) {
 
   const loggedIn = await checkLoginStatus(sessionToken as string);
 
+  console.log("LOGGED IN : " + loggedIn);
+  console.log("SESSION TOKEN : " + sessionToken);
+
   if (logoutRequiringRoutes.includes(pathname) && loggedIn) {
     return NextResponse.redirect(new URL("/site/feed", CLIENT_ORIGIN));
-  }
-  if (loginRequiringRoutes.includes(pathname) && !loggedIn) {
+  } else if (loginRequiringRoutes.includes(pathname) && !loggedIn) {
     return NextResponse.redirect(new URL("/auth/login", CLIENT_ORIGIN));
   }
 

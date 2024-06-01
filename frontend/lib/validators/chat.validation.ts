@@ -7,4 +7,5 @@ export const MessageSchema = z.object({
   }),
   content: z.object({}),
   date: z.date().optional(),
+  you: z.boolean(),
 });

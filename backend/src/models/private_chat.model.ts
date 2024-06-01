@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const privateChatSchema = new mongoose.Schema({
   user1: {
@@ -19,4 +19,8 @@ const privateChatSchema = new mongoose.Schema({
   ],
 });
 
-export const PrivateChat = mongoose.model("PrivateChat", privateChatSchema);
+export type PrivateChatDocument = InferSchemaType<typeof privateChatSchema>;
+export const PrivateChat = mongoose.model<PrivateChatDocument>(
+  "PrivateChat",
+  privateChatSchema
+);
