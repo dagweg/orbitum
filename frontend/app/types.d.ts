@@ -64,6 +64,8 @@ export type TChatArea = {
   enabledStyle: string;
   disabledStyle: string;
   currentChat: {
+    yourId: string;
+    recipientId: string;
     messages: TMessageSchema[];
   };
 };

@@ -13,6 +13,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { TMessageSchema } from "@/lib/types/schema";
 import useSocket from "../hooks/useSocket";
+import socket from "@/lib/socket";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -37,12 +38,20 @@ function ChatArea() {
   function handleMessageSend() {
     console.log(message);
 
-    // useSocket('chat:',)
+    socket.emit("chat:sendMessage", {
+      to: chatArea.currentChat.recipientId,
+      message,
+    });
   }
+
+  useSocket("chat:recieveMessage", ({ from, message }) => {
+    console.log("You have recieved message: ", message, " from ", from);
+  });
 
   useEffect(() => {
     // console.log(chatArea.currentChat);
-  });
+    socket.emit("user:connect");
+  }, []);
 
   return (
     <>

@@ -1,6 +1,8 @@
 import { Server as SocketIOServer } from "socket.io";
 import { validateSocketSession } from "../middlewares/validateSocketSession";
 
+let map = new Map();
+
 export default function socketHandler(server: any) {
   const io = new SocketIOServer(server, {
     cors: {
@@ -24,12 +26,21 @@ export default function socketHandler(server: any) {
       // }, 5000);
     }
 
-    socket.on("user:connect", ({ userId }) => {
-      console.log("Connected User id is ", userId);
+    socket.on("user:connect", () => {
+      console.log("Connected User is ", socket.data.user.email);
+      map.set(socket.data.user.userId, socket.id);
+      console.log("Map set to ", map);
     });
 
-    socket.on("chat", (data) => {
-      console.log(data);
+    socket.on("chat:sendMessage", ({ to, message }) => {
+      console.log("SENDING MESSAGE TO ", to);
+      console.log("MESSAGE IS ", message);
+      const socketId = map.get(to);
+      console.log("Socket ID is ", socketId);
+      io.to(socketId).emit("chat:receiveMessage", {
+        from: socket.data.user.userId,
+        message,
+      });
     });
 
     socket.on("disconnect", () => {

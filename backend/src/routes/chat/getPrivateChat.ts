@@ -37,7 +37,11 @@ export async function getPrivateChat(req: Request, res: Response) {
       }))
     );
 
-    return res.json(ret.flat(1));
+    return res.json({
+      yourId: userId,
+      recipientId: user2Id,
+      messages: ret.flat(1),
+    });
   } catch (error) {
     console.log((error as Error).message);
     return res.status(500).json(error);

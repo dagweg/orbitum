@@ -50,6 +50,8 @@ const chatAreaInitialState: TChatArea = {
   enabledStyle: "w-full",
   disabledStyle: "w-0 hidden",
   currentChat: {
+    yourId: "",
+    recipientId: "",
     messages: [],
   },
 };
@@ -67,7 +69,7 @@ const chatAreaSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(setCurrentChat.fulfilled, (state, action) => {
-      state.currentChat.messages = action.payload;
+      state.currentChat = action.payload;
     });
   },
 });
