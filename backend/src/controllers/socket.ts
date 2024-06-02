@@ -9,15 +9,24 @@ export default function socketHandler(server: any) {
     },
   });
 
+  let disconnected = false;
+
   io.on("connection", (socket) => {
     console.log("a user connected");
 
-    setInterval(() => {
-      io.emit("chat", JSON.stringify(new Date()));
-      console.log("EMMITED CHAT");
-    }, 5000);
+    if (!disconnected) {
+      setInterval(() => {
+        io.emit("chat", "MY NAME IS JEFF. I'm 21 1 1: D");
+        console.log("EMMITED CHAT");
+      }, 5000);
+    }
+
+    socket.on("chat", (data) => {
+      console.log(data);
+    });
 
     socket.on("disconnect", () => {
+      disconnected = true;
       console.log("user disconnected");
     });
   });
