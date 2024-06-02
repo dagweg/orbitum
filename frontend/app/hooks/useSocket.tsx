@@ -1,8 +1,5 @@
 import { useEffect } from "react";
-import io from "socket.io-client";
-import { API_ORIGIN } from "../config/apiConfig";
-
-const socket = io(API_ORIGIN);
+import socket from "@/lib/socket";
 
 export default function useSocket(
   eventName: string,
@@ -18,7 +15,6 @@ export default function useSocket(
     };
 
     const handleEvent = (data: any) => {
-      console.log(`Received data for event ${eventName}:`, data);
       callback(data);
     };
 

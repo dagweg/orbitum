@@ -12,6 +12,7 @@ import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { TMessageSchema } from "@/lib/types/schema";
+import useSocket from "../hooks/useSocket";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -20,9 +21,12 @@ function ChatArea() {
 
   const messages = chatArea.currentChat.messages;
 
+  const [message, setMessage] = useState<string>("");
+
   const [hasStartedTyping, setHasStartedTyping] = useState(false);
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setMessage(e.currentTarget.value);
     if (e.target.value.length > 0) {
       setHasStartedTyping(true);
     } else {
@@ -30,8 +34,14 @@ function ChatArea() {
     }
   }
 
+  function handleMessageSend() {
+    console.log(message);
+
+    // useSocket('chat:',)
+  }
+
   useEffect(() => {
-    console.log(chatArea.currentChat);
+    // console.log(chatArea.currentChat);
   });
 
   return (
@@ -71,7 +81,11 @@ function ChatArea() {
                   onChange={(e) => handleTextAreaChange(e)}
                 />
                 <Smile />
-                {hasStartedTyping ? <SendHorizontal /> : <Mic />}
+                {hasStartedTyping ? (
+                  <SendHorizontal onClick={handleMessageSend} />
+                ) : (
+                  <Mic />
+                )}
               </div>
             </section>
           </div>
