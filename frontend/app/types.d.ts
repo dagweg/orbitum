@@ -63,11 +63,13 @@ export type TChatArea = {
   enabled: boolean;
   enabledStyle: string;
   disabledStyle: string;
-  currentChat: {
-    yourId: string;
-    recipientId: string;
-    messages: TMessageSchema[];
-  };
+  currentChat:
+    | {
+        yourId: string;
+        recipientId: string;
+        messages: TMessageSchema[];
+      }
+    | undefined;
 };
 
 // Zod Return Type

@@ -14,29 +14,42 @@ export async function getPrivateChat(req: Request, res: Response) {
         { user1: userId, user2: user2Id },
         { user2: userId, user1: user2Id },
       ],
-    })
+    });
+
+    if (!chats) {
+      console.log("NO CHATS SO CREATED ONE");
+      // Create a new chat if there isn't one
+      const newPChat = await PrivateChat.create({
+        user1: userId,
+        user2: user2Id,
+        messages: [],
+      });
+
+      return res.json({
+        yourId: userId,
+        recipientId: user2Id,
+        messages: [],
+      });
+    }
+
+    chats = chats
       .populate({
         path: "messages",
         populate: {
           path: "sender",
           select: "firstName lastName userName email _id profileUrl",
-          // how can I add a custom field you : boolean that specifies if the sender is you or not to later be used in the client side for correct rendering. since I'm using httponly cookie I cant' access user information in the lcient side
         },
       })
       .populate("user1")
       .populate("user2");
 
-    if (!chats) {
-      // Then
-    }
-
+    // If there is a chat then return it
     let ret = chats.map((chat) =>
       chat.toObject().messages.map((message: any) => ({
         ...message,
         you: message.sender._id.toString() === userId.toString(),
       }))
     );
-
     return res.json({
       yourId: userId,
       recipientId: user2Id,

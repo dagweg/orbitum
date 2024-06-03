@@ -49,11 +49,7 @@ const chatAreaInitialState: TChatArea = {
   enabled: true,
   enabledStyle: "w-full",
   disabledStyle: "w-0 hidden",
-  currentChat: {
-    yourId: "",
-    recipientId: "",
-    messages: [],
-  },
+  currentChat: undefined,
 };
 
 const chatAreaSlice = createSlice({

@@ -1,5 +1,6 @@
 import { Server as SocketIOServer } from "socket.io";
 import { validateSocketSession } from "../middlewares/validateSocketSession";
+import sendMessage from "./sendMessage";
 
 let map = new Map();
 
@@ -32,15 +33,22 @@ export default function socketHandler(server: any) {
       console.log("Map set to ", map);
     });
 
-    socket.on("chat:sendMessage", ({ to, message }) => {
+    socket.on("chat:sendMessage", async ({ to, message }) => {
       console.log("SENDING MESSAGE TO ", to);
       console.log("MESSAGE IS ", message);
       const socketId = map.get(to);
       console.log("Socket ID is ", socketId);
-      io.to(socketId).emit("chat:receiveMessage", {
-        from: socket.data.user.userId,
-        message,
-      });
+
+      const msg = await sendMessage(socket.data.user.userId, to, message);
+
+      if (msg.status === 200) {
+        io.to(socketId).emit("chat:receiveMessage", {
+          from: socket.data.user.userId,
+          message,
+        });
+      } else {
+        console.log("Error: ", msg.message);
+      }
     });
 
     socket.on("disconnect", () => {

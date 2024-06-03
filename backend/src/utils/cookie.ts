@@ -6,7 +6,7 @@ export default function parseCookie(cookie: string): { [key: string]: string } {
   let cookiez = cookies.reduce((acc, cur) => {
     return {
       ...acc,
-      [cur.split("=")[0]]: cur.split("=")[1],
+      [cur.split("=")[0].trim()]: cur.split("=")[1].trim(),
     };
   }, {});
   return cookiez;
