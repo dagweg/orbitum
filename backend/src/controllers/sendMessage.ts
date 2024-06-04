@@ -15,7 +15,7 @@ export default async function sendMessage(
       sender: from,
     });
 
-    const pchat = await PrivateChat.findOneAndUpdate(
+    let pchat = await PrivateChat.findOneAndUpdate(
       {
         $or: [
           { user1: from, user2: to },
@@ -27,19 +27,29 @@ export default async function sendMessage(
           messages: msg._id,
         },
       },
-      { new: true } // Create the document if it doesn't exist
     );
 
     if (!pchat) {
+      pchat = await PrivateChat.create({
+        user1: from,
+        user2: to,
+        messages : [msg]
+      })
+      if(!pchat){
+        return {
+          message: "Something went wrong trying to create a private chat",
+          status: 500
+        }
+      }
       return {
-        message: "No private chat found aborted message",
-        status: 400,
+        message: msg.content,
+        status: 201,
       };
     }
 
     return {
       message: msg.content,
-      status: 200,
+      status: 201,
     };
   } catch (error) {
     return { message: (error as Error).message, status: 500 };

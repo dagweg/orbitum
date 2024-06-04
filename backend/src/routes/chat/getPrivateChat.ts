@@ -14,16 +14,18 @@ export async function getPrivateChat(req: Request, res: Response) {
         { user1: userId, user2: user2Id },
         { user2: userId, user1: user2Id },
       ],
-    });
+    }).populate({
+      path: "messages",
+      populate: {
+        path: "sender",
+        select: "firstName lastName userName email _id profileUrl",
+      },
+    })
+    .populate("user1")
+    .populate("user2");
 
     if (!chats) {
-      console.log("NO CHATS SO CREATED ONE");
-      // Create a new chat if there isn't one
-      const newPChat = await PrivateChat.create({
-        user1: userId,
-        user2: user2Id,
-        messages: [],
-      });
+      console.log("No private chats found trying GET.")
 
       return res.json({
         yourId: userId,
@@ -31,17 +33,6 @@ export async function getPrivateChat(req: Request, res: Response) {
         messages: [],
       });
     }
-
-    chats = chats
-      .populate({
-        path: "messages",
-        populate: {
-          path: "sender",
-          select: "firstName lastName userName email _id profileUrl",
-        },
-      })
-      .populate("user1")
-      .populate("user2");
 
     // If there is a chat then return it
     let ret = chats.map((chat) =>
