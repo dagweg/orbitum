@@ -2,11 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import ChatMessage from "./chat-message";
-import AvatarWrapper from "./avatar-wrapper";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import TextAreaAutoSize from "react-textarea-autosize";
 import {
   HelpCircleIcon,
@@ -63,12 +60,9 @@ function ChatArea() {
         message,
       })
 
-      // Refresh mechanism should be fixed this is just the time being.
       setTimeout(() => refreshChat(), 1000)
     }
   }
-
-
 
   useSocket("chat:receiveMessage", ({ from, message }) => {
     console.log("You have recieved message: ", message, " from ", from);
@@ -76,7 +70,6 @@ function ChatArea() {
   });
 
   useEffect(() => {
-    // console.log(chatArea.currentChat);
     socket.emit("user:connect");
   }, []);
 
