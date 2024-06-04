@@ -15,25 +15,20 @@ export default async function sendMessage(
       sender: from,
     });
 
-    let pchat = await PrivateChat.findOneAndUpdate(
+    let pchat = await PrivateChat.findOne(
       {
         $or: [
           { user1: from, user2: to },
           { user1: to, user2: from },
         ],
-      },
-      {
-        $push: {
-          messages: msg._id,
-        },
-      },
+      }
     );
 
     if (!pchat) {
       pchat = await PrivateChat.create({
         user1: from,
         user2: to,
-        messages : [msg]
+        messages : [msg._id]
       })
       if(!pchat){
         return {
@@ -46,6 +41,9 @@ export default async function sendMessage(
         status: 201,
       };
     }
+
+    pchat.messages.push(msg._id)
+    await pchat.save()
 
     return {
       message: msg.content,

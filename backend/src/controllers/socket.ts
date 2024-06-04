@@ -20,13 +20,6 @@ export default function socketHandler(server: any) {
   io.on("connection", (socket) => {
     console.log("a user connected");
 
-    if (!disconnected) {
-      // setInterval(() => {
-      //   io.emit("chat", "MY NAME IS JEFF. I'm 21 1 1: D");
-      //   console.log("EMMITED CHAT");
-      // }, 5000);
-    }
-
     socket.on("user:connect", () => {
       console.log("Connected User is ", socket.data.user.email);
       map.set(socket.data.user.userId, socket.id);
@@ -41,7 +34,7 @@ export default function socketHandler(server: any) {
 
       const msg = await sendMessage(socket.data.user.userId, to, message);
 
-      if (msg.status === 200) {
+      if (msg.status === 200 || msg.status === 201) {
         io.to(socketId).emit("chat:receiveMessage", {
           from: socket.data.user.userId,
           message,

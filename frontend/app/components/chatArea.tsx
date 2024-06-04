@@ -45,24 +45,34 @@ function ChatArea() {
     }
   }
 
-  function handleMessageSend() {
-    console.log(message);
-
-    if (chatArea.currentChat)
-      socket.emit("chat:sendMessage", {
-        to: chatArea.currentChat.recipientId,
-        message,
-      });
-  }
-
-  useSocket("chat:receiveMessage", ({ from, message }) => {
-    console.log("You have recieved message: ", message, " from ", from);
+  function refreshChat() {
     if (chatArea.currentChat)
       dispatch(
         setCurrentChat({
           id: chatArea.currentChat.recipientId,
         })
       );
+  }
+
+  function handleMessageSend() {
+    console.log(message);
+
+    if (chatArea.currentChat) {
+      socket.emit("chat:sendMessage", {
+        to: chatArea.currentChat.recipientId,
+        message,
+      })
+
+      // Refresh mechanism should be fixed this is just the time being.
+      setTimeout(() => refreshChat(), 1000)
+    }
+  }
+
+
+
+  useSocket("chat:receiveMessage", ({ from, message }) => {
+    console.log("You have recieved message: ", message, " from ", from);
+    refreshChat()
   });
 
   useEffect(() => {
