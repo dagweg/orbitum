@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  closeChatSideBar,
   openChatArea,
   setChatSideBar,
 } from "@/lib/redux/slices/chat/chatSlice";
@@ -52,10 +53,18 @@ function SearchSideBar() {
     // Add the user to the chat
     dispatch(setCurrentChat({ id }));
     dispatch(openChatArea());
+
+    const width = window.innerWidth;
+    if (width <= 950) {
+      dispatch(closeChatSideBar());
+    }
   };
 
   return (
-    <div ref={sideBarSearchRef} className="flex flex-col items-center gap-2">
+    <div
+      ref={sideBarSearchRef}
+      className="flex flex-col items-center gap-2 z-10 py-2 sticky top-0"
+    >
       <Input
         placeholder="Search people, groups or channels"
         onChangeCapture={(e) => handleSearch(e)}

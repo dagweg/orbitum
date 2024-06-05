@@ -12,6 +12,8 @@ const config = {
   theme: {
     fontFamily: {
       lemonMilk: ["var(--font-lemonmilk)"],
+      openSans: ["'Open Sans'", "sans-serif"],
+      lato: ["'Lato'", "sans-serif"],
     },
     container: {
       center: true,

@@ -21,7 +21,7 @@ function ChatMessage({
         name={name}
         lineClamp="line-clamp-none"
         summary={message}
-        className="p-2 !bg-white rounded-lg ring-neutral-200 w-fit shadow-md "
+        className="p-2 !bg-white rounded-lg ring-neutral-200 w-fit shadow-sm font-semibold font-lato "
         chatType={chatType}
         sender={sender}
       />

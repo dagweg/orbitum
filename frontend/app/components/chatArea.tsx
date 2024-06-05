@@ -20,6 +20,8 @@ import socket from "@/lib/socket";
 import { setCurrentChat } from "@/lib/redux/slices/chat/chatThunks";
 import Image from "next/image";
 
+import sprinkleWallpaper from "@/public/images/chat/Sprinkle.svg";
+
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
 
@@ -113,27 +115,43 @@ function ChatArea() {
     <>
       <div
         className={cn(
-          "flex-1  w-full border-l-2 border-t-2 h-full  rounded-lg rounded-b-none  bg-neutral-100 flex flex-col items-center  justify-start ",
+          "flex-1  w-full border-l-2 border-t-2 h-full  rounded-lg rounded-b-none !bg-neutral-300 !bg-opacity-55 relative overflow-clip   flex flex-col items-center  justify-start ",
           chatArea.enabled
             ? `${chatArea.enabledStyle}`
             : `${chatArea.disabledStyle}`
         )}
       >
+        {sprinkleWallpaper && (
+          <Image
+            src={sprinkleWallpaper}
+            alt="wallpaper"
+            className="absolute w-full h-full object-fit z-[-1] opacity-20 bg-current "
+          />
+        )}
         {messages && messages.length !== 0 && (
-          <div className="h-[50px] w-full bg-white p-2 sticky top-0">
-            <span>
-              {recipient?.firstName} {recipient?.lastName} <br />
-              <span className="text-sm opacity-45">Last seen recently</span>
-            </span>
+          <div className=" w-full h-fit  p-2 sticky top-0 bg-white">
+            <div className="flex  gap-2">
+              <Image
+                src={recipient?.profileUrl ?? "https://imgur.com/0omjre2.png"}
+                alt="prof"
+                width={50}
+                height={50}
+                className="rounded-sm"
+              ></Image>
+              <span className="w-fit">
+                {recipient?.firstName} {recipient?.lastName} <br />
+                <span className="text-sm opacity-45">Last seen recently</span>
+              </span>
+            </div>
           </div>
         )}
-        <div className="w-full flex-1 flex flex-col  justify-center h-full px-2 md:px-10">
+        <div className="w-full flex-1 flex flex-col  justify-center h-full ">
           {!messages ? (
             <Badge className="mx-auto text-base">
               Get started by selecting a chat
             </Badge>
           ) : (
-            <div className={cn(" flex flex-col  justify-between  mx-auto ")}>
+            <div className="h-full  p-4 flex flex-col gap-3">
               {messages.length === 0 ? (
                 <div className="flex-1  flex flex-col gap-3 justify-center items-center">
                   <Image
@@ -146,8 +164,8 @@ function ChatArea() {
                   Get started by saying hi.
                 </div>
               ) : (
-                <section className="flex-1 ">
-                  <div className="overflow-y-scroll no-scrollbar flex flex-col">
+                <section className="flex-1 h-full ">
+                  <div className="h-full overflow-y-scroll no-scrollbar flex flex-col pb-32">
                     {messages &&
                       messages.map((message: TMessageSchema, index) => (
                         <ChatMessage
@@ -159,17 +177,18 @@ function ChatArea() {
                   </div>
                 </section>
               )}
-              <section className="h-fit sticky bottom-0 w-full flex flex-col-reverse">
-                <div className="flex items-end justify-around gap-4 bg-white w-fit p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
+              <section className="h-fit sticky bottom-0 w-[95%] md:w-[80%] mx-auto max-w-[700px] flex flex-col-reverse">
+                <div className="flex items-end justify-around gap-4 bg-white w-full p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
                   <Paperclip className="" />
                   <TextAreaAutoSize
                     maxRows={10}
                     ref={chatTextAreaRef}
-                    className="w-fit sm:w-[500px] outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
+                    className=" outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
                     placeholder="Type a message"
                     onChange={(e) => handleTextAreaChange(e)}
                     onKeyDown={(e) => handleTextAreaKeyDown(e)}
                     onKeyUp={(e) => handleTextAreaKeyUp(e)}
+                    style={{ width: "100%" }}
                   />
                   <Smile />
                   {hasStartedTyping ? (
