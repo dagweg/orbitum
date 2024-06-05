@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  closeChatArea,
   closeChatSideBar,
+  openChatArea,
   openChatSideBar,
 } from "@/lib/redux/slices/chat/chatSlice";
 import { RootState, AppDispatch } from "@/lib/redux/store";
@@ -16,11 +18,8 @@ function ChatSideBar() {
   const sideBar = useSelector((state: RootState) => state.ChatSideBar);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-
-    function handleResize(e: Event) {
-      // @ts-ignore
-      const innerWidth = e.currentTarget.innerWidth;
+    function handleResize() {
+      const innerWidth = window.innerWidth;
 
       if (innerWidth <= 950) {
         dispatch(closeChatSideBar());
@@ -29,6 +28,23 @@ function ChatSideBar() {
       }
     }
 
+    function handleResizeInitial() {
+      const innerWidth = window.innerWidth;
+
+      if (innerWidth <= 950) {
+        dispatch(closeChatArea());
+      } else {
+        dispatch(openChatArea());
+      }
+    }
+
+    // Call handleResize once to handle initial load
+    handleResizeInitial();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function to remove event listener
     return () => {
       window.removeEventListener("resize", handleResize);
     };

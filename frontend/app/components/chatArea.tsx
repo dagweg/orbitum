@@ -111,7 +111,14 @@ function ChatArea() {
 
   return (
     <>
-      <div className="flex-1  w-full border-l-2 border-t-2 h-full  rounded-lg rounded-b-none  bg-neutral-100 flex flex-col items-center  justify-start ">
+      <div
+        className={cn(
+          "flex-1  w-full border-l-2 border-t-2 h-full  rounded-lg rounded-b-none  bg-neutral-100 flex flex-col items-center  justify-start ",
+          chatArea.enabled
+            ? `${chatArea.enabledStyle}`
+            : `${chatArea.disabledStyle}`
+        )}
+      >
         {messages && messages.length !== 0 && (
           <div className="h-[50px] w-full bg-white p-2 sticky top-0">
             <span>
@@ -126,14 +133,7 @@ function ChatArea() {
               Get started by selecting a chat
             </Badge>
           ) : (
-            <div
-              className={cn(
-                " flex flex-col  justify-between  mx-auto ",
-                chatArea.enabled
-                  ? `${chatArea.enabledStyle}`
-                  : `${chatArea.disabledStyle}`
-              )}
-            >
+            <div className={cn(" flex flex-col  justify-between  mx-auto ")}>
               {messages.length === 0 ? (
                 <div className="flex-1  flex flex-col gap-3 justify-center items-center">
                   <Image

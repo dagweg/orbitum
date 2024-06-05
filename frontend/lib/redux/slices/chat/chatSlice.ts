@@ -49,7 +49,6 @@ const chatSideBarSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(chatSideBarSearch.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.searchResult = action.payload;
     });
     builder.addCase(chatSideBarFetchAll.fulfilled, (state, action) => {

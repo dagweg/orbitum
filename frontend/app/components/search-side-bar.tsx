@@ -3,7 +3,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { setChatSideBar } from "@/lib/redux/slices/chat/chatSlice";
+import {
+  openChatArea,
+  setChatSideBar,
+} from "@/lib/redux/slices/chat/chatSlice";
 import {
   chatSideBarSearch,
   setCurrentChat,
@@ -48,6 +51,7 @@ function SearchSideBar() {
   const handleChatClick = (id: string) => {
     // Add the user to the chat
     dispatch(setCurrentChat({ id }));
+    dispatch(openChatArea());
   };
 
   return (
