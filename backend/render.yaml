@@ -1,8 +1,8 @@
 services:
   - name: backend
     type: web
-    buildCommand: cd backend && npm run build
-    startCommand: cd backend && npm run serve
+    buildCommand: npm run build
+    startCommand: npm run serve
     env:
       - key: CLIENT_ORIGIN
         value: "https://orbitum.vercel.app/"
