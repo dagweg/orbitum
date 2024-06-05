@@ -1,5 +1,5 @@
-import nodemailer, { Transport } from "nodemailer";
-import process from "process";
+import * as nodemailer from "nodemailer";
+import * as process from "process";
 import { getHourGap } from "./date";
 
 export const createTransport = nodemailer.createTransport;

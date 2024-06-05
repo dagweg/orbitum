@@ -62,7 +62,6 @@ export const chatSideBarFetchAll = createAsyncThunk(
         return rejectWithValue(`Error:  ${response.statusText}`);
       }
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error);

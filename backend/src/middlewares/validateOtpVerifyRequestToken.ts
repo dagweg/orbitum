@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { OTPVerifySchema } from "../validators/otpVerify.validation";
 import { verifyJWT } from "../utils/jwt";
 import { TOTPVerifySchema } from "../types/schema";

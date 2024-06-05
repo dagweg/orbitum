@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SearchSideBar from "./search-side-bar";
+import { chatSideBarFetchAll } from "@/lib/redux/slices/chat/chatThunks";
+import { TChatSideBarPerson } from "../types";
 
 function ChatSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,11 +46,14 @@ function ChatSideBar() {
     // Add event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Cleanup function to remove event listener
+    dispatch(chatSideBarFetchAll());
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [dispatch]);
+
+  const { people } = sideBar.chat;
 
   return (
     <div
@@ -58,7 +63,22 @@ function ChatSideBar() {
       )}
     >
       <SearchSideBar />
-      <div></div>
+      <div>
+        {people &&
+          people.map((person: TChatSideBarPerson) => {
+            return (
+              <div
+                key={person._id}
+                className="flex items-center gap-2 p-2 bg-neutral-50 rounded-lg shadow-sm"
+              >
+                <div className="w-10 h-10 bg-neutral-200 rounded-full"></div>
+                <div>
+                  <div className="font-semibold">{person.firstName}</div>
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }

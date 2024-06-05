@@ -82,6 +82,13 @@ export type TChatArea = {
     | undefined;
 };
 
+export type TChatSideBarPerson = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  profileUrl: string;
+};
+
 // Zod Return Type
 export type TZodReturn = {
   errors: [

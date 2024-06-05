@@ -1,5 +1,5 @@
 import { Router } from "express";
-import express from "express";
+const express = require("express");
 import { createPost } from "../user/createPost";
 import { PostSchema } from "../../validators/post.validation";
 import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";

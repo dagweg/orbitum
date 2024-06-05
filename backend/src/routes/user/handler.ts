@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import express from "express";
+const express = require("express");
 import { loginUser } from "./login";
 import { logoutUser } from "./logout";
 import { registerUser } from "./register";

@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 import { verifyOTP } from "./verify";
 import { validateOTPGenerateRequest } from "../../middlewares/validateOTPGenerateRequest";
 import { validateOtpVerifyRequestToken } from "../../middlewares/validateOtpVerifyRequestToken";

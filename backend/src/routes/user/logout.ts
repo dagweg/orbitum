@@ -5,7 +5,7 @@ import { User } from "../../models/user.model";
 import { Session } from "../../models/session.model";
 import { generateToken } from "../../utils/token";
 import { dateHoursFromNow, getHourGap } from "../../utils/date";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { SESSION_TOKEN } from "../../config/apiConfig";
 import { verifyJWT } from "../../utils/jwt";
 
@@ -26,7 +26,7 @@ export async function logoutUser(req: Request, res: Response) {
       return res.status(400).json("Invalid sessionToken!");
     }
 
-    // The sessionToken is a jwt so parse it to get the email
+    // The sessionToken is a * as jwt so parse it to get the email
     const sess = await Session.findOneAndUpdate(
       { userId },
       {

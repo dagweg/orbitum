@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../../models/user.model";
 import { Session } from "../../models/session.model";
 import { dateHoursFromNow } from "../../utils/date";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { PRODUCTION, SESSION_TOKEN } from "../../config/apiConfig";
 
 export async function loginUser(req: Request, res: Response) {

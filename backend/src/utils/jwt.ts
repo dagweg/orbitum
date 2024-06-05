@@ -1,6 +1,6 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
-export function verifyJWT(jwtToken: string): JwtPayload | string | null {
+export function verifyJWT(jwtToken: string): jwt.JwtPayload | string | null {
   try {
     return jwt.verify(jwtToken, process.env.JWT_SECRET_KEY as string);
   } catch (error) {

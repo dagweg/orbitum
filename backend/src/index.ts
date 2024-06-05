@@ -1,10 +1,10 @@
-import express from "express";
+const express = require("express");
 import { Server } from "http";
 import connectDB from "./utils/db";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import userRouteHandler from "./routes/user/handler";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 import { tokenRouteHandler } from "./routes/token/handler";
 import { otpRouteHandler } from "./routes/otp/handler";
 import postsRouterHandler from "./routes/post/handler";
@@ -12,6 +12,7 @@ import { searchHandler } from "./routes/search/handler";
 import chatRouteHandler from "./routes/chat/handler";
 import { createConversations } from "./models/mock/createConversations";
 import socketHandler from "./controllers/socket";
+import { Request, Response } from "express";
 
 // Load environment variables
 dotenv.config();
@@ -48,7 +49,7 @@ app.use("/api/v1/token", tokenRouteHandler());
 app.use("/api/v1/search", searchHandler());
 app.use("/api/v1/chat", chatRouteHandler());
 
-app.get("/api/v1/mock/conversations", (req, res) => {
+app.get("/api/v1/mock/conversations", (req: Request, res: Response) => {
   return res.json(createConversations());
 });
 

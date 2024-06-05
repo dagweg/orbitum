@@ -3,7 +3,7 @@ import { User } from "../../models/user.model";
 import { sendOtpEmail } from "../../utils/email";
 import { generateOTP } from "../../utils/otp";
 import { TUserSchema } from "../../types/schema";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 export async function registerUser(req: Request, res: Response) {
   try {

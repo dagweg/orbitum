@@ -62,12 +62,6 @@ importers:
       socket.io:
         specifier: ^4.7.5
         version: 4.7.5
-      tsc:
-        specifier: ^2.0.4
-        version: 2.0.4
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
       zod:
         specifier: ^3.23.7
         version: 3.23.7
@@ -78,6 +72,9 @@ importers:
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@20.12.8)(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
 packages:
 
@@ -1054,10 +1051,6 @@ packages:
         optional: true
       '@swc/wasm':
         optional: true
-
-  tsc@2.0.4:
-    resolution: {integrity: sha512-fzoSieZI5KKJVBYGvwbVZs/J5za84f2lSTLPYf6AGiIf43tZ3GNrI1QzTLcjtyDDP4aLxd46RTZq1nQxe7+k5Q==}
-    hasBin: true
 
   tsconfig@7.0.0:
     resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
@@ -2183,8 +2176,6 @@ snapshots:
       typescript: 5.4.5
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-
-  tsc@2.0.4: {}
 
   tsconfig@7.0.0:
     dependencies:

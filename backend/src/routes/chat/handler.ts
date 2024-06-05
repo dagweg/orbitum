@@ -1,5 +1,5 @@
 import { Router } from "express";
-import express from "express";
+const express = require("express");
 import { validateSession } from "../../middlewares/validateSession";
 import { getPrivateChats } from "./getPrivateChats";
 import { getPrivateChat } from "./getPrivateChat";

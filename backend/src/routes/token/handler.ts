@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { User } from "../../models/user.model";
 
 export function tokenRouteHandler() {
