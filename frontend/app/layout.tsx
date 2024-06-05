@@ -31,12 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${lemonMilk.variable} `}>
-        <ReduxProvider>
+      <ReduxProvider>
+        <body className={`${inter.className} ${lemonMilk.variable} w-screen`}>
           <main className="h-full w-full">{children}</main>
           <Toaster />
-        </ReduxProvider>
-      </body>
+        </body>
+      </ReduxProvider>
     </html>
   );
 }

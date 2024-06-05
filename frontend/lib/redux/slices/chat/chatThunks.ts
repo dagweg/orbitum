@@ -43,7 +43,26 @@ export const setCurrentChat = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log("FETCHED THIS ", data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const chatSideBarFetchAll = createAsyncThunk(
+  "/chatSideBar/getAllChats",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_ORIGIN}/api/v1/chat/all`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        return rejectWithValue(`Error:  ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error);

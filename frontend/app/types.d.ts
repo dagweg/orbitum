@@ -59,6 +59,15 @@ export type TChatSideBar = {
   enabledStyle: string;
   disabledStyle: string;
 };
+
+export type TUser = {
+  firstName: string;
+  lastName: string;
+  profileUrl: string;
+  userName: string;
+  email: string;
+};
+
 export type TChatArea = {
   enabled: boolean;
   enabledStyle: string;
@@ -67,6 +76,7 @@ export type TChatArea = {
     | {
         yourId: string;
         recipientId: string;
+        recipient: TUser;
         messages: TMessageSchema[];
       }
     | undefined;

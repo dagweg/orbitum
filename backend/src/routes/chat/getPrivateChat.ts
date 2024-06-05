@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PrivateChat } from "../../models/private_chat.model";
 import { Message, MessageDocument } from "../../models/message.model";
+import { User } from "../../models/user.model";
 
 export async function getPrivateChat(req: Request, res: Response) {
   try {
@@ -14,18 +15,19 @@ export async function getPrivateChat(req: Request, res: Response) {
         { user1: userId, user2: user2Id },
         { user2: userId, user1: user2Id },
       ],
-    }).populate({
-      path: "messages",
-      populate: {
-        path: "sender",
-        select: "firstName lastName userName email _id profileUrl",
-      },
     })
-    .populate("user1")
-    .populate("user2");
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+          select: "firstName lastName userName email _id profileUrl",
+        },
+      })
+      .populate("user1")
+      .populate("user2");
 
     if (!chats) {
-      console.log("No private chats found trying GET.")
+      console.log("No private chats found trying GET.");
 
       return res.json({
         yourId: userId,
@@ -41,9 +43,16 @@ export async function getPrivateChat(req: Request, res: Response) {
         you: message.sender._id.toString() === userId.toString(),
       }))
     );
+
+    const recipient = await User.findById(
+      user2Id,
+      "userName email firstName lastName phoneNumber  profileUrl"
+    );
+
     return res.json({
       yourId: userId,
       recipientId: user2Id,
+      recipient: recipient,
       messages: ret.flat(1),
     });
   } catch (error) {

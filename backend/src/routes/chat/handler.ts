@@ -5,17 +5,21 @@ import { getPrivateChats } from "./getPrivateChats";
 import { getPrivateChat } from "./getPrivateChat";
 import { validateGETRequestSchema } from "../../middlewares/validateGETRequestSchema";
 import { GetPrivateChatSchema } from "../../validators/chat.validation";
+import { getAllChats } from "./getAllChat";
 
 export default function chatRouteHandler(): Router {
   const router = express.Router();
 
-  router.get("/private", validateSession, getPrivateChats);
+  router.use(validateSession);
+
+  router.get("/private", getPrivateChats);
   router.get(
     "/private/user",
-    validateSession,
     validateGETRequestSchema(GetPrivateChatSchema),
     getPrivateChat
   );
+
+  router.get("/all", getAllChats);
 
   return router;
 }

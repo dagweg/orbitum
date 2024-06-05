@@ -7,7 +7,7 @@ async function SiteLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full bg-white sticky top-0 ">
         <Navbar />
       </div>
-      <div className="w-full min-h-full     py-4">{children}</div>
+      <div className="w-full min-h-full py-4">{children}</div>
     </>
   );
 }

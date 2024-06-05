@@ -42,6 +42,7 @@ function ChatSideBar() {
       )}
     >
       <SearchSideBar />
+      <div></div>
     </div>
   );
 }

@@ -55,6 +55,7 @@ export default function Login() {
             description: loginData.message,
           });
           router.push("/site/feed");
+          window.location.reload()
           break;
         case 401:
           toast({
