@@ -1,0 +1,21 @@
+services:
+  - name: backend
+    type: web
+    buildCommand: cd backend && npm run build
+    startCommand: cd backend && npm run serve
+    env:
+      - key: CLIENT_ORIGIN
+        value: "https://orbitum.vercel.app/"
+      - key: JWT_SECRET_KEY
+        value: "1fab55fe7fe5da2446b92abbba493abd05604e7c12bfd165903f1511fe0b6703a08a0567d9eb8390b19c247d79f0daaf66ed7eaffb02ae41ff885863674aa5fb"
+      - key: NODE_ENV
+        value: development
+      - key: MONGO_URI
+        value: "mongodb+srv://dagweg:P2WKYRuGoQEjwF9V@orbitumcluster0.8epzeai.mongodb.net/?retryWrites=true&w=majority&appName=OrbitumCluster0"
+      - key: MAILER_EMAIL
+        value: "orbitum.staff@gmail.com"
+      - key: MAILER_PASSWORD
+        value: "utnu agcq vmyc uvxu"
+    healthCheckPath: /health
+  - name: mongodb
+    type: mongodb
