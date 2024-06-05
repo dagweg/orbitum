@@ -17,5 +17,3 @@ services:
       - key: MAILER_PASSWORD
         value: "utnu agcq vmyc uvxu"
     healthCheckPath: /health
-  - name: mongodb
-    type: mongodb
