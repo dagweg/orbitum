@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "module": "commonjs",
+    "module": "CommonJS",
     "outDir": "./dist",
     "rootDir": "./src",
     "typeRoots": ["./node_modules/@types", "./@types"],
@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/types/express.d.ts"],
+  "include": ["src/**/*.ts", "express.d.ts"],
 
   "exclude": ["node_modules"]
 }
