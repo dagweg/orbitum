@@ -11,8 +11,14 @@ import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SearchSideBar from "./search-side-bar";
-import { chatSideBarFetchAll } from "@/lib/redux/slices/chat/chatThunks";
+import {
+  chatSideBarFetchAll,
+  setCurrentChat,
+} from "@/lib/redux/slices/chat/chatThunks";
 import { TChatSideBarPerson } from "../types";
+import { Avatar } from "@/components/ui/avatar";
+import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import ChatCard from "./chatCard";
 
 function ChatSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +59,10 @@ function ChatSideBar() {
     };
   }, [dispatch]);
 
+  function handleChatCardClick(id: string) {
+    dispatch(setCurrentChat({ id }));
+  }
+
   const { people } = sideBar.chat;
 
   return (
@@ -63,19 +73,16 @@ function ChatSideBar() {
       )}
     >
       <SearchSideBar />
-      <div>
+      <div className="flex flex-col gap-[-1]">
         {people &&
-          people.map((person: TChatSideBarPerson) => {
+          people.map((person: TChatSideBarPerson, index: number) => {
             return (
-              <div
-                key={person._id}
-                className="flex items-center gap-2 p-2 bg-neutral-50 rounded-lg shadow-sm"
-              >
-                <div className="w-10 h-10 bg-neutral-200 rounded-full"></div>
-                <div>
-                  <div className="font-semibold">{person.firstName}</div>
-                </div>
-              </div>
+              <ChatCard
+                name={person.firstName + " " + person.lastName}
+                recentMessage={person.recentMessage.content}
+                profileUrl={person.profileUrl}
+                onClick={() => handleChatCardClick(person._id)}
+              />
             );
           })}
       </div>

@@ -34,6 +34,7 @@ import {
   closeChatArea,
   openChatSideBar,
 } from "@/lib/redux/slices/chat/chatSlice";
+import { fetchUser } from "@/lib/redux/slices/user/userThunks";
 
 const user: { title: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -59,7 +60,7 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Navbar() {
-  // const store = useSelector((state: RootState) => state.ChatSideBar);
+  const { firstName, lastName } = useSelector((state: RootState) => state.User);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -69,6 +70,10 @@ export default function Navbar() {
       dispatch(closeChatArea());
     }
   }
+
+  React.useLayoutEffect(() => {
+    dispatch(fetchUser());
+  }, []);
 
   return (
     <NavigationMenu className="w-fit mx-auto p-2 sticky top-0 ">
@@ -111,6 +116,7 @@ export default function Navbar() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+        <p>Logged in as {firstName + " " + lastName}</p>
       </NavigationMenuList>
     </NavigationMenu>
   );

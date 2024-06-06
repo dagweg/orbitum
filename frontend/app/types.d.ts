@@ -87,6 +87,7 @@ export type TChatSideBarPerson = {
   firstName: string;
   lastName: string;
   profileUrl: string;
+  recentMessage: { content: string };
 };
 
 // Zod Return Type
