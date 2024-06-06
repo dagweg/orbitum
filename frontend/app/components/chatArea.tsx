@@ -21,6 +21,7 @@ import { setCurrentChat } from "@/lib/redux/slices/chat/chatThunks";
 import Image from "next/image";
 
 import sprinkleWallpaper from "@/public/images/chat/Sprinkle.svg";
+import { Button } from "@/components/ui/button";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -164,8 +165,8 @@ function ChatArea() {
                   Get started by saying hi.
                 </div>
               ) : (
-                <section className="flex-1 h-full ">
-                  <div className="h-full overflow-y-scroll no-scrollbar flex flex-col pb-32">
+                <section className="flex-1 h-full  pb-32">
+                  <div className="h-full overflow-y-scroll no-scrollbar flex flex-col">
                     {messages &&
                       messages.map((message: TMessageSchema, index) => (
                         <ChatMessage
@@ -178,8 +179,12 @@ function ChatArea() {
                 </section>
               )}
               <section className="h-fit sticky bottom-0 w-[95%] md:w-[80%] mx-auto max-w-[700px] flex flex-col-reverse">
-                <div className="flex items-end justify-around gap-4 bg-white w-full p-4 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
-                  <Paperclip className="" />
+                <div className="flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
+                  <div className="h-full flex flex-col-reverse items-end">
+                    <Button variant={"circleGhost"}>
+                      <Paperclip className="" />
+                    </Button>
+                  </div>
                   <TextAreaAutoSize
                     maxRows={10}
                     ref={chatTextAreaRef}
@@ -190,12 +195,21 @@ function ChatArea() {
                     onKeyUp={(e) => handleTextAreaKeyUp(e)}
                     style={{ width: "100%" }}
                   />
-                  <Smile />
-                  {hasStartedTyping ? (
-                    <SendHorizontal onClick={handleMessageSend} />
-                  ) : (
-                    <Mic />
-                  )}
+                  <div className="h-full flex flex-col-reverse items-end">
+                    <div className="flex items-end">
+                      <Button variant={"circleGhost"}>
+                        <Smile />
+                      </Button>
+                      <Button
+                        onClick={
+                          hasStartedTyping ? handleMessageSend : () => {}
+                        }
+                        variant={"circleGhost"}
+                      >
+                        {hasStartedTyping ? <SendHorizontal /> : <Mic />}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>

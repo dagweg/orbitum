@@ -77,7 +77,7 @@ function SearchSideBar() {
               <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
                 <Avatar>
                   <AvatarImage
-                    src="https://imgur.com/HdZ9ZqY.png"
+                    src={result.profileUrl ?? "https://imgur.com/0omjre2.png"}
                     alt="@username"
                     className="bg-center self-center"
                   />
