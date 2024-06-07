@@ -44,6 +44,12 @@ export default function socketHandler(server: any) {
       }
     });
 
+    socket.on("chat:type", ({ to }) => {
+      console.log("User is typing to ", to);
+      const socketId = map.get(to);
+      io.to(socketId).emit("chat:type", { from: socket.data.user.userId });
+    });
+
     socket.on("disconnect", () => {
       disconnected = true;
       console.log("user disconnected");

@@ -57,14 +57,14 @@ export default function Post({
   };
 
   return (
-    <Card className="flex flex-col gap-3 items-center p-3 ">
+    <Card className="flex flex-col gap-3 items-center p-3 border-opacity-60  shadow-sm ">
       <section className="flex justify-between w-full">
         <AvatarWrapper name={user.userName} date={date} />
         <Button variant={"ghost"}>
           <Ellipsis />
         </Button>
       </section>
-      <section className="w-full">{content}</section>
+      <section className="w-full font-lato">{content}</section>
       <section className="w-full space-y-3">
         {likes.length > 0 && (
           <>

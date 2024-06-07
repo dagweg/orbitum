@@ -23,6 +23,8 @@ import Image from "next/image";
 import sprinkleWallpaper from "@/public/images/chat/Sprinkle.svg";
 import { Button } from "@/components/ui/button";
 
+import { PulseLoader, SyncLoader } from "react-spinners";
+
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
 
@@ -34,17 +36,24 @@ function ChatArea() {
 
   const [message, setMessage] = useState<string>("");
 
-  const [hasStartedTyping, setHasStartedTyping] = useState(false);
+  const [hasStartedTyping, setHasStartedTyping] = useState({
+    you: false,
+    recipient: false,
+  });
 
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setMessage(e.currentTarget.value);
     if (e.target.value.length > 0) {
-      setHasStartedTyping(true);
+      setHasStartedTyping({ ...hasStartedTyping, you: true });
     } else {
-      setHasStartedTyping(false);
+      setHasStartedTyping({ ...hasStartedTyping, you: false });
     }
+
+    socket.emit("chat:type", {
+      to: chatArea.currentChat?.recipientId,
+    });
   }
 
   let keys = {
@@ -106,6 +115,22 @@ function ChatArea() {
     refreshChat();
   });
 
+  const typingTimeout = useRef(setTimeout(() => {}));
+
+  useSocket("chat:type", (from) => {
+    console.log("tyPING", from);
+
+    if (typingTimeout.current) {
+      clearTimeout(typingTimeout.current);
+    }
+
+    setHasStartedTyping((prev) => ({ ...prev, recipient: true }));
+
+    typingTimeout.current = setTimeout(() => {
+      setHasStartedTyping((prev) => ({ ...prev, recipient: false }));
+    }, 1000);
+  });
+
   useEffect(() => {
     socket.emit("user:connect");
   }, []);
@@ -141,7 +166,20 @@ function ChatArea() {
               ></Image>
               <span className="w-fit">
                 {recipient?.firstName} {recipient?.lastName} <br />
-                <span className="text-sm opacity-45">Last seen recently</span>
+                <span className="text-sm opacity-45">
+                  {hasStartedTyping.recipient ? (
+                    <>
+                      <PulseLoader
+                        color="black"
+                        size={5}
+                        speedMultiplier={0.7}
+                      />{" "}
+                      typing
+                    </>
+                  ) : (
+                    "Last seen recently"
+                  )}
+                </span>
               </span>
             </div>
           </div>
