@@ -2,6 +2,7 @@
 
 import LoaderPage from "@/app/components/loader-page";
 import { API_ORIGIN } from "@/app/config/apiConfig";
+import socket from "@/lib/socket";
 import { useEffect } from "react";
 
 function Logout() {
@@ -20,6 +21,8 @@ function Logout() {
       }, 1000);
     })();
   }, []);
+
+  socket.emit("user:logout");
 
   return (
     <div className="flex flex-col h-screen  justify-center items-center">

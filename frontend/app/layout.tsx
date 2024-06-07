@@ -37,15 +37,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
-        <SocketProvider>
-          <body
-            suppressHydrationWarning
-            className={`${inter.className} ${lemonMilk.variable} ${openSans.className} ${lato.className} w-screen`}
-          >
-            <main className="h-full w-full">{children}</main>
-            <Toaster />
-          </body>
-        </SocketProvider>
+        <body
+          suppressHydrationWarning
+          className={`${inter.className} ${lemonMilk.variable} ${openSans.className} ${lato.className} w-screen`}
+        >
+          <main className="h-full w-full">{children}</main>
+          <Toaster />
+        </body>
       </ReduxProvider>
     </html>
   );
