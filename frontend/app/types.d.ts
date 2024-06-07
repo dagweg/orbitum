@@ -61,6 +61,7 @@ export type TChatSideBar = {
 };
 
 export type TUser = {
+  _id?: string;
   firstName: string;
   lastName: string;
   profileUrl: string;

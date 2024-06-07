@@ -65,6 +65,10 @@ function ChatSideBar() {
 
   function handleChatCardClick(id: string) {
     dispatch(setCurrentChat({ id }));
+    if (window.innerWidth <= 950) {
+      dispatch(closeChatSideBar());
+      dispatch(openChatArea());
+    }
   }
 
   const { people } = sideBar.chat;

@@ -31,6 +31,9 @@ import OnlineIndicator from "./online-indicator";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
+  const { onlineUsers } = useSelector(
+    (state: RootState) => state.ChatSideBar.chat
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -140,7 +143,7 @@ function ChatArea() {
   });
 
   const recipient = chatArea.currentChat?.recipient;
-
+  console.log(recipient?._id);
   return (
     <>
       <div
@@ -163,13 +166,15 @@ function ChatArea() {
             <div className="flex  gap-2">
               <div className="relative ">
                 <Image
-                  src={recipient?.profileUrl ?? "https://imgur.com/0omjre2.png"}
+                  src={recipient?.profileUrl ?? "https://imgur.com/cAy8VXf.png"}
                   alt="prof"
                   width={50}
                   height={50}
                   className="rounded-sm"
                 ></Image>
-                <OnlineIndicator />
+                {onlineUsers && (recipient?._id as string) in onlineUsers && (
+                  <OnlineIndicator />
+                )}
               </div>
               <span className="w-fit">
                 {recipient?.firstName} {recipient?.lastName} <br />
