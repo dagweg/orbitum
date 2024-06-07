@@ -6,6 +6,9 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import TextAreaAutoSize from "react-textarea-autosize";
 import {
+  Circle,
+  CircleDot,
+  Dot,
   HelpCircleIcon,
   Mic,
   Paperclip,
@@ -24,6 +27,7 @@ import sprinkleWallpaper from "@/public/images/chat/Sprinkle.svg";
 import { Button } from "@/components/ui/button";
 
 import { PulseLoader, SyncLoader } from "react-spinners";
+import OnlineIndicator from "./online-indicator";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -39,6 +43,10 @@ function ChatArea() {
   const [hasStartedTyping, setHasStartedTyping] = useState({
     you: false,
     recipient: false,
+  });
+
+  const [user, setUser] = useState({
+    connected: false,
   });
 
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -106,7 +114,7 @@ function ChatArea() {
         message,
       });
 
-      setTimeout(() => refreshChat(), 1000);
+      setTimeout(() => refreshChat(), 50);
     }
   }
 
@@ -131,10 +139,6 @@ function ChatArea() {
     }, 1000);
   });
 
-  useEffect(() => {
-    socket.emit("user:connect");
-  }, []);
-
   const recipient = chatArea.currentChat?.recipient;
 
   return (
@@ -157,13 +161,16 @@ function ChatArea() {
         {messages && messages.length !== 0 && (
           <div className=" w-full h-fit  p-2 sticky top-0 bg-white">
             <div className="flex  gap-2">
-              <Image
-                src={recipient?.profileUrl ?? "https://imgur.com/0omjre2.png"}
-                alt="prof"
-                width={50}
-                height={50}
-                className="rounded-sm"
-              ></Image>
+              <div className="relative ">
+                <Image
+                  src={recipient?.profileUrl ?? "https://imgur.com/0omjre2.png"}
+                  alt="prof"
+                  width={50}
+                  height={50}
+                  className="rounded-sm"
+                ></Image>
+                <OnlineIndicator />
+              </div>
               <span className="w-fit">
                 {recipient?.firstName} {recipient?.lastName} <br />
                 <span className="text-sm opacity-45">

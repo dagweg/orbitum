@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import socket from "@/lib/socket";
 
 export default function useSocket(
-  eventName: string,
-  callback: (data: any) => void
+  eventName: string = "connect",
+  callback: (data: any) => void = () => {}
 ) {
   useEffect(() => {
     const handleConnect = () => {
@@ -20,13 +20,14 @@ export default function useSocket(
 
     socket.on("connect", handleConnect);
     socket.on("connect_error", handleConnectError);
-    socket.on(eventName, handleEvent);
+
+    if (eventName !== "connect") socket.on(eventName, handleEvent);
 
     // Cleanup function
     return () => {
       socket.off("connect", handleConnect);
       socket.off("connect_error", handleConnectError);
-      socket.off(eventName, handleEvent);
+      if (eventName !== "connect") socket.off(eventName, handleEvent);
     };
   }, [eventName, callback]);
 

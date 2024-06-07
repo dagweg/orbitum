@@ -9,6 +9,7 @@ import {
 type TChatSideBarExtended = TChatSideBar & {
   searchResult: [];
   chat: {
+    onlineUsers: {};
     people: [];
     groups: [];
     channels: [];
@@ -27,6 +28,7 @@ const chatSideBarInitialState: TChatSideBarExtended = {
   },
   searchResult: [],
   chat: {
+    onlineUsers: {},
     people: [],
     groups: [],
     channels: [],
@@ -45,6 +47,9 @@ const chatSideBarSlice = createSlice({
     },
     setChatSideBar(state, action) {
       return action.payload;
+    },
+    setOnlineUsers(state, action) {
+      state.chat.onlineUsers = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,8 +87,12 @@ const chatAreaSlice = createSlice({
   },
 });
 
-export const { closeChatSideBar, openChatSideBar, setChatSideBar } =
-  chatSideBarSlice.actions;
+export const {
+  closeChatSideBar,
+  openChatSideBar,
+  setChatSideBar,
+  setOnlineUsers,
+} = chatSideBarSlice.actions;
 export const ChatSideBar = chatSideBarSlice.reducer;
 
 export const { closeChatArea, openChatArea } = chatAreaSlice.actions;

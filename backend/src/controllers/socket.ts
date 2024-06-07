@@ -15,16 +15,11 @@ export default function socketHandler(server: any) {
 
   io.use(validateSocketSession);
 
-  let disconnected = false;
-
   io.on("connection", (socket) => {
     console.log("a user connected");
 
-    socket.on("user:connect", () => {
-      console.log("Connected User is ", socket.data.user.email);
-      map.set(socket.data.user.userId, socket.id);
-      console.log("Map set to ", map);
-    });
+    console.log("Connected User is ", socket.data.user.email);
+    map.set(socket.data.user.userId, socket.id);
 
     socket.on("chat:sendMessage", async ({ to, message }) => {
       console.log("SENDING MESSAGE TO ", to);
@@ -50,9 +45,13 @@ export default function socketHandler(server: any) {
       io.to(socketId).emit("chat:type", { from: socket.data.user.userId });
     });
 
+    setInterval(() => {
+      io.emit("users:connected", Object.fromEntries(map));
+    }, 2000);
+
     socket.on("disconnect", () => {
-      disconnected = true;
       console.log("user disconnected");
+      map.delete(socket.data.user.userId);
     });
   });
 }

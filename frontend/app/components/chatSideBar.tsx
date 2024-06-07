@@ -5,10 +5,11 @@ import {
   closeChatSideBar,
   openChatArea,
   openChatSideBar,
+  setOnlineUsers,
 } from "@/lib/redux/slices/chat/chatSlice";
 import { RootState, AppDispatch } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SearchSideBar from "./search-side-bar";
 import {
@@ -19,11 +20,14 @@ import { TChatSideBarPerson } from "../types";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import ChatCard from "./chatCard";
+import useSocket from "../hooks/useSocket";
+import socket from "@/lib/socket";
 
 function ChatSideBar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const sideBar = useSelector((state: RootState) => state.ChatSideBar);
+  const { onlineUsers } = sideBar.chat;
 
   useEffect(() => {
     function handleResize() {
@@ -64,6 +68,10 @@ function ChatSideBar() {
   }
 
   const { people } = sideBar.chat;
+  useSocket("users:connected", (data) => {
+    dispatch(setOnlineUsers(data));
+    console.log(sideBar.chat.onlineUsers);
+  });
 
   return (
     <div
@@ -81,6 +89,7 @@ function ChatSideBar() {
                 name={person.firstName + " " + person.lastName}
                 recentMessage={person.recentMessage.content}
                 profileUrl={person.profileUrl}
+                isOnline={onlineUsers ? person._id in onlineUsers : false}
                 onClick={() => handleChatCardClick(person._id)}
               />
             );
