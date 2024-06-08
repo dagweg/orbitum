@@ -38,7 +38,7 @@ function ChatCard({
       </div>
       <div className="">
         <div className="font-lato">{name}</div>
-        <p className="opacity-50 text-sm font-lato">
+        <p className="opacity-50 text-sm font-lato w-full line-clamp-1">
           {recentMessage ?? "Recent Message is hidden"}
         </p>
       </div>
