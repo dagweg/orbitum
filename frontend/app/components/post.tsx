@@ -16,13 +16,15 @@ import React, { useEffect, useRef, useState } from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import Image from "next/image";
 import { TUserSchema } from "@/lib/types/schema";
-import { useDispatch } from "react-redux";
-import { AppDispatch, store } from "@/lib/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { fetchUser } from "@/lib/redux/slices/user/userThunks";
-import { likePost } from "@/lib/redux/slices/post/postThunks";
+import { likePost, postComment } from "@/lib/redux/slices/post/postThunks";
 import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 import { Textarea } from "@/components/ui/textarea";
+import CommentCard from "./comment-card";
+import { TUser } from "../types";
 
 type TComment = {
   name: string;
@@ -55,12 +57,12 @@ export default function Post({
   const dispatch = useDispatch<AppDispatch>();
 
   dispatch(fetchUser());
-  console.log(store.getState().User);
 
   const handleLike = () => {
     dispatch(likePost({ postId }));
   };
 
+  const comment = useRef("");
   const [commentMode, setCommentMode] = useState(false);
 
   const commentModeStyle =
@@ -81,6 +83,13 @@ export default function Post({
 
   function handleSendComment() {
     // Send the comment here
+    console.log("you are going to send ", comment.current);
+    dispatch(
+      postComment({
+        postId,
+        comment: comment.current,
+      })
+    );
   }
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -145,7 +154,8 @@ export default function Post({
               className="flex items-center gap-3"
               onClick={handleComment}
             >
-              <MessageSquareText /> Comment
+              <MessageSquareText /> Comments{" "}
+              {comments.length > 0 && `(${comments.length})`}
             </Button>
             <Button variant={"ghost"} className="flex items-center gap-3">
               <Share2 /> Share
@@ -157,6 +167,9 @@ export default function Post({
                 placeholder="Share your thoughts"
                 rows={3}
                 className="pr-12 no-scrollbar"
+                onChangeCapture={(e) => {
+                  comment.current = e.currentTarget.value;
+                }}
               />
               <Button
                 variant={"ghost"}
@@ -167,14 +180,29 @@ export default function Post({
               </Button>
             </div>
           )}
-          {commentMode && (
-            <div className=" p-2 rounded-lg">
-              <p className="text-center font-lato py-8 flex  gap-3 mx-auto w-fit">
-                <MessageSquareMore />
-                Be the first to comment
-              </p>
-            </div>
-          )}
+          {commentMode &&
+            (comments && comments.length > 0 ? (
+              <div className="flex flex-col gap-2">
+                <span className="font-semibold flex items-center gap-3">
+                  <span className="flex-1 h-[2px] bg-neutral-200"></span>
+                  Comments{" "}
+                  <span className="flex-1 h-[2px] bg-neutral-200"></span>
+                </span>
+                {comments.map((comment: any, key) => (
+                  <CommentCard
+                    user={comment.user as TUser}
+                    text={comment.text}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className=" p-2 rounded-lg">
+                <p className="text-center font-lato py-8 flex  gap-3 mx-auto w-fit">
+                  <MessageSquareMore />
+                  Be the first to comment
+                </p>
+              </div>
+            ))}
         </section>
       </Card>
     </div>

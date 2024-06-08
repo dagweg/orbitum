@@ -13,6 +13,7 @@ import chatRouteHandler from "./routes/chat/handler";
 import { createConversations } from "./models/mock/createConversations";
 import socketHandler from "./controllers/socket";
 import { Request, Response } from "express";
+import commentRouteHandler from "./routes/comment/handler";
 
 // Load environment variables
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/api/v1/otp", otpRouteHandler());
 app.use("/api/v1/token", tokenRouteHandler());
 app.use("/api/v1/search", searchHandler());
 app.use("/api/v1/chat", chatRouteHandler());
+app.use("/api/v1/comment", commentRouteHandler());
 
 app.get("/api/v1/mock/conversations", (req: Request, res: Response) => {
   return res.json(createConversations());

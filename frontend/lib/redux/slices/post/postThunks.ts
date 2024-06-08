@@ -64,4 +64,33 @@ const likePost = createAsyncThunk(
   }
 );
 
+export const postComment = createAsyncThunk(
+  "comments/post",
+  async (param: { postId: string; comment: string }, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${API_ORIGIN}/api/v1/comment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          postId: param.postId,
+          comment: param.comment,
+        }),
+      });
+
+      if (!res.ok) {
+        return rejectWithValue(res);
+      }
+
+      const data = await res.json();
+      console.log("COMMENT SUCCESS ", data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export { getUserPosts, getAllPosts, likePost };

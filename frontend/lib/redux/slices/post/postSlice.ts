@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllPosts, getUserPosts, likePost } from "./postThunks";
+import { getAllPosts, getUserPosts, likePost, postComment } from "./postThunks";
 import { TPostSchema } from "@/lib/types/schema";
 import { User } from "../user/userSlice";
 import { useSelector } from "react-redux";
@@ -41,6 +41,11 @@ const posts = createSlice({
         }
         return post;
       });
+    });
+
+    builder.addCase(postComment.fulfilled, (state, action) => {
+      const pid = state.findIndex((post) => post._id === action.payload.post);
+      state[pid].comments.push(action.payload);
     });
   },
 });
