@@ -10,7 +10,7 @@ type Props = {
 function CommentCard({ user, text }: Props) {
   return (
     <div
-      className={`flex  gap-2 p-2 h-fit   border-b-2 border-opacity-30  rounded-sm shadow-sm `}
+      className={`flex  gap-2 p-2 h-fit   rounded-sm bg-neutral-50 border-[1px]  `}
     >
       <div className="relative h-full flex items-start">
         <Avatar>

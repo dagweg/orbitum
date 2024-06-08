@@ -11,6 +11,7 @@ import {
   Send,
   SendHorizonal,
   MessageSquareMore,
+  X,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import AvatarWrapper from "./avatar-wrapper";
@@ -66,8 +67,9 @@ export default function Post({
   const [commentMode, setCommentMode] = useState(false);
 
   const commentModeStyle =
-    "w-full fixed inset-0 bg-white bg-transparent backdrop-blur-lg flex justify-center p-10 z-[100]";
-  const commentModeCardStyle = "fixed w-[95%] sm:w-[550px] ";
+    "w-full fixed inset-0 bg-white bg-transparent backdrop-blur-md flex items-center justify-center   z-[100] h-full";
+  const commentModeCardStyle =
+    "fixed w-[95%] sm:w-[550px] max-h-[98%] overflow-y-scroll no-scrollbar";
 
   useEffect(() => {
     if (commentMode) {
@@ -103,7 +105,7 @@ export default function Post({
       <Card
         ref={cardRef}
         className={cn(
-          "flex flex-col gap-3 items-center p-3 border-opacity-60  shadow-sm ",
+          "flex flex-col gap-3 items-center p-3 border-opacity-60  shadow-sm relative",
           commentMode && commentModeCardStyle
         )}
       >
@@ -114,7 +116,7 @@ export default function Post({
           </Button>
         </section>
         <section className="w-full font-lato">{content}</section>
-        <section className="w-full h-full space-y-3 flex flex-col">
+        <section className="w-full  space-y-3 flex flex-col">
           {likes.length > 0 && (
             <>
               <div className="flex -space-x-2 border-b-2 pb-2">
@@ -182,11 +184,9 @@ export default function Post({
           )}
           {commentMode &&
             (comments && comments.length > 0 ? (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2  flex-1 ">
                 <span className="font-semibold flex items-center gap-3">
-                  <span className="flex-1 h-[2px] bg-neutral-200"></span>
-                  Comments{" "}
-                  <span className="flex-1 h-[2px] bg-neutral-200"></span>
+                  Comments
                 </span>
                 {comments.map((comment: any, key) => (
                   <CommentCard
@@ -204,6 +204,15 @@ export default function Post({
               </div>
             ))}
         </section>
+        {commentMode && (
+          <Button
+            variant={"circleGhost"}
+            className="fixed right-0 top-0 rounded-full m-0 p-2 w-fit h-fit bg-neutral-200 "
+            onClick={() => setCommentMode(false)}
+          >
+            <X size={15} />
+          </Button>
+        )}
       </Card>
     </div>
   );

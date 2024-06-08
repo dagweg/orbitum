@@ -20,7 +20,7 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-stone-100 hover:text-stone-900 dark:hover:bg-stone-800 dark:hover:text-stone-50",
         circleGhost:
-          "hover:bg-stone-100 hover:text-stone-900 dark:hover:bg-stone-800 dark:hover:text-stone-50 rounded-full !aspect-square !p-0 !py-0 !m-0 ",
+          "hover:bg-stone-100 hover:text-stone-900 dark:hover:bg-stone-800 dark:hover:text-stone-50 rounded-full !aspect-square ",
         link: "text-stone-900 underline-offset-4 hover:underline dark:text-stone-50",
         selected:
           "bg-neutral-100 text-neutral-800 hover:text-neutral-900 hover:bg-neutral-100/80 dark:bg-stone-800 dark:text-stone-50 dark:hover:bg-stone-800/80",
