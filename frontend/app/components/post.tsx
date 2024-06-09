@@ -67,7 +67,7 @@ export default function Post({
   const [commentMode, setCommentMode] = useState(false);
 
   const commentModeStyle =
-    "w-full fixed inset-0 bg-white bg-transparent backdrop-blur-md flex items-center justify-center   z-[100] h-full";
+    "w-full fixed inset-0 bg-white bg-transparent backdrop-blur-2xl flex items-center justify-center   z-[100] h-full";
   const commentModeCardStyle =
     "fixed w-[95%] sm:w-[550px] max-h-[98%] overflow-y-scroll no-scrollbar";
 
@@ -208,7 +208,7 @@ export default function Post({
         {commentMode && (
           <Button
             variant={"circleGhost"}
-            className="fixed right-0 top-0 rounded-full m-0 p-2 w-fit h-fit bg-neutral-200 "
+            className="fixed right-0 top-0 rounded-full m-0 !p-3 w-fit h-fit bg-neutral-200 "
             onClick={() => setCommentMode(false)}
           >
             <X size={15} />

@@ -148,7 +148,7 @@ function ChatArea() {
     <>
       <div
         className={cn(
-          "flex-1  w-full border-l-2 border-t-2 h-full  rounded-lg rounded-b-none !bg-neutral-300 !bg-opacity-55 relative overflow-clip   flex flex-col items-center  justify-start ",
+          "flex-1  w-full border-l-2 h-full  rounded-none !bg-neutral-300 !bg-opacity-55 relative overflow-clip   flex flex-col items-center  justify-start ",
           chatArea.enabled
             ? `${chatArea.enabledStyle}`
             : `${chatArea.disabledStyle}`

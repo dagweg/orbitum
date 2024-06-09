@@ -59,6 +59,25 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
   },
 ];
 
+const links = [
+  {
+    href: "/site/feed",
+    label: "Home",
+  },
+  {
+    href: "/site/chat",
+    label: "Chat",
+  },
+  {
+    href: "/site/notifications",
+    label: "Notifications",
+  },
+  {
+    href: "#",
+    label: "You",
+  },
+];
+
 export default function Navbar() {
   const { firstName, lastName } = useSelector((state: RootState) => state.User);
 
@@ -76,49 +95,85 @@ export default function Navbar() {
   }, []);
 
   return (
-    <NavigationMenu className="w-fit mx-auto p-2 sticky top-0 ">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/site/feed" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Home />
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem onClick={handleChatClick}>
-          <Link href="/site/chat" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <MessageCircle />
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <Link href="/site/notifications" legacyBehavior passHref>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Bell />
-          </NavigationMenuLink>
-        </Link>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>
-            <User />
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              {user.map((items) => (
-                <NavItem key={items.title}>
-                  {items.icon}
-                  <ListItem
-                    key={items.title}
-                    title={items.title}
-                    href={items.href}
-                  ></ListItem>
-                </NavItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <p>Logged in as {firstName + " " + lastName}</p>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="flex w-full justify-center sticky top-0 z-[1000]">
+      <div className="flex gap-10 items-center p-2 bg-white sticky top-0 ">
+        {links.map((link, key) => {
+          // if (link.href === "#") {
+          //   let node;
+          //   switch (link.label) {
+          //     case "You":
+          //       node = user.map((usr, key) => (
+          //         <Link href={usr.href} className="hover:underline">
+          //           {usr.title}
+          //         </Link>
+          //       ));
+          //       break;
+          //     default:
+          //       break;
+          //   }
+          //   return (
+          //     <div className=" relative ">
+          //       {link.label}
+          //       <div className=" absolute w-[200px]  grid grid-cols-1 gap-3  bg-neutral-50 shadow-lg rounded-lg p-3">
+          //         {node}
+          //       </div>
+          //     </div>
+          //   );
+          // }
+          return (
+            <Link
+              href={link.href}
+              className=" px-4 rounded-full py-2 hover:bg-neutral-100"
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+    // <NavigationMenu className="w-fit mx-auto p-2 sticky top-0 bg-white !z-[100]">
+    //   <NavigationMenuList>
+    //     <NavigationMenuItem>
+    //       <Link href="/site/feed" legacyBehavior passHref>
+    //         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+    //           <Home />
+    //         </NavigationMenuLink>
+    //       </Link>
+    //     </NavigationMenuItem>
+    //     <NavigationMenuItem onClick={handleChatClick}>
+    //       <Link href="/site/chat" legacyBehavior passHref>
+    //         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+    //           <MessageCircle />
+    //         </NavigationMenuLink>
+    //       </Link>
+    //     </NavigationMenuItem>
+    //     <Link href="/site/notifications" legacyBehavior passHref>
+    //       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+    //         <Bell />
+    //       </NavigationMenuLink>
+    //     </Link>
+    //     <NavigationMenuItem>
+    //       <NavigationMenuTrigger>
+    //         <User />
+    //       </NavigationMenuTrigger>
+    //       <NavigationMenuContent>
+    //         <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] !z-[1000] relative">
+    //           {user.map((items) => (
+    //             <NavItem key={items.title}>
+    //               {items.icon}
+    //               <ListItem
+    //                 key={items.title}
+    //                 title={items.title}
+    //                 href={items.href}
+    //               ></ListItem>
+    //             </NavItem>
+    //           ))}
+    //         </ul>
+    //       </NavigationMenuContent>
+    //     </NavigationMenuItem>
+    //     <p>Logged in as {firstName + " " + lastName}</p>
+    //   </NavigationMenuList>
+    // </NavigationMenu>
   );
 }
 
