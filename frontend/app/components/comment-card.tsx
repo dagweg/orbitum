@@ -1,13 +1,18 @@
 import React from "react";
 import { TUser } from "../types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dot } from "lucide-react";
 
 type Props = {
   user: TUser;
   text: string;
+  createdAt: Date;
 };
 
-function CommentCard({ user, text }: Props) {
+function CommentCard({ user, text, createdAt }: Props) {
+  console.log(Date.now());
+  const createdAtTime = new Date(createdAt).toDateString().slice(0, 15);
+
   return (
     <div
       className={`flex  gap-2 p-2 h-fit   rounded-sm bg-neutral-50 border-[1px]  `}
@@ -24,8 +29,10 @@ function CommentCard({ user, text }: Props) {
         </Avatar>
       </div>
       <div className="">
-        <div className="font-opensans text-sm">
-          {user.firstName + " " + user.lastName}
+        <div className="font-opensans text-sm flex items-center">
+          {user.firstName + " " + user.lastName}{" "}
+          <Dot className="scale-50 opactiy-40" />
+          <span className="text-xs opacity-40">{createdAtTime}</span>
         </div>
         <p className="opacity-80 text-sm font-opensans w-full ">{text}</p>
       </div>

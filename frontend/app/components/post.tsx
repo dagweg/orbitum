@@ -192,12 +192,13 @@ export default function Post({
                   <CommentCard
                     user={comment.user as TUser}
                     text={comment.text}
+                    createdAt={comment.createdAt}
                   />
                 ))}
               </div>
             ) : (
               <div className=" p-2 rounded-lg">
-                <p className="text-center font-lato py-8 flex  gap-3 mx-auto w-fit">
+                <p className="text-center font-lato py-8 flex  gap-3 mx-auto  w-fit">
                   <MessageSquareMore />
                   Be the first to comment
                 </p>
