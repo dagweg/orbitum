@@ -19,7 +19,7 @@ function ChatCard({
 }: TChatCardProps) {
   return (
     <div
-      className={`flex items-center  gap-2 p-2 h-[65px] border-[1px] hover:bg-neutral-50 cursor-pointer  border-neutral-200 `}
+      className={`flex items-center  gap-2 p-2 h-[65px] border-b-[1px] hover:bg-neutral-50 cursor-pointer  border-neutral-200 `}
       onClick={onClick}
     >
       <div className="relative">

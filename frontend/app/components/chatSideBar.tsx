@@ -85,7 +85,7 @@ function ChatSideBar() {
       )}
     >
       <SearchSideBar />
-      <div className="flex flex-col gap-[-1]">
+      <div className="flex flex-col ">
         {people &&
           people.map((person: TChatSideBarPerson, index: number) => {
             return (

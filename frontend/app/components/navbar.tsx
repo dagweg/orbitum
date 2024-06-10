@@ -59,25 +59,6 @@ const user: { title: string; href: string; icon: React.ReactNode }[] = [
   },
 ];
 
-const links = [
-  {
-    href: "/site/feed",
-    label: "Home",
-  },
-  {
-    href: "/site/chat",
-    label: "Chat",
-  },
-  {
-    href: "/site/notifications",
-    label: "Notifications",
-  },
-  {
-    href: "#",
-    label: "You",
-  },
-];
-
 export default function Navbar() {
   const { firstName, lastName } = useSelector((state: RootState) => state.User);
 
@@ -93,6 +74,26 @@ export default function Navbar() {
   React.useLayoutEffect(() => {
     dispatch(fetchUser());
   }, []);
+
+  const links = [
+    {
+      href: "/site/feed",
+      label: "Home",
+    },
+    {
+      href: "/site/chat",
+      label: "Chat",
+      onClick: handleChatClick,
+    },
+    {
+      href: "/site/notifications",
+      label: "Notifications",
+    },
+    {
+      href: "#",
+      label: "You",
+    },
+  ];
 
   return (
     <div className="flex w-full justify-center sticky top-0 z-[1000]">
@@ -124,6 +125,7 @@ export default function Navbar() {
             <Link
               href={link.href}
               className=" px-4 rounded-full py-2 hover:bg-neutral-100"
+              onClick={link.onClick}
             >
               {link.label}
             </Link>
