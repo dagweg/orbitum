@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "nodemon --files src/index.ts",
-    "build": "tsc ",
+    "build": "pnpx tsc ",
     "serve": "node dist/index.js"
   },
   "dependencies": {
