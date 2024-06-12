@@ -10,8 +10,6 @@ import {
 } from "../../validators/user.validation";
 import { LoginSchema } from "../../validators/login.validation";
 import { validateSession } from "../../middlewares/validateSession";
-import { PostSchema } from "../../validators/post.validation";
-import { createPost } from "./createPost";
 import { getAllUserPosts } from "./getAllUserPosts";
 import { checkLoginStatus } from "../../middlewares/checkLoginStatus";
 import { validateGETRequestSchema } from "../../middlewares/validateGETRequestSchema";
@@ -43,14 +41,6 @@ export default function userRouteHandler(): Router {
   router.get("/status", checkLoginStatus, (req: Request, res: Response) => {
     res.status(200).json({ loggedIn: true });
   });
-
-  /**USER POST FUNCTIONALITY */
-  router.post(
-    "/post",
-    validateSession,
-    validatePOSTRequestSchema(PostSchema),
-    createPost
-  );
 
   /** GET ALL POSTS THE USER HAS POSTED TILL NOW */
   router.get("/post", validateSession, getAllUserPosts);

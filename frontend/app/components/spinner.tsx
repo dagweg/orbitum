@@ -1,7 +1,7 @@
 import { Loader } from "lucide-react";
 
-function Spinner() {
-  return <Loader className="animate-spin" size={17} />;
+function Spinner({ className }: { className?: string }) {
+  return <Loader className={`animate-spin ${className}`} size={17} />;
 }
 
 export default Spinner;

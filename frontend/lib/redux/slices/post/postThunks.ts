@@ -1,4 +1,5 @@
 import { API_ORIGIN } from "@/app/config/apiConfig";
+import { TPost } from "@/app/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const getUserPosts = createAsyncThunk(
@@ -93,4 +94,24 @@ export const postComment = createAsyncThunk(
   }
 );
 
-export { getUserPosts, getAllPosts, likePost };
+const createPost = createAsyncThunk(
+  "post/create",
+  async (param: TPost, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${API_ORIGIN}/api/v1/post`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(param),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export { getUserPosts, getAllPosts, likePost, createPost };

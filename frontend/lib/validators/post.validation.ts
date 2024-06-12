@@ -16,7 +16,20 @@ export const PostSchemaRefined = z.object({
   comments: z.array(z.string()),
   shares: z.array(z.string()),
   postType: z.string(),
-  imageUrl: z.string(),
-  videoUrl: z.string(),
+  images: z.array(
+    z.object({
+      name: z.string(),
+      type: z.string(),
+      dataBase64: z.string(),
+      url: z.string(),
+    })
+  ),
+  videos: z.array(
+    z.object({
+      name: z.string(),
+      type: z.string(),
+      url: z.string(),
+    })
+  ),
   privacy: z.string(),
 });

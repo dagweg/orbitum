@@ -91,6 +91,23 @@ export type TChatSideBarPerson = {
   recentMessage: { content: string };
 };
 
+export type TImage = {
+  name: string;
+  type: string;
+  dataBase64: string;
+  url: string;
+};
+
+export type TVideo = {
+  // TODO
+};
+
+export type TPost = {
+  text: string;
+  images?: TImage[];
+  videos?: TVideo[];
+};
+
 // Zod Return Type
 export type TZodReturn = {
   errors: [

@@ -33,17 +33,18 @@ const postsSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  postType: {
-    type: String,
-    enum: ["text", "image", "video"],
-    default: "text",
-  },
-  imageUrl: {
-    type: String,
-  },
-  videoUrl: {
-    type: String,
-  },
+  images: [
+    {
+      type: ObjectId,
+      ref: "Images",
+    },
+  ],
+  videoUrl: [
+    {
+      type: ObjectId,
+      ref: "Videos",
+    },
+  ],
   privacy: {
     type: String,
     enum: ["public", "private", "friends"],

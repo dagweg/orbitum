@@ -22,22 +22,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { API_ORIGIN } from "../config/apiConfig";
 import { FileUploader } from "react-drag-drop-files";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
+import Spinner from "./spinner";
+import { TImage } from "../types";
 
 const FILE_TYPES = ["JPG", "PNG", "GIF"];
-
-type TImages = {
-  name: string;
-  type: string;
-  dataBase64: string;
-  url: string;
-};
 
 export default function PostInput() {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   const [content, setContent] = useState("");
 
-  const [images, setImages] = useState<TImages[]>([]);
+  const [images, setImages] = useState<TImage[]>([]);
+  const [size, setSize] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
 
   function openDialog() {
@@ -49,7 +46,7 @@ export default function PostInput() {
       content,
     });
 
-    fetch(`${API_ORIGIN}/api/v1/user/post`, {
+    fetch(`${API_ORIGIN}/api/v1/post`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -62,13 +59,14 @@ export default function PostInput() {
   }
 
   function handleFileChange(fileList: FileList) {
+    setSize(Array.from(fileList).length as number);
     setLoading(true);
     if (!fileList || fileList.length === 0) {
       console.error("No files selected");
       return;
     }
 
-    let imgs: TImages[] = [];
+    let imgs: TImage[] = [];
     const fileReaderPromise = Array.from(fileList).map((file) => {
       return new Promise<void>((resolve, reject) => {
         const fileReader = new FileReader();
@@ -127,11 +125,11 @@ export default function PostInput() {
             Trigger
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-[425px] sm:w-[500px]">
+        <DialogContent className="w-[425px] sm:w-[500px]  flex flex-col">
           <DialogHeader>
             <DialogTitle>Create a new post</DialogTitle>
           </DialogHeader>
-          <Card className="flex flex-col gap-3 justify-center p-3 border-none shadow-none">
+          <Card className="flex flex-col gap-3 justify-center p-3 border-none shadow-none  max-w-[425px] sm:max-w-[500px] ">
             <Textarea
               placeholder="Share your thoughts"
               rows={5}
@@ -140,7 +138,14 @@ export default function PostInput() {
               onChangeCapture={(e) => setContent(e.currentTarget.value)}
             ></Textarea>
             <div className="flex flex-col gap-3 justify-center">
-              <div className="w-full flex gap-2">
+              <div className=" flex gap-2  overflow-x-scroll w-fit no-scrollbar">
+                {loading &&
+                  Array.from({ length: size ?? 0 }).map((_, i) => (
+                    <div key={i} className="flex items-center justify-center">
+                      <Spinner className="absolute z-[10]" />
+                      <Skeleton className="aspect-square w-12" />
+                    </div>
+                  ))}
                 {images &&
                   images.map((image, key) => {
                     return (

@@ -1,6 +1,6 @@
 import { Router } from "express";
 const express = require("express");
-import { createPost } from "../user/createPost";
+import { createPost } from "./createPost";
 import { PostSchema } from "../../validators/post.validation";
 import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
 import { validateSession } from "../../middlewares/validateSession";
@@ -19,6 +19,14 @@ export default function postsRouterHandler(): Router {
 
   /** Like a post */
   router.post("/like", validatePOSTRequestSchema(likeSchema), likePost);
+
+  /**USER POST FUNCTIONALITY */
+  router.post(
+    "/",
+    validateSession,
+    validatePOSTRequestSchema(PostSchema),
+    createPost
+  );
 
   return router;
 }
