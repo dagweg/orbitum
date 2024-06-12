@@ -14,9 +14,7 @@ function CommentCard({ user, text, createdAt }: Props) {
   const createdAtTime = new Date(createdAt).toDateString().slice(0, 15);
 
   return (
-    <div
-      className={`flex  gap-2 p-2 h-fit   rounded-sm bg-neutral-50 border-[1px]  `}
-    >
+    <div className={`flex  gap-2 p-2 h-fit   rounded-sm bg-neutral-50   `}>
       <div className="relative h-full flex items-start">
         <Avatar>
           <AvatarImage

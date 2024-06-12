@@ -172,6 +172,7 @@ export default function Post({
                 onChangeCapture={(e) => {
                   comment.current = e.currentTarget.value;
                 }}
+                
               />
               <Button
                 variant={"ghost"}
