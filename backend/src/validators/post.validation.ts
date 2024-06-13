@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { UserSchema } from "./user.validation";
-import { TUserSchema } from "../types/schema";
 
 export const PostSchema = z.object({
   content: z.string().refine((val) => val.trim().length > 0, {
@@ -10,9 +8,12 @@ export const PostSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        type: z.string(),
-        dataBase64: z.string(),
-        url: z.string(),
+        type: z.string().refine((val) => val.trim().length > 0, {
+          message: "Cannot be empty",
+        }),
+        dataBase64: z.string().refine((val) => val.trim().length > 0, {
+          message: "Cannot be empty",
+        }),
       })
     )
     .optional(),
@@ -20,8 +21,12 @@ export const PostSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        type: z.string(),
-        url: z.string(),
+        type: z.string().refine((val) => val.trim().length > 0, {
+          message: "Cannot be empty",
+        }),
+        dataBase64: z.string().refine((val) => val.trim().length > 0, {
+          message: "Cannot be empty",
+        }),
       })
     )
     .optional(),
