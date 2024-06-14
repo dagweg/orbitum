@@ -25,7 +25,8 @@ import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 import { Textarea } from "@/components/ui/textarea";
 import CommentCard from "./comment-card";
-import { TUser } from "../types";
+import { TImagePost, TUser } from "../types";
+import ImageGallery from "./image-gallery";
 
 type TComment = {
   name: string;
@@ -43,6 +44,8 @@ type TPost = {
   liked: boolean;
   comments: Object[];
   shares: Object[];
+  images?: TImagePost[];
+  videos?: [];
 };
 
 export default function Post({
@@ -54,6 +57,8 @@ export default function Post({
   liked,
   comments,
   shares,
+  images,
+  videos,
 }: TPost) {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -105,7 +110,7 @@ export default function Post({
       <Card
         ref={cardRef}
         className={cn(
-          "flex flex-col gap-3 items-center p-3 border-opacity-60  shadow-sm relative",
+          "flex flex-col gap-3 items-center p-3   border-none  ring-[1px] ring-neutral-200 relative",
           commentMode && commentModeCardStyle
         )}
       >
@@ -115,7 +120,15 @@ export default function Post({
             <Ellipsis />
           </Button>
         </section>
-        <section className="w-full font-lato">{content}</section>
+        <section className="w-full font-lato ">
+          {content}
+
+          {images && (
+            <div className="post-images max-h-[500px]  max-w-[1500px] flex gap-2 overflow-x-scroll overflow-clip no-scrollbar py-4">
+              <ImageGallery images={images} />
+            </div>
+          )}
+        </section>
         <section className="w-full  space-y-3 flex flex-col">
           {likes.length > 0 && (
             <>
@@ -164,47 +177,13 @@ export default function Post({
             </Button>
           </div>
           {commentMode && (
-            <div className="w-full bg-white h-fit relative">
-              <Textarea
-                placeholder="Share your thoughts"
-                rows={3}
-                className="pr-12 no-scrollbar"
-                onChangeCapture={(e) => {
-                  comment.current = e.currentTarget.value;
-                }}
-                
-              />
-              <Button
-                variant={"ghost"}
-                className="absolute right-0 bottom-0"
-                onClick={handleSendComment}
-              >
-                <SendHorizonal />
-              </Button>
-            </div>
+            <CommentSection
+              comment={comment}
+              commentMode={commentMode}
+              comments={comments}
+              handleSendComment={handleSendComment}
+            />
           )}
-          {commentMode &&
-            (comments && comments.length > 0 ? (
-              <div className="flex flex-col gap-2  flex-1 ">
-                <span className="font-semibold flex items-center gap-3">
-                  Comments
-                </span>
-                {comments.map((comment: any, key) => (
-                  <CommentCard
-                    user={comment.user as TUser}
-                    text={comment.text}
-                    createdAt={comment.createdAt}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className=" p-2 rounded-lg">
-                <p className="text-center font-lato py-8 flex  gap-3 mx-auto  w-fit">
-                  <MessageSquareMore />
-                  Be the first to comment
-                </p>
-              </div>
-            ))}
         </section>
         {commentMode && (
           <Button
@@ -216,6 +195,62 @@ export default function Post({
           </Button>
         )}
       </Card>
+    </div>
+  );
+}
+
+function CommentSection({
+  comment,
+  commentMode,
+  comments,
+  handleSendComment,
+}: {
+  comment: any;
+  commentMode: any;
+  handleSendComment: any;
+  comments: any;
+}) {
+  return (
+    <div>
+      <div className="w-full bg-white h-fit relative">
+        <Textarea
+          placeholder="Share your thoughts"
+          rows={3}
+          className="pr-12 no-scrollbar"
+          onChangeCapture={(e) => {
+            comment.current = e.currentTarget.value;
+          }}
+        />
+        <Button
+          variant={"ghost"}
+          className="absolute right-0 bottom-0"
+          onClick={handleSendComment}
+        >
+          <SendHorizonal />
+        </Button>
+      </div>
+      {commentMode &&
+        (comments && comments.length > 0 ? (
+          <div className="flex flex-col gap-2  flex-1 ">
+            <span className="font-semibold flex items-center gap-3">
+              Comments
+            </span>
+            {comments.map((comment: any, key: number) => (
+              <CommentCard
+                user={comment.user as TUser}
+                text={comment.text}
+                createdAt={comment.createdAt}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className=" p-2 rounded-lg">
+            <p className="text-center font-lato py-8 flex  gap-3 mx-auto  w-fit">
+              <MessageSquareMore />
+              Be the first to comment
+            </p>
+          </div>
+        ))}
     </div>
   );
 }

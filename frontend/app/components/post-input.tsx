@@ -138,7 +138,7 @@ export default function PostInput() {
               onChangeCapture={(e) => setContent(e.currentTarget.value)}
             ></Textarea>
             <div className="flex flex-col gap-3 justify-center">
-              <div className=" flex gap-2  overflow-x-scroll w-fit no-scrollbar">
+              <div className=" flex gap-2  overflow-x-scroll  w-full no-scrollbar p-2">
                 {loading &&
                   Array.from({ length: size ?? 0 }).map((_, i) => (
                     <div key={i} className="flex items-center justify-center">
@@ -157,7 +157,7 @@ export default function PostInput() {
                             width={50}
                             height={50}
                             key={key}
-                            className="rounded-sm shadow-sm"
+                            className="rounded-sm shadow-sm min-w-[100px] "
                             objectFit="fit"
                           />
                           <Button

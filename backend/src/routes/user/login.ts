@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { User } from "../../models/user.model";
 import { Session } from "../../models/session.model";
-import { dateHoursFromNow } from "../../utils/date";
+import {
+  dateHoursFromNow,
+  dateMillisecondsFromNow,
+  dateSecondsFromNow,
+} from "../../utils/date";
 import * as jwt from "jsonwebtoken";
 import { PRODUCTION, SESSION_TOKEN } from "../../config/apiConfig";
 
@@ -34,8 +38,8 @@ export async function loginUser(req: Request, res: Response) {
       });
     }
 
-    const expireDuration = 24 * 3; // 3 days
-    const expires: Date = dateHoursFromNow(expireDuration);
+    const expireDuration = 60 * 60 * 24 * 3; // 3 days in seconds
+    const expires: Date = dateSecondsFromNow(expireDuration);
 
     const sessionToken = jwt.sign(
       {
@@ -44,7 +48,7 @@ export async function loginUser(req: Request, res: Response) {
       },
       process.env.JWT_SECRET_KEY as string,
       {
-        expiresIn: `${expireDuration}h`,
+        expiresIn: `${expireDuration}`,
       }
     );
 

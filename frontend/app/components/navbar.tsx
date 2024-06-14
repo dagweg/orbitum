@@ -96,8 +96,8 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="flex w-full justify-center sticky top-0 z-[1000]">
-      <div className="flex gap-10 items-center p-2 bg-white sticky top-0 ">
+    <div className="flex w-full justify-center  bg-neutral-200 bg-opacity-50 backdrop-blur-md  !z-[100000]">
+      <div className="flex gap-10 items-center p-2   top-0 ">
         {links.map((link, key) => {
           // if (link.href === "#") {
           //   let node;
@@ -124,7 +124,7 @@ export default function Navbar() {
           return (
             <Link
               href={link.href}
-              className=" px-4 rounded-full py-2 hover:bg-neutral-100"
+              className=" px-4 rounded-full py-2 hover:bg-white duration-100"
               onClick={link.onClick}
             >
               {link.label}

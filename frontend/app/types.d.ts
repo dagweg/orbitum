@@ -98,6 +98,10 @@ export type TImage = {
   url: string;
 };
 
+export type TImagePost = {
+  url: string;
+};
+
 export type TVideo = {
   // TODO
 };

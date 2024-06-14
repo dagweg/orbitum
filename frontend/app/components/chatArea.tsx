@@ -148,7 +148,7 @@ function ChatArea() {
     <>
       <div
         className={cn(
-          "flex-1  w-full border-l-2 h-full  rounded-none !bg-neutral-300 !bg-opacity-55 relative overflow-clip   flex flex-col items-center  justify-start ",
+          "flex-1  w-full border-l-2 h-full  rounded-none !bg-neutral-300 sticky bottom-0   overflow-clip   flex flex-col items-center  justify-start ",
           chatArea.enabled
             ? `${chatArea.enabledStyle}`
             : `${chatArea.disabledStyle}`
@@ -215,7 +215,7 @@ function ChatArea() {
                   Get started by saying hi.
                 </div>
               ) : (
-                <section className="flex-1 h-full  pb-32">
+                <section className="flex-1 h-full  pb-44">
                   <div className="h-full overflow-y-scroll no-scrollbar flex flex-col">
                     {messages &&
                       messages.map((message: TMessageSchema, index) => (

@@ -15,3 +15,15 @@ export function dateHoursFromNow(hours: number) {
   date.setHours(date.getHours() + hours);
   return date;
 }
+
+export function dateSecondsFromNow(seconds: number) {
+  const date = new Date();
+  date.setSeconds(date.getSeconds() + seconds);
+  return date;
+}
+
+export function dateMillisecondsFromNow(milliseconds: number) {
+  const date = new Date();
+  date.setMilliseconds(date.getMilliseconds() + milliseconds);
+  return date;
+}

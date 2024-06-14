@@ -4,6 +4,7 @@ import Heading from "@/app/components/heading";
 import Post from "@/app/components/post";
 import PostInput from "@/app/components/post-input";
 import useSocket from "@/app/hooks/useSocket";
+import { TImagePost } from "@/app/types";
 import { getAllPosts } from "@/lib/redux/slices/post/postThunks";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { TPostSchema, TUserSchema } from "@/lib/types/schema";
@@ -22,11 +23,46 @@ function FeedPage() {
     dispatch(getAllPosts());
   }, [dispatch]);
 
+  const testImages: TImagePost[] = [
+    {
+      url: "https://imgur.com/TUTGvNF.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+    {
+      url: "https://imgur.com/MPm3aok.png",
+    },
+  ];
+
   return (
     <div className="flex w-full justify-center bg-white">
       <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
         <Heading>Feed</Heading>
         <PostInput />
+        <Post
+          comments={[]}
+          content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis veniam officiis quis ducimus ea dolorem! Accusamus voluptatum dolorem eius fugiat? Eveniet dolores corporis praesentium, molestiae quia quo consequuntur! Et dicta, recusandae ratione impedit accusantium illo consequatur officiis quasi pariatur alias earum sit placeat. Dolore suscipit sunt nisi quaerat deleniti at!"
+          date={new Date()}
+          likes={[]}
+          postId={""}
+          user={{ userName: "Dagmawi Tefera" } as TUserSchema}
+          shares={[]}
+          liked
+          images={testImages}
+        />
         {posts.length > 0 &&
           posts.map((post: TPostSchema, key: number) => (
             <Post
