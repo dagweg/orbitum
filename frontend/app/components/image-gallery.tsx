@@ -54,14 +54,16 @@ const ImageGallery = ({ images }: { images: TImagePost[] }) => {
           </div>
         ))}
         {imageCount > 3 && (
-          <div className="relative rounded-sm hover:brightness-90 cursor-pointer duration-200 hover:rounded-lg">
+          <div
+            className="relative rounded-sm hover:brightness-90 cursor-pointer duration-200 hover:rounded-lg"
+            onClick={() => setIsEnabled(true)}
+          >
             <Image
               src={images[3].url}
               alt={`image-3`}
               width={500}
               height={500}
               className="w-full h-full object-cover "
-              onClick={() => setIsEnabled(true)}
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-xl font-bold">
               +{imageCount - 3}

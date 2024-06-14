@@ -123,7 +123,7 @@ export default function Post({
         <section className="w-full font-lato ">
           {content}
 
-          {images && (
+          {images && images.length > 0 && (
             <div className="post-images max-h-[500px]  max-w-[1500px] flex gap-2 overflow-x-scroll overflow-clip no-scrollbar py-4">
               <ImageGallery images={images} />
             </div>

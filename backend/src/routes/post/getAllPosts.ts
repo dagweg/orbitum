@@ -12,10 +12,13 @@ export async function getAllPosts(req: Request, res: Response) {
         populate: {
           path: "user",
         },
-      });
+      })
+      .populate("images")
+      .populate("videos")
+      .populate("shares");
 
     return res.json(posts);
   } catch (error) {
-    return res.status(500).json(error);
+    return res.status(500).json({ error: (error as Error).message });
   }
 }

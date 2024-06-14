@@ -1,64 +1,87 @@
 import { Request, Response } from "express";
-import { User } from "../../models/user.model";
 import { Posts } from "../../models/posts.model";
 import { PostVideos } from "../../models/postVideos.model";
-import {
-  TPostImagesSchema,
-  TPostRequestSchema,
-  TPostVideosSchema,
-} from "../../types/schema";
 import { PostImages } from "../../models/postImages.model";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 export async function createPost(req: Request, res: Response) {
   try {
     const { userId } = req.user;
+    const { content, images, videos } = req.body;
 
-    const { content } = req.body;
-    const { images } = req.body;
-    const { videos } = req.body;
+    let videoIds: Types.ObjectId[] = [];
+    let imageIds: Types.ObjectId[] = [];
 
-    let videoIds: string[] = [];
-    let imageIds: string[] = [];
+    console.log(images);
+    console.log(videos);
+    // Handling image creation and collecting their IDs
+    if (images)
+      for (let i = 0; i < images.length; i++) {
+        const curr = images[i];
+        const image = await PostImages.create({
+          base64: curr.base64,
+          name: curr.name,
+          type: curr.type,
+        });
+        imageIds.push(image._id as Types.ObjectId);
+      }
 
+    // Handling video creation and collecting their IDs
+    if (videos)
+      for (let i = 0; i < videos.length; i++) {
+        const curr = videos[i];
+        const video = await PostVideos.create({
+          base64: curr.base64,
+          name: curr.name,
+          type: curr.type,
+        });
+        videoIds.push(video._id as Types.ObjectId);
+      }
+
+    // Creating the post with references to the images and videos
     const post = await Posts.create({
       user: userId,
       content,
+      images: imageIds,
+      videos: videoIds,
     });
-
-    if (images) {
-      const imagePromises = images.map(async (image: any) => {
-        const newImage = await PostImages.create({
-          postId: post._id,
-          dataBase64: image.dataBase64,
-          name: image.name,
-          type: image.type,
-        });
-        return newImage._id;
-      });
-      const createdImageIds = await Promise.all(imagePromises);
-      imageIds.push(...createdImageIds);
-    }
-
-    if (videos) {
-      const videoPromises = videos.map(async (video: any) => {
-        const newVideo = await PostVideos.create({
-          postId: post._id,
-          dataBase64: video.dataBase64,
-          name: video.name,
-          type: video.type,
-        });
-        return newVideo._id;
-      });
-      const createdVideoIds = await Promise.all(videoPromises);
-      videoIds.push(...createdVideoIds);
-    }
-
-    post.images = imageIds as any;
-    post.videos = videoIds as any;
-    await post.save();
 
     return res.json(post);
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+    return res.status(500).json({ error: (error as Error).message });
   }
 }
+
+// if (images) {
+//   const imagePromises = images.map(async (image: any) => {
+//     return await PostImages.create({
+//       postId: post._id,
+//       dataBase64: image.dataBase64,
+//       name: image.name,
+//       type: image.type,
+//     });
+//   });
+//   const createdImageIds = await Promise.all(imagePromises);
+//   imageIds.push(...createdImageIds.map((image) => image._id));
+// }
+
+// if (videos) {
+//   const videoPromises = videos.map(async (video: any) => {
+//     const newVideo = await PostVideos.create({
+//       postId: post._id,
+//       dataBase64: video.dataBase64,
+//       name: video.name,
+//       type: video.type,
+//     });
+//     return newVideo._id;
+//   });
+//   const createdVideoIds = await Promise.all(videoPromises);
+//   videoIds.push(...createdVideoIds.map((video) => video._id));
+// }
+
+// post.images = imageIds as any;
+// post.videos = videoIds as any;
+
+// console.log(post.images);
+// console.log(post.videos);
+// await post.save();

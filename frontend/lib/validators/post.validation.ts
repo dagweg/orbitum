@@ -20,15 +20,14 @@ export const PostSchemaRefined = z.object({
     z.object({
       name: z.string(),
       type: z.string(),
-      dataBase64: z.string(),
-      url: z.string(),
+      base64: z.string(),
     })
   ),
   videos: z.array(
     z.object({
       name: z.string(),
       type: z.string(),
-      url: z.string(),
+      base64: z.string(),
     })
   ),
   privacy: z.string(),

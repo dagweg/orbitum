@@ -7,11 +7,6 @@ import { InferSchemaType } from "mongoose";
  */
 
 const postVideosSchema = new mongoose.Schema({
-  postId: {
-    type: Schema.Types.ObjectId,
-    ref: "Post",
-    required: true,
-  },
   type: {
     type: String,
     required: true,
@@ -19,7 +14,7 @@ const postVideosSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  dataBase64: {
+  base64: {
     type: String,
     required: true,
   },

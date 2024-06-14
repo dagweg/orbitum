@@ -31,19 +31,16 @@ function FeedPage() {
       url: "https://imgur.com/MPm3aok.png",
     },
     {
-      url: "https://imgur.com/MPm3aok.png",
+      url: "https://imgur.com/H2Ar0as.png",
     },
     {
-      url: "https://imgur.com/MPm3aok.png",
+      url: "https://imgur.com/gkAxMj7.png",
     },
     {
-      url: "https://imgur.com/MPm3aok.png",
+      url: "https://imgur.com/TnQ2stP.png",
     },
     {
-      url: "https://imgur.com/MPm3aok.png",
-    },
-    {
-      url: "https://imgur.com/MPm3aok.png",
+      url: "https://imgur.com/mNkCX9W.png",
     },
   ];
 

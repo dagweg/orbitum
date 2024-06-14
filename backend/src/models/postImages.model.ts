@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 import { InferSchemaType } from "mongoose";
 
 const postImagesSchema = new mongoose.Schema({
-  _id: {
-    type: ObjectId,
-    ref: "Post",
-  },
   type: {
     type: String,
     required: true,
@@ -14,7 +10,7 @@ const postImagesSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  dataBase64: {
+  base64: {
     type: String,
     required: true,
   },

@@ -11,7 +11,7 @@ export const PostSchema = z.object({
         type: z.string().refine((val) => val.trim().length > 0, {
           message: "Cannot be empty",
         }),
-        dataBase64: z.string().refine((val) => val.trim().length > 0, {
+        base64: z.string().refine((val) => val.trim().length > 0, {
           message: "Cannot be empty",
         }),
       })
@@ -24,7 +24,7 @@ export const PostSchema = z.object({
         type: z.string().refine((val) => val.trim().length > 0, {
           message: "Cannot be empty",
         }),
-        dataBase64: z.string().refine((val) => val.trim().length > 0, {
+        base64: z.string().refine((val) => val.trim().length > 0, {
           message: "Cannot be empty",
         }),
       })
@@ -46,7 +46,7 @@ export const PostSchemaRefined = z.object({
     z.object({
       name: z.string(),
       type: z.string(),
-      dataBase64: z.string(),
+      base64: z.string(),
       url: z.string(),
     })
   ),
@@ -55,6 +55,7 @@ export const PostSchemaRefined = z.object({
       name: z.string(),
       type: z.string(),
       url: z.string(),
+      base64: z.string(),
     })
   ),
   privacy: z.string(),

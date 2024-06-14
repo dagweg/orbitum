@@ -25,7 +25,8 @@ const posts = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAllPosts.fulfilled, (state, action) => {
-      const { posts, user } = action.payload;
+      let { posts, user } = action.payload;
+      // if (typeof posts == "object" && posts.length)
       posts.map((post: TPostSchema) => {
         if (post.likes.includes(user._id)) {
           post.liked = true;
