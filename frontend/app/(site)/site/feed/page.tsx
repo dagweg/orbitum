@@ -49,7 +49,7 @@ function FeedPage() {
       <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
         <Heading>Feed</Heading>
         <PostInput />
-        <Post
+        {/* <Post
           comments={[]}
           content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis veniam officiis quis ducimus ea dolorem! Accusamus voluptatum dolorem eius fugiat? Eveniet dolores corporis praesentium, molestiae quia quo consequuntur! Et dicta, recusandae ratione impedit accusantium illo consequatur officiis quasi pariatur alias earum sit placeat. Dolore suscipit sunt nisi quaerat deleniti at!"
           date={new Date()}
@@ -59,7 +59,7 @@ function FeedPage() {
           shares={[]}
           liked
           images={testImages}
-        />
+        /> */}
         {posts.length > 0 &&
           posts.map((post: TPostSchema, key: number) => (
             <Post

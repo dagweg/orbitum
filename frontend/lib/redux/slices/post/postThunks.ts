@@ -98,7 +98,7 @@ const createPost = createAsyncThunk(
   "post/create",
   async (param: TPost, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_ORIGIN}/api/v1/post`, {
+      const res = await fetch(`${API_ORIGIN}/api/v1/posts`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(param),
@@ -107,6 +107,7 @@ const createPost = createAsyncThunk(
         },
       });
       const data = await res.json();
+      console.log("FETCHED THIS ", data);
       return data;
     } catch (error) {
       return rejectWithValue(error);

@@ -74,7 +74,7 @@ function ChatSideBar() {
   const { people } = sideBar.chat;
   useSocket("users:connected", (data) => {
     dispatch(setOnlineUsers(data));
-    console.log(sideBar.chat.onlineUsers);
+    // console.log(sideBar.chat.onlineUsers);
   });
 
   return (

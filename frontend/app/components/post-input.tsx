@@ -24,7 +24,10 @@ import { FileUploader } from "react-drag-drop-files";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import Spinner from "./spinner";
-import { TImage } from "../types";
+import { TImage, TVideo } from "../types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { createPost } from "@/lib/redux/slices/post/postThunks";
 
 const FILE_TYPES = ["JPG", "PNG", "GIF"];
 
@@ -34,28 +37,34 @@ export default function PostInput() {
   const [content, setContent] = useState("");
 
   const [images, setImages] = useState<TImage[]>([]);
+  const [videos, setVideos] = useState<TVideo[]>([]);
   const [size, setSize] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   function openDialog() {
     triggerRef.current?.click();
   }
 
   function handlePost() {
-    const formData = JSON.stringify({
-      content,
-    });
-
-    fetch(`${API_ORIGIN}/api/v1/post`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(async (res) => {
-      const data = await res.json();
-    });
+    dispatch(
+      createPost({
+        content,
+        images,
+        videos,
+      })
+    );
+    // fetch(`${API_ORIGIN}/api/v1/post`, {
+    //   method: "POST",
+    //   credentials: "include",
+    //   body: formData,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // }).then(async (res) => {
+    //   const data = await res.json();
+    // });
   }
 
   function handleFileChange(fileList: FileList) {
@@ -81,7 +90,7 @@ export default function PostInput() {
           imgs.push({
             name: file.name,
             type: file.type,
-            dataBase64: btoa(binary),
+            base64: btoa(binary),
             url: URL.createObjectURL(file),
           });
           resolve();

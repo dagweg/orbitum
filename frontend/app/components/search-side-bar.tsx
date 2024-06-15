@@ -16,6 +16,7 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import React, { FormEvent, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
+import { Search } from "lucide-react";
 
 function SearchSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,21 +59,25 @@ function SearchSideBar() {
     if (width <= 950) {
       dispatch(closeChatSideBar());
     }
+    handleOutsideClick();
   };
 
   return (
     <div
       ref={sideBarSearchRef}
-      className="flex flex-col items-center gap-2 z-10 py-2 sticky top-0"
+      className="flex flex-col items-center gap-2 z-10 py-2 sticky top-0 "
     >
-      <Input
-        placeholder="Search people, groups or channels"
-        onChangeCapture={(e) => handleSearch(e)}
-      />
-      <div className="w-full bg-neutral-50 shadow-lg rounded-lg">
-        {searchPanel.enabled &&
-          searchResult &&
-          searchResult.map((result: any, key: any) => (
+      <div className="w-full relative flex items-center">
+        <Input
+          placeholder="Search people, groups or channels"
+          onChangeCapture={(e) => handleSearch(e)}
+          className=" !rounded-b-none focus:!ring-0  focus:border-2 focus:!border-neutral-300"
+        />
+        <Search className="absolute right-2 opacity-60 " size={20} />
+      </div>
+      {searchPanel.enabled && searchResult && (
+        <div className="w-full bg-neutral-100 shadow-lg rounded-lg absolute top-[3rem] border-neutral-300 border-t-0 rounded-t-none border-2">
+          {searchResult.map((result: any, key: any) => (
             <>
               <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
                 <Avatar>
@@ -98,7 +103,8 @@ function SearchSideBar() {
               </div>
             </>
           ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

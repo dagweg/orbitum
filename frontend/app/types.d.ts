@@ -16,6 +16,7 @@ export type TChatProps = {
   message: string;
   sender?: TSender;
   chatType?: TChatType;
+  date?: Date;
 };
 
 export type TAvatarWrapper = {
@@ -23,6 +24,7 @@ export type TAvatarWrapper = {
   alt?: string;
   name?: string;
   date?: Date | undefined;
+  dateType?: "date" | "timeAgo" | "both" | undefined;
   lineClamp?: TLineClamp;
   background?: TBackground;
   className?: string;
@@ -94,7 +96,7 @@ export type TChatSideBarPerson = {
 export type TImage = {
   name: string;
   type: string;
-  dataBase64: string;
+  base64: string;
   url: string;
 };
 
@@ -103,11 +105,14 @@ export type TImagePost = {
 };
 
 export type TVideo = {
-  // TODO
+  name: string;
+  type: string;
+  base64: string;
+  url: string;
 };
 
 export type TPost = {
-  text: string;
+  content: string;
   images?: TImage[];
   videos?: TVideo[];
 };

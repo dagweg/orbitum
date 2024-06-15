@@ -23,11 +23,15 @@ import socket from "@/lib/socket";
 import { setCurrentChat } from "@/lib/redux/slices/chat/chatThunks";
 import Image from "next/image";
 
-import sprinkleWallpaper from "@/public/images/chat/Sprinkle.svg";
+import abstract from "@/public/images/chat/abstract.jpg";
 import { Button } from "@/components/ui/button";
 
 import { PulseLoader, SyncLoader } from "react-spinners";
 import OnlineIndicator from "./online-indicator";
+import ChatWallpaper from "./chat-wallpaper";
+import ChatUserBanner from "./chat-user-banner";
+import ChatTextArea from "./chat-text-area";
+import ChatMessages from "./chat-messages";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -48,15 +52,11 @@ function ChatArea() {
     recipient: false,
   });
 
-  const [user, setUser] = useState({
-    connected: false,
-  });
-
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setMessage(e.currentTarget.value);
-    if (e.target.value.length > 0) {
+    if (e.currentTarget.value.length > 0) {
       setHasStartedTyping({ ...hasStartedTyping, you: true });
     } else {
       setHasStartedTyping({ ...hasStartedTyping, you: false });
@@ -143,62 +143,28 @@ function ChatArea() {
   });
 
   const recipient = chatArea.currentChat?.recipient;
-  console.log(recipient?._id);
+
   return (
     <>
       <div
         className={cn(
-          "flex-1  w-full border-l-2 h-full  rounded-none !bg-neutral-300 sticky bottom-0   overflow-clip   flex flex-col items-center  justify-start ",
+          "flex-1  w-full border-l-2 h-full  rounded-none !bg-neutral-200 sticky    overflow-clip   flex flex-col items-center  justify-start ",
           chatArea.enabled
             ? `${chatArea.enabledStyle}`
             : `${chatArea.disabledStyle}`
         )}
       >
-        {sprinkleWallpaper && (
-          <Image
-            src={sprinkleWallpaper}
-            alt="wallpaper"
-            className="absolute w-full h-full object-fit z-[-1] opacity-20 bg-current "
-          />
-        )}
+        {/* <ChatWallpaper wallpaper={abstract} /> */}
         {messages && messages.length !== 0 && (
-          <div className=" w-full h-fit  p-2 sticky top-0 bg-white">
-            <div className="flex  gap-2">
-              <div className="relative ">
-                <Image
-                  src={recipient?.profileUrl ?? "https://imgur.com/cAy8VXf.png"}
-                  alt="prof"
-                  width={50}
-                  height={50}
-                  className="rounded-sm"
-                ></Image>
-                {onlineUsers && (recipient?._id as string) in onlineUsers && (
-                  <OnlineIndicator />
-                )}
-              </div>
-              <span className="w-fit">
-                {recipient?.firstName} {recipient?.lastName} <br />
-                <span className="text-sm opacity-45">
-                  {hasStartedTyping.recipient ? (
-                    <>
-                      <PulseLoader
-                        color="black"
-                        size={5}
-                        speedMultiplier={0.7}
-                      />{" "}
-                      typing
-                    </>
-                  ) : (
-                    "Last seen recently"
-                  )}
-                </span>
-              </span>
-            </div>
-          </div>
+          <ChatUserBanner
+            hasStartedTyping={hasStartedTyping}
+            onlineUsers={onlineUsers}
+            recipient={recipient}
+          />
         )}
         <div className="w-full flex-1 flex flex-col  justify-center h-full ">
           {!messages ? (
-            <Badge className="mx-auto text-base">
+            <Badge className="mx-auto text-base rounded-sm bg-neutral-600 text-white">
               Get started by selecting a chat
             </Badge>
           ) : (
@@ -216,52 +182,17 @@ function ChatArea() {
                 </div>
               ) : (
                 <section className="flex-1 h-full  pb-44">
-                  <div className="h-full overflow-y-scroll no-scrollbar flex flex-col">
-                    {messages &&
-                      messages.map((message: TMessageSchema, index) => (
-                        <ChatMessage
-                          name={message.sender.userName}
-                          message={message.content as string}
-                          sender={message.you ? "you" : "default"}
-                        />
-                      ))}
-                  </div>
+                  <ChatMessages messages={messages} />
                 </section>
               )}
-              <section className="h-fit sticky bottom-0 w-[95%] md:w-[80%] mx-auto max-w-[700px] flex flex-col-reverse">
-                <div className="flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto mb-5 ring-2 ring-neutral-200 rounded-lg">
-                  <div className="h-full flex flex-col-reverse items-end">
-                    <Button variant={"circleGhost"}>
-                      <Paperclip className="" />
-                    </Button>
-                  </div>
-                  <TextAreaAutoSize
-                    maxRows={10}
-                    ref={chatTextAreaRef}
-                    className=" outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
-                    placeholder="Type a message"
-                    onChange={(e) => handleTextAreaChange(e)}
-                    onKeyDown={(e) => handleTextAreaKeyDown(e)}
-                    onKeyUp={(e) => handleTextAreaKeyUp(e)}
-                    style={{ width: "100%" }}
-                  />
-                  <div className="h-full flex flex-col-reverse items-end">
-                    <div className="flex items-end">
-                      <Button variant={"circleGhost"}>
-                        <Smile />
-                      </Button>
-                      <Button
-                        onClick={
-                          hasStartedTyping ? handleMessageSend : () => {}
-                        }
-                        variant={"circleGhost"}
-                      >
-                        {hasStartedTyping ? <SendHorizontal /> : <Mic />}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </section>
+              <ChatTextArea
+                chatTextAreaRef={chatTextAreaRef}
+                handleMessageSend={handleMessageSend}
+                handleTextAreaChange={handleTextAreaChange}
+                handleTextAreaKeyDown={handleTextAreaKeyDown}
+                handleTextAreaKeyUp={handleTextAreaKeyUp}
+                hasStartedTyping={hasStartedTyping}
+              />
             </div>
           )}
         </div>

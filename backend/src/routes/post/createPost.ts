@@ -46,6 +46,13 @@ export async function createPost(req: Request, res: Response) {
       videos: videoIds,
     });
 
+    await post.populate("user");
+    await post.populate("likes");
+    await post.populate("comments");
+    await post.populate("shares");
+    await post.populate("videos");
+    await post.populate("images");
+
     return res.json(post);
   } catch (error) {
     return res.status(500).json({ error: (error as Error).message });

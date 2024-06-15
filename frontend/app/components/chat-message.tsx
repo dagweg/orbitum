@@ -8,6 +8,7 @@ function ChatMessage({
   message,
   sender = "default",
   chatType = "private",
+  date,
 }: TChatProps) {
   return (
     <div
@@ -24,6 +25,8 @@ function ChatMessage({
         className="p-2 !bg-white rounded-lg ring-neutral-200 w-fit shadow-sm font-semibold font-lato "
         chatType={chatType}
         sender={sender}
+        date={new Date(date?.toString() as string)}
+        dateType="both"
       />
     </div>
   );

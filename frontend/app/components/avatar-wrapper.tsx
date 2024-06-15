@@ -3,8 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 import { TAvatarWrapper, TBackground, TLineClamp, TSize } from "../types";
 import { cn } from "@/lib/utils";
-import { User } from "lucide-react";
+import { Dot, User } from "lucide-react";
 import { send } from "process";
+import { timeAgo as time_ago, timeAgo } from "@/util/time";
 
 function AvatarWrapper({
   src = "",
@@ -12,6 +13,7 @@ function AvatarWrapper({
   fallback = <User />,
   name = "",
   date = undefined,
+  dateType = "both",
   lineClamp = "line-clamp-1",
   background = "bg-transparent",
   className = "",
@@ -21,6 +23,30 @@ function AvatarWrapper({
   chatType = "default",
   size = "small",
 }: TAvatarWrapper) {
+  // (dateType === "timeAgo" && time_ago(date.toISOString())) ||
+  // (dateType === "date" && date.toDateString()) ||
+  // (dateType === "both" &&
+  //   date.toDateString() + <Dot /> + time_ago(date.toISOString()))
+  // console.log(timeAgo(date?.toISOString() as string));
+  let dateModif;
+  if (date)
+    switch (dateType) {
+      case "timeAgo":
+        dateModif = time_ago(date.toISOString());
+        break;
+      case "both":
+        dateModif = (
+          <div className="flex items-center">
+            {date.toDateString()} <Dot opacity={0.2} />{" "}
+            {time_ago(date.toISOString())}
+          </div>
+        );
+        break;
+      default:
+        dateModif = date.toDateString();
+        break;
+    }
+
   return (
     <div
       className={cn(
@@ -61,12 +87,12 @@ function AvatarWrapper({
         </span>
         <span
           className={cn(
-            "text-sm font-light",
+            "text-[9pt] opacity-50 font-semibold",
             (date === undefined || summary.length > 0) && "hidden"
           )}
         >
           {date
-            ? date.toDateString()
+            ? dateModif
             : new Date().toDateString().split(" ").slice(1, 4).join(" ")}
         </span>
 

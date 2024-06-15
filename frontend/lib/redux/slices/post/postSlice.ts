@@ -32,6 +32,7 @@ const posts = createSlice({
           post.liked = true;
         }
       });
+      // console.log(posts);
       return posts;
     });
 
@@ -57,7 +58,9 @@ const posts = createSlice({
     });
 
     builder.addCase(createPost.fulfilled, (state, action) => {
-      if (action.payload) state.push(action.payload);
+      if (action.payload) {
+        return [action.payload, ...state];
+      }
     });
   },
 });

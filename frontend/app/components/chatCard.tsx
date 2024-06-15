@@ -25,7 +25,7 @@ function ChatCard({
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src={profileUrl ?? "https://imgur.com/cAy8VXf.png"}
+            src={profileUrl ?? "https://imgur.com/0omjre2.png"}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"
@@ -37,8 +37,8 @@ function ChatCard({
         )}
       </div>
       <div className="">
-        <div className="font-lato">{name}</div>
-        <p className="opacity-50 text-sm font-lato w-full line-clamp-1">
+        <div className="font-opensans font-semibold opacity-70">{name}</div>
+        <p className="opacity-40 text-sm font-lato w-full line-clamp-1">
           {recentMessage ?? "Recent Message is hidden"}
         </p>
       </div>

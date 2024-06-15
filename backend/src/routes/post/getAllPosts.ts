@@ -5,7 +5,7 @@ import { populate } from "dotenv";
 
 export async function getAllPosts(req: Request, res: Response) {
   try {
-    const posts = await Posts.find({})
+    let posts = await Posts.find({})
       .populate("user")
       .populate({
         path: "comments",
@@ -16,6 +16,11 @@ export async function getAllPosts(req: Request, res: Response) {
       .populate("images")
       .populate("videos")
       .populate("shares");
+
+    posts = posts.sort(
+      (a, b) =>
+        (b.createdAt as Date).getTime() - (a.createdAt as Date).getTime()
+    );
 
     return res.json(posts);
   } catch (error) {
