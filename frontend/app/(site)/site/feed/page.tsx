@@ -8,6 +8,7 @@ import { TImagePost } from "@/app/types";
 import { getAllPosts } from "@/lib/redux/slices/post/postThunks";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { TPostSchema, TUserSchema } from "@/lib/types/schema";
+import { base64ToBlob } from "@/util/file";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -72,6 +73,13 @@ function FeedPage() {
               liked={post.liked as boolean}
               comments={post.comments}
               shares={post.shares}
+              images={post.images.map((image, key) => {
+                return {
+                  url: URL.createObjectURL(
+                    base64ToBlob(image.base64, image.type)
+                  ),
+                };
+              })}
             />
           ))}
       </div>

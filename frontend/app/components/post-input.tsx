@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 import { Image as LucideImage, Video, X } from "lucide-react";
@@ -136,11 +136,11 @@ export default function PostInput() {
         </DialogTrigger>
         <DialogContent className="w-[425px] sm:w-[500px]  flex flex-col">
           <DialogHeader>
-            <DialogTitle>Create a new post</DialogTitle>
+            <CardTitle>Create a Post</CardTitle>
           </DialogHeader>
           <Card className="flex flex-col gap-3 justify-center p-3 border-none shadow-none  max-w-[425px] sm:max-w-[500px] ">
             <Textarea
-              placeholder="Share your thoughts"
+              placeholder="The world is waiting to hear from you <3"
               rows={5}
               className="w-full"
               value={content}
