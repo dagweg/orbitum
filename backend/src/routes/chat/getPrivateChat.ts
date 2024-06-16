@@ -20,7 +20,7 @@ export async function getPrivateChat(req: Request, res: Response) {
         path: "messages",
         populate: {
           path: "sender",
-          select: "firstName lastName userName email _id profileUrl",
+          select: "firstName lastName userName email _id profilePicture",
         },
       })
       .populate("user1")
@@ -46,7 +46,7 @@ export async function getPrivateChat(req: Request, res: Response) {
 
     const recipient = await User.findById(
       user2Id,
-      "userName email firstName lastName phoneNumber  profileUrl"
+      "userName email firstName lastName phoneNumber  profilePicture"
     );
 
     return res.json({

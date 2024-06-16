@@ -1,6 +1,7 @@
 import { TUserSchema } from "@/lib/types/schema";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchUser } from "./userThunks";
+import { changeProfilePicture, fetchUser } from "./userThunks";
+import { base64ToBlob } from "@/util/file";
 
 type TUserType = Pick<
   TUserSchema,
@@ -11,7 +12,7 @@ type TUserType = Pick<
   | "lastName"
   | "phoneNumber"
   | "settings"
-  | "profileUrl"
+  | "profilePicture"
 >;
 
 const userInitialState: TUserType = {
@@ -22,7 +23,11 @@ const userInitialState: TUserType = {
   userName: "",
   phoneNumber: "",
   settings: "",
-  profileUrl: "",
+  profilePicture: {
+    base64: "",
+    name: "",
+    type: "",
+  },
 };
 
 const userSlice = createSlice({
@@ -36,6 +41,9 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       return action.payload;
+    });
+    builder.addCase(changeProfilePicture.fulfilled, (state, action) => {
+      state.profilePicture = action.payload;
     });
   },
 });

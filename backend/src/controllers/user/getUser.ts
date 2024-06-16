@@ -7,8 +7,8 @@ export async function getUser(req: Request, res: Response) {
 
     let user = await User.findById(
       userId,
-      "userName email firstName lastName phoneNumber  profileUrl settings"
-    );
+      "userName email firstName lastName phoneNumber  profilePicture settings"
+    ).populate("profilePicture");
 
     if (!user) {
       return res

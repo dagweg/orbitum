@@ -18,7 +18,7 @@ function CommentCard({ user, text, createdAt }: Props) {
       <div className="relative h-full flex items-start">
         <Avatar>
           <AvatarImage
-            src={user.profileUrl ?? "https://imgur.com/cAy8VXf.png"}
+            src={user.profilePicture ?? "https://imgur.com/cAy8VXf.png"}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"

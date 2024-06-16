@@ -36,7 +36,7 @@ const postsSchema = new mongoose.Schema({
   images: [
     {
       type: ObjectId,
-      ref: "PostImages",
+      ref: "Images",
     },
   ],
   videos: [

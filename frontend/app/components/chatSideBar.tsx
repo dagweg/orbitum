@@ -22,6 +22,7 @@ import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import ChatCard from "./chatCard";
 import useSocket from "../hooks/useSocket";
 import socket from "@/lib/socket";
+import { createUrl } from "@/util/file";
 
 function ChatSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,11 +73,12 @@ function ChatSideBar() {
   }
 
   const { people } = sideBar.chat;
+
   useSocket("users:connected", (data) => {
     dispatch(setOnlineUsers(data));
-    // console.log(sideBar.chat.onlineUsers);
   });
 
+  console.log(people);
   return (
     <div
       className={cn(
@@ -92,8 +94,15 @@ function ChatSideBar() {
               <ChatCard
                 name={person.firstName + " " + person.lastName}
                 recentMessage={person.recentMessage.content}
-                profileUrl={person.profileUrl}
-                isOnline={onlineUsers ? person._id in onlineUsers : false}
+                profilePicture={
+                  person.profilePicture
+                    ? createUrl(
+                        person.profilePicture.base64,
+                        person.profilePicture.type
+                      )
+                    : undefined
+                }
+                isOnline={person._id in (onlineUsers ?? {})}
                 onClick={() => handleChatCardClick(person._id)}
               />
             );

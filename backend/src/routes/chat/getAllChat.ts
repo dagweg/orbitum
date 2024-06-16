@@ -9,16 +9,28 @@ export async function getAllChats(req: Request, res: Response) {
 
     // TODO : GET ALL CHATS CORRESPONDING TO THE ID
     // PRIVATE, GROUP and CHANNELS
-    console.log("USER ID ", userId);
+    // console.log("USER ID ", userId);
 
     let chats = await PrivateChat.find({
       $or: [{ user1: userId }, { user2: userId }],
     })
-      .populate("user1", "_id firstName lastName profileUrl")
-      .populate("user2", "_id firstName lastName profileUrl")
+      .populate({
+        path: "user1",
+        select: "_id firstName lastName profilePicture",
+        populate: {
+          path: "profilePicture",
+        },
+      })
+      .populate({
+        path: "user2",
+        select: "_id firstName lastName profilePicture",
+        populate: {
+          path: "profilePicture",
+        },
+      })
       .populate("messages", "content date")
       .exec();
-
+    console.log(chats);
     let ret = chats.map((chat) => {
       const { user1, user2, messages } = chat.toObject();
       const recentMessage = messages.sort(
@@ -42,6 +54,6 @@ export async function getAllChats(req: Request, res: Response) {
     });
   } catch (error) {
     console.log((error as Error).message);
-    return res.status(500).json(error);
+    return res.status(500).json({ error: (error as Error).message });
   }
 }

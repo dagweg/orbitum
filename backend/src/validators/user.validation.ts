@@ -38,7 +38,7 @@ export const UserSchema = z.object({
   confirmPassWord: z.string(),
   otp: z.string().optional(),
   otpExpiry: z.date().optional(),
-  profileUrl: z.string().optional(),
+  profilePicture: z.string().optional(),
   settings: z.string().optional(),
   friends: z.array(z.string()).optional(),
   groupMemberships: z.array(z.string()).optional(),

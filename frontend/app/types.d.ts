@@ -66,7 +66,7 @@ export type TUser = {
   _id?: string;
   firstName: string;
   lastName: string;
-  profileUrl: string;
+  profilePicture: TProfilePic;
   userName: string;
   email: string;
 };
@@ -89,7 +89,7 @@ export type TChatSideBarPerson = {
   _id: string;
   firstName: string;
   lastName: string;
-  profileUrl: string;
+  profilePicture: TProfilePic;
   recentMessage: { content: string };
 };
 
@@ -99,6 +99,8 @@ export type TImage = {
   base64: string;
   url: string;
 };
+
+export type TProfilePic = Pick<TImage, "name" | "base64" | "type">;
 
 export type TImagePost = {
   url: string;

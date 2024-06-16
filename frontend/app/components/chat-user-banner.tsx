@@ -20,7 +20,7 @@ function ChatUserBanner({
       <div className="flex  gap-2">
         <div className="relative ">
           <Image
-            src={recipient?.profileUrl ?? "https://imgur.com/0omjre2.png"}
+            src={recipient?.profilePicture ?? "https://imgur.com/0omjre2.png"}
             alt="prof"
             width={50}
             height={50}

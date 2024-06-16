@@ -6,7 +6,7 @@ import { InferSchemaType } from "mongoose";
  * The Below is just a prototype for rapid testing, will be using Mongo GridFS lateron
  */
 
-const postVideosSchema = new mongoose.Schema({
+const VideosSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
@@ -20,8 +20,8 @@ const postVideosSchema = new mongoose.Schema({
   },
 });
 
-export type PostVideosDocument = InferSchemaType<typeof postVideosSchema>;
-export const PostVideos = mongoose.model<PostVideosDocument>(
+export type VideosDocument = InferSchemaType<typeof VideosSchema>;
+export const Videos = mongoose.model<VideosDocument>(
   "PostVideos",
-  postVideosSchema
+  VideosSchema
 );

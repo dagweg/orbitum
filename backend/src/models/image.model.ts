@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import { InferSchemaType } from "mongoose";
 
-const postImagesSchema = new mongoose.Schema({
+const ImageSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
@@ -16,8 +16,5 @@ const postImagesSchema = new mongoose.Schema({
   },
 });
 
-export type PostImagesDocument = InferSchemaType<typeof postImagesSchema>;
-export const PostImages = mongoose.model<PostImagesDocument>(
-  "PostImages",
-  postImagesSchema
-);
+export type ImageDocument = InferSchemaType<typeof ImageSchema>;
+export const Images = mongoose.model<ImageDocument>("Images", ImageSchema);

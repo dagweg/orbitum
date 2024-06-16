@@ -14,18 +14,21 @@ import { Card, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { RootState } from "@/lib/redux/store";
-import { base64ToBlob } from "@/util/file";
+import { changeProfilePicture } from "@/lib/redux/slices/user/userThunks";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { base64ToBlob, createUrl } from "@/util/file";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 import { Camera, ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Settings() {
   return (
@@ -88,15 +91,25 @@ function Settings() {
 function ProfileSetting() {
   const ALLOWED_IMAGES = ".jpg, .jpeg, .png, .gif";
   const user = useSelector((state: RootState) => state.User);
+  const dispatch: AppDispatch = useDispatch();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dialogTriggerRef = useRef<HTMLButtonElement>(null);
 
   const [image, setImage] = useState<{
     base64: string;
     type: string;
     name: string;
     url: string;
-  }>();
+  }>({
+    base64: "",
+    type: "",
+    name: "",
+    url: "",
+  });
+
+  const { base64, type } = user.profilePicture ?? {};
+  const profileUrl = createUrl(base64, type);
 
   function chooseImageFile() {
     fileInputRef.current?.click();
@@ -116,11 +129,21 @@ function ProfileSetting() {
           base64,
           url: URL.createObjectURL(base64ToBlob(base64, file.type)),
         });
+        dialogTriggerRef.current?.click();
       };
       fileReader.readAsArrayBuffer(file);
     }
   }
 
+  function confirmProfileChange() {
+    dispatch(
+      changeProfilePicture({
+        name: image.name,
+        type: image.type,
+        base64: image.base64,
+      })
+    );
+  }
   return (
     <>
       <ExpandableButton>
@@ -133,7 +156,10 @@ function ProfileSetting() {
                 className="relative ring-2 ring-neutral-300 group/avatar [&>*]:cursor-pointer"
                 onClick={chooseImageFile}
               >
-                <AvatarImage src={user.profileUrl ?? image?.url}></AvatarImage>
+                <AvatarImage
+                  src={profileUrl ?? image?.url}
+                  className="object-cover"
+                ></AvatarImage>
                 <AvatarFallback>
                   {user.firstName[0] + user.lastName[0]}
                 </AvatarFallback>
@@ -154,19 +180,32 @@ function ProfileSetting() {
       </ExpandableButton>
       <Dialog>
         <DialogTrigger>
-          <Button>Trigger</Button>
+          <Button ref={dialogTriggerRef} className="sr-only">
+            Trigger
+          </Button>
         </DialogTrigger>
-        <DialogContent>
-          <DialogTitle>Edit Profile</DialogTitle>
-          <Avatar className="relative shadow-md group/avatar [&>*]:cursor-pointer w-[130px] h-[130px] ">
-            <AvatarImage src={user.profileUrl}></AvatarImage>
+        <DialogContent className="w-fit  !flex !flex-col  min-w-[300px] !justify-center !items-center">
+          <DialogTitle className="text-center">Edit Profile</DialogTitle>
+          <Avatar className="relative ring-2 ring-neutral-300 group/avatar [&>*]:cursor-pointer w-[130px] h-[130px]">
+            <AvatarImage
+              src={image?.url}
+              className="object-cover"
+            ></AvatarImage>
             <AvatarFallback>
               {user.firstName[0] + user.lastName[0]}
             </AvatarFallback>
-            <div className="absolute bottom-[-100%] group-hover/avatar:bottom-0 duration-200 ease-out  w-full flex justify-center bg-white">
-              <Camera size={15} />
-            </div>
           </Avatar>
+          <span className="text-lg font-semibold opacity-80">
+            {user.firstName + " " + user.lastName}
+          </span>
+          <DialogFooter className="flex flex-col gap-3">
+            <Button variant={"ghost"} onClick={confirmProfileChange}>
+              Confirm
+            </Button>
+            <DialogClose>
+              <Button variant={"secondary"}>Revert</Button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

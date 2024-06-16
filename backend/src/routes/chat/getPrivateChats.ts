@@ -14,12 +14,12 @@ export async function getPrivateChats(req: Request, res: Response) {
         populate: {
           path: "sender",
           select:
-            "userName email firstName lastName phoneNumber profileUrl settings",
+            "userName email firstName lastName phoneNumber profilePicture settings",
         },
       })
       .populate(
         "user2",
-        "userName email firstName lastName phoneNumber profileUrl settings"
+        "userName email firstName lastName phoneNumber profilePicture settings"
       );
 
     return res.json(chats);

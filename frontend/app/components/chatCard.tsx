@@ -5,7 +5,7 @@ import OnlineIndicator from "./online-indicator";
 type TChatCardProps = {
   name: string;
   recentMessage?: string;
-  profileUrl?: string;
+  profilePicture?: string;
   isOnline?: boolean;
   onClick?: () => void;
 };
@@ -13,7 +13,7 @@ type TChatCardProps = {
 function ChatCard({
   name,
   recentMessage,
-  profileUrl,
+  profilePicture,
   isOnline = false,
   onClick,
 }: TChatCardProps) {
@@ -25,7 +25,7 @@ function ChatCard({
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src={profileUrl ?? "https://imgur.com/0omjre2.png"}
+            src={profilePicture ?? "https://imgur.com/0omjre2.png"}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"

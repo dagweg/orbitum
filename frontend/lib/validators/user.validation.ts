@@ -1,4 +1,15 @@
 import { z } from "zod";
+import { TProfilePic } from "@/app/types";
+
+export const ProfilePicSchema = z.object({
+  name: z.string(),
+  type: z.string().refine((val) => val.trim().length > 0, {
+    message: "Cannot be empty",
+  }),
+  base64: z.string().refine((val) => val.trim().length > 0, {
+    message: "Cannot be empty",
+  }),
+});
 
 export const UserSchema = z.object({
   _id: z.string().optional(),
@@ -38,7 +49,7 @@ export const UserSchema = z.object({
   confirmPassWord: z.string(),
   otp: z.string().optional(),
   otpExpiry: z.date().optional(),
-  profileUrl: z.string().optional(),
+  profilePicture: ProfilePicSchema,
   settings: z.string().optional(),
   friends: z.array(z.string()).optional(),
   groupMemberships: z.array(z.string()).optional(),

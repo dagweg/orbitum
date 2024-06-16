@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
 const express = require("express");
-import { loginUser } from "./login";
-import { logoutUser } from "./logout";
-import { registerUser } from "./register";
+import { loginUser } from "../../controllers/user/login";
+import { logoutUser } from "../../controllers/user/logout";
+import { registerUser } from "../../controllers/user/register";
 import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
 import {
   GetUserSchema,
@@ -10,11 +10,14 @@ import {
 } from "../../validators/user.validation";
 import { LoginSchema } from "../../validators/login.validation";
 import { validateSession } from "../../middlewares/validateSession";
-import { getAllUserPosts } from "./getAllUserPosts";
+import { getAllUserPosts } from "../../controllers/user/getAllUserPosts";
 import { checkLoginStatus } from "../../middlewares/checkLoginStatus";
 import { validateGETRequestSchema } from "../../middlewares/validateGETRequestSchema";
-import { getUser } from "./getUser";
-import { getUserWithId } from "./getUserWithId";
+import { getUser } from "../../controllers/user/getUser";
+import { getUserWithId } from "../../controllers/user/getUserWithId";
+import { validatePUTRequestSchema } from "../../middlewares/validatePUTRequestSchema";
+import { ProfilePicSchema } from "../../validators/settings.validation";
+import { changeProfilePicture } from "../../controllers/settings/changeProfilePicture";
 
 export default function userRouteHandler(): Router {
   const router = express.Router();
@@ -44,6 +47,13 @@ export default function userRouteHandler(): Router {
 
   /** GET ALL POSTS THE USER HAS POSTED TILL NOW */
   router.get("/post", validateSession, getAllUserPosts);
+
+  router.put(
+    "/settings/profile",
+    validateSession,
+    validatePUTRequestSchema(ProfilePicSchema),
+    changeProfilePicture
+  );
 
   return router;
 }

@@ -21,6 +21,9 @@ export default function socketHandler(server: any) {
     console.log("Connected User is ", socket.data.user.email);
     map.set(socket.data.user.userId, socket.id);
 
+    // Broadcast the connected users
+    io.emit("users:connected", Object.fromEntries(map));
+
     socket.on("user:logout", () => {
       console.log("Logged out user ", socket.data.user.email);
       map.delete(socket.data.user.userId);
@@ -50,13 +53,12 @@ export default function socketHandler(server: any) {
       io.to(socketId).emit("chat:type", { from: socket.data.user.userId });
     });
 
-    setInterval(() => {
-      io.emit("users:connected", Object.fromEntries(map));
-    }, 2000);
-
     socket.on("disconnect", () => {
       console.log("Disconnected user ", socket.data.user.email);
       map.delete(socket.data.user.userId);
+
+      // Broadcast the connected users after user with id has been deleted
+      io.emit("users:connected", Object.fromEntries(map));
     });
   });
 }
