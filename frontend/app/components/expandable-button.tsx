@@ -21,7 +21,7 @@ export function ExpandableButtonItem({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="flex justify-between">{children}</div>;
+  return <div className="flex justify-between items-center">{children}</div>;
 }
 
 export function ExpandableButtonTrigger({
@@ -46,7 +46,7 @@ export function ExpandableButtonContent({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-neutral-50 px-4 py-2 text-[9pt]  font-semibold font-openSans flex flex-col gap-2">
+    <div className="bg-white border-1 border rounded-md border-t-0 rounded-t-none px-4 py-2 text-[9pt]  font-semibold font-openSans flex flex-col gap-2">
       {children}
     </div>
   );
