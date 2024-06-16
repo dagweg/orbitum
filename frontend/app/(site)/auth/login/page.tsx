@@ -20,6 +20,8 @@ import { getMappedZodErrors } from "@/lib/utils";
 import Spinner from "@/app/components/spinner";
 import { API_ORIGIN } from "@/app/config/apiConfig";
 import { TLoginSchema } from "@/lib/types/schema";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import Image from "next/image";
 
 type TLoginError = { [key in keyof TLoginSchema]?: z.ZodIssue };
 
@@ -55,7 +57,7 @@ export default function Login() {
             description: loginData.message,
           });
           router.push("/site/feed");
-          window.location.reload()
+          window.location.reload();
           break;
         case 401:
           toast({
@@ -79,13 +81,16 @@ export default function Login() {
   return (
     <div className="w-[450px] max-w-[500px] px-10 py-20 mx-auto rounded-lg">
       <h1 className="text-4xl font-bold  mb-4 font-lemonMilk flex w-full justify-center flex-col items-center">
-        <span className="flex items-start">
+        <Image src={"/logo/logo.ico"} alt="" width={65} height={65} />
+        <span className="tracking-[6pt] text-sm opacity-60">Orbitum</span>
+        {/* <span className="flex items-start tracking-[5pt] opacity-80">
           Orbitum<span className="font-light text-[11pt]">&trade;</span>
         </span>{" "}
-        <span className="text-sm font-light">Login</span>
+        <span className="text-sm font-light">Login</span> */}
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <span className="text-3xl opacity-70 font-bold">Login</span>
           <FormField
             control={form.control}
             name="email"
@@ -117,11 +122,21 @@ export default function Login() {
               {loading ? <Spinner /> : "Login"}
             </Button>
             <p>
-              New to Orbitum? <Link href="/auth/register">Register</Link>
+              Are you new to Orbitum?{" "}
+              <Link href="/auth/register">Register</Link>
             </p>
           </div>
         </form>
       </Form>
+
+      <div className="flex flex-col gap-3 pt-4 border-t-2 mt-4">
+        <Button className="w-full bg-neutral-100 text-black flex items-center justify-center  gap-3 hover:bg-neutral-200 ring-neutral-300 focus:!ring-[3px] !ring-0 ease-in-out !duration-100">
+          <FaGoogle size={20} /> <span>Continue with Google</span>
+        </Button>
+        <Button className="w-full bg-blue-500 text-white flex items-center justify-center gap-3 hover:bg-blue-600 focus:!ring-[3px] !ring-0 ease-in-out !duration-100">
+          <FaFacebook size={20} /> <span>Continue with Facebook</span>
+        </Button>
+      </div>
     </div>
   );
 }

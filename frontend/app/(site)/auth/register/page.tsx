@@ -34,6 +34,7 @@ import {
 import { getMappedZodErrors } from "@/lib/utils";
 import { TUserSchema } from "@/lib/types/schema";
 import { TZodErrors } from "@/lib/types/types";
+import Image from "next/image";
 
 type TRegisterError = { [key in keyof TUserSchema]?: z.ZodIssue };
 
@@ -109,16 +110,19 @@ function Register() {
   return (
     <div className="w-full sm:min-w-fit sm:w-[450px]  my-4 duration-300  p-10 mx-auto rounded-md">
       <h1 className="text-4xl font-bold  mb-4 font-lemonMilk flex w-full justify-center flex-col items-center">
-        <span className="flex items-start">
+        <Image src={"/logo/logo.ico"} alt="" width={65} height={65} />
+        <span className="tracking-[6pt] text-sm opacity-60">Orbitum</span>
+        {/* <span className="flex items-start tracking-wider">
           Orbitum<span className="font-light text-[11pt]">&trade;</span>
         </span>{" "}
-        <span className="text-sm font-light">Register</span>
+        <span className="text-sm font-light">Register</span> */}
       </h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(register)}
-          className="relative flex flex-col px-2  woverflow-y-scroll no-scrollbar"
+          className="relative flex flex-col px-2 gap-3  overflow-y-scroll no-scrollbar"
         >
+          <span className="text-3xl opacity-70 font-bold">Register</span>
           <FormField
             control={form.control}
             name="userName"
