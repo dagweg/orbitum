@@ -23,11 +23,6 @@ function AvatarWrapper({
   chatType = "default",
   size = "small",
 }: TAvatarWrapper) {
-  // (dateType === "timeAgo" && time_ago(date.toISOString())) ||
-  // (dateType === "date" && date.toDateString()) ||
-  // (dateType === "both" &&
-  //   date.toDateString() + <Dot /> + time_ago(date.toISOString()))
-  // console.log(timeAgo(date?.toISOString() as string));
   let dateModif;
   if (date)
     switch (dateType) {
@@ -87,7 +82,7 @@ function AvatarWrapper({
         </span>
         <span
           className={cn(
-            "text-[9pt] opacity-50 font-semibold",
+            "text-[10pt] opacity-70 ",
             (date === undefined || summary.length > 0) && "hidden"
           )}
         >

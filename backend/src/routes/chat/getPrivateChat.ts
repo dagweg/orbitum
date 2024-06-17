@@ -21,10 +21,23 @@ export async function getPrivateChat(req: Request, res: Response) {
         populate: {
           path: "sender",
           select: "firstName lastName userName email _id profilePicture",
+          populate: {
+            path: "profilePicture",
+          },
         },
       })
-      .populate("user1")
-      .populate("user2");
+      .populate({
+        path: "user1",
+        populate: {
+          path: "profilePicture",
+        },
+      })
+      .populate({
+        path: "user2",
+        populate: {
+          path: "profilePicture",
+        },
+      });
 
     if (!chats) {
       console.log("No private chats found trying GET.");
@@ -47,7 +60,7 @@ export async function getPrivateChat(req: Request, res: Response) {
     const recipient = await User.findById(
       user2Id,
       "userName email firstName lastName phoneNumber  profilePicture"
-    );
+    ).populate("profilePicture");
 
     return res.json({
       yourId: userId,

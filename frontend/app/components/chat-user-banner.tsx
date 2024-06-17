@@ -3,6 +3,7 @@ import React from "react";
 import OnlineIndicator from "./online-indicator";
 import { PulseLoader } from "react-spinners";
 import { TUser } from "../types";
+import { createUrl } from "@/util/file";
 
 function ChatUserBanner({
   onlineUsers,
@@ -15,16 +16,18 @@ function ChatUserBanner({
     recipient: boolean;
   };
 }) {
+  const { type, base64 } = recipient!.profilePicture;
+  const profileUrl = createUrl(base64, type);
   return (
     <div className=" w-full h-fit  p-2 sticky top-0 bg-white">
       <div className="flex  gap-2">
         <div className="relative ">
           <Image
-            src={recipient?.profilePicture ?? "https://imgur.com/0omjre2.png"}
+            src={profileUrl ?? "https://imgur.com/0omjre2.png"}
             alt="prof"
             width={50}
             height={50}
-            className="rounded-sm"
+            className="rounded-sm min-w-[50px] aspect-square max-w-[50px] object-cover"
           ></Image>
           {onlineUsers && (recipient?._id as string) in onlineUsers && (
             <OnlineIndicator />

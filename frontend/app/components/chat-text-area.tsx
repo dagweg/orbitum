@@ -22,8 +22,8 @@ function ChatTextArea({
   handleMessageSend: () => void;
 }) {
   return (
-    <section className="h-fit sticky bottom-0 w-[95%] md:w-[80%] mx-auto max-w-[700px] flex flex-col-reverse">
-      <div className="flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto mb-5 ring-1 shadow-2xl ring-neutral-400 rounded-lg">
+    <section className=" pb-2     bottom-0 sticky w-full  mx-auto flex flex-col-reverse bg-neutral-200 pt-4 h-fit px-10">
+      <div className="flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto ring-1 max-w-[700px]  ring-neutral-400  rounded-lg">
         <div className="h-full flex flex-col-reverse items-end">
           <Button variant={"circleGhost"}>
             <Paperclip className="" />

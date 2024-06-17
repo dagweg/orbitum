@@ -37,7 +37,7 @@ import {
 } from "@/lib/redux/slices/chat/chatSlice";
 import { fetchUser } from "@/lib/redux/slices/user/userThunks";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Dialog,
   DialogClose,
@@ -59,6 +59,7 @@ export default function Navbar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const dialogTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -131,7 +132,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div>
+    <div className={cn("w-full", pathname.includes("chat") && "fixed")}>
       <Dialog>
         <DialogTrigger asChild>
           <Button className="sr-only" ref={dialogTriggerRef}>

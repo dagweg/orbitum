@@ -168,9 +168,9 @@ function ChatArea() {
               Get started by selecting a chat
             </Badge>
           ) : (
-            <div className="h-full  p-4 flex flex-col gap-3">
+            <div className="h-full  flex flex-col gap-3">
               {messages.length === 0 ? (
-                <div className="flex-1  flex flex-col gap-3 justify-center items-center">
+                <div className="flex-1  flex flex-col gap-3 justify-center items-center ">
                   <Image
                     src={"https://imgur.com/wnW8YPI.png"}
                     className="rounded-lg "
@@ -181,7 +181,7 @@ function ChatArea() {
                   Get started by saying hi.
                 </div>
               ) : (
-                <section className="flex-1 h-full  pb-44">
+                <section className="h-full  overflow-y-scroll no-scrollbar p-2 mb-[50px]">
                   <ChatMessages messages={messages} />
                 </section>
               )}

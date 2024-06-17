@@ -6,7 +6,7 @@ import ChatMessage from "./chat-message";
 
 function ChatMessages({ messages }: { messages: TMessageSchema[] }) {
   return (
-    <div className="h-full overflow-y-scroll no-scrollbar flex flex-col">
+    <>
       {messages &&
         messages.map((message: TMessageSchema, index) => (
           <ChatMessage
@@ -16,7 +16,7 @@ function ChatMessages({ messages }: { messages: TMessageSchema[] }) {
             date={message.date}
           />
         ))}
-    </div>
+    </>
   );
 }
 

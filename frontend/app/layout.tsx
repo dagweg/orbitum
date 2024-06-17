@@ -41,7 +41,12 @@ export default function RootLayout({
           suppressHydrationWarning
           className={`${inter.className} ${lemonMilk.variable} ${openSans.className} ${lato.className} w-screen`}
         >
-          <main className="h-screen">{children}</main>
+          <main
+            className="h-screen
+          "
+          >
+            {children}
+          </main>
           <Toaster />
         </body>
       </ReduxProvider>
