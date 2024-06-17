@@ -32,6 +32,7 @@ import ChatWallpaper from "./chat-wallpaper";
 import ChatUserBanner from "./chat-user-banner";
 import ChatTextArea from "./chat-text-area";
 import ChatMessages from "./chat-messages";
+import { createUrl } from "@/util/file";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -61,7 +62,6 @@ function ChatArea() {
     } else {
       setHasStartedTyping({ ...hasStartedTyping, you: false });
     }
-
     socket.emit("chat:type", {
       to: chatArea.currentChat?.recipientId,
     });
@@ -142,7 +142,16 @@ function ChatArea() {
     }, 1000);
   });
 
-  const recipient = chatArea.currentChat?.recipient;
+  let recipient = chatArea.currentChat?.recipient;
+
+  let profileUrl = useRef<string | undefined>();
+
+  useEffect(() => {
+    if (recipient) {
+      const { type, base64 } = recipient.profilePicture;
+      profileUrl.current = createUrl(base64, type);
+    }
+  }, []);
 
   return (
     <>
@@ -160,6 +169,7 @@ function ChatArea() {
             hasStartedTyping={hasStartedTyping}
             onlineUsers={onlineUsers}
             recipient={recipient}
+            profileUrl={profileUrl.current}
           />
         )}
         <div className="w-full flex-1 flex flex-col  justify-center h-full ">

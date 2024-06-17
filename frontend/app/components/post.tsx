@@ -115,7 +115,12 @@ export default function Post({
         )}
       >
         <section className="flex justify-between w-full">
-          <AvatarWrapper name={user.userName} date={date} dateType="both" />
+          <AvatarWrapper
+            name={user.userName}
+            date={date}
+            dateType="both"
+            src=""
+          />
           <Button variant={"ghost"}>
             <Ellipsis />
           </Button>

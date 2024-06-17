@@ -7,6 +7,7 @@ import {
   closeChatSideBar,
   openChatArea,
   setChatSideBar,
+  setSearchPanel,
 } from "@/lib/redux/slices/chat/chatSlice";
 import {
   chatSideBarSearch,
@@ -30,12 +31,7 @@ function SearchSideBar() {
   const sideBarSearchRef = useRef<HTMLDivElement>(null);
 
   const handleOutsideClick = () => {
-    dispatch(
-      setChatSideBar({
-        ...chatSideBar,
-        searchPanel: { enabled: false },
-      })
-    );
+    if (searchPanel.enabled) dispatch(setSearchPanel({ enabled: false }));
   };
 
   useClickOutsideObserver(sideBarSearchRef, handleOutsideClick);
@@ -45,9 +41,7 @@ function SearchSideBar() {
   const handleSearch = (e: FormEvent<HTMLInputElement>) => {
     query = e.currentTarget?.value;
     dispatch(chatSideBarSearch({ query }));
-    dispatch(
-      setChatSideBar({ ...chatSideBar, searchPanel: { enabled: true } })
-    );
+    if (!searchPanel.enabled) dispatch(setSearchPanel({ enabled: true }));
   };
 
   const handleChatClick = (id: string) => {

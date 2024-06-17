@@ -51,6 +51,9 @@ const chatSideBarSlice = createSlice({
     setOnlineUsers(state, action) {
       state.chat.onlineUsers = action.payload;
     },
+    setSearchPanel(state, action) {
+      state.searchPanel = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(chatSideBarSearch.fulfilled, (state, action) => {
@@ -92,6 +95,7 @@ export const {
   openChatSideBar,
   setChatSideBar,
   setOnlineUsers,
+  setSearchPanel,
 } = chatSideBarSlice.actions;
 export const ChatSideBar = chatSideBarSlice.reducer;
 

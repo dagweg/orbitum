@@ -1,7 +1,7 @@
 export function base64ToBlob(base64: string, mimeType: string) {
   try {
     const bytes = Buffer.from(base64, "base64");
-    console.log(bytes);
+    // console.log(bytes);
 
     // const bytesNum = new Array(bytes.length);
 
@@ -20,8 +20,7 @@ export function base64ToBlob(base64: string, mimeType: string) {
 
 export function createUrl(base64: string, type: string) {
   try {
-    console.log(base64);
-    console.log(type);
+    console.log("CREATED URL");
     const blob = base64ToBlob(base64, type);
     if (!blob) throw new Error("Blob cannot be created");
     return URL.createObjectURL(blob);

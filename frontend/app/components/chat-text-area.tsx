@@ -3,6 +3,7 @@ import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
 import React, { Ref, useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 import EmojiPicker from "emoji-picker-react";
+import { cn } from "@/lib/utils";
 
 function ChatTextArea({
   chatTextAreaRef,
@@ -28,11 +29,15 @@ function ChatTextArea({
   return (
     <>
       <div className="flex flex-col w-full  sticky  bottom-0 ">
-        {emojiPane.enabled && (
-          <div className="relative max-w-[700px] w-full mx-auto">
-            <EmojiPicker className="!absolute bottom-0 right-0 z-[1000]" />
-          </div>
-        )}
+        <div
+          className={cn(
+            "relative max-w-[700px] w-full mx-auto duration-100 ease-out",
+            emojiPane.enabled ? "scale-y-1" : "scale-y-0"
+          )}
+        >
+          <EmojiPicker className="!absolute bottom-0 right-0 z-[1000]" />
+        </div>
+
         <section className=" pb-2     w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
           <div className="h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto ring-1 max-w-[700px]  ring-neutral-400  rounded-lg">
             <div className="h-full flex flex-col-reverse items-end">
@@ -53,7 +58,12 @@ function ChatTextArea({
             />
             <div className="h-full flex flex-col-reverse items-end">
               <div className="flex items-end">
-                <Button variant={"circleGhost"}>
+                <Button
+                  variant={"circleGhost"}
+                  onClick={() =>
+                    setEmojiPane((prev) => ({ enabled: !prev.enabled }))
+                  }
+                >
                   <Smile />
                 </Button>
                 <Button

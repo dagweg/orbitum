@@ -11,6 +11,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.8",
     "@types/nodemailer": "^6.4.15",
+    "cloudinary": "^2.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

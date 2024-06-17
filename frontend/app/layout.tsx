@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Lato, Open_Sans } from "next/font/google";
+import { Inter, Lato, Open_Sans, Work_Sans } from "next/font/google";
 import localFont from "@next/font/local";
 import "./globals.css";
 import Navbar from "./components/navbar";
@@ -24,6 +24,8 @@ const openSans = Open_Sans({ subsets: ["latin"] });
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
+const workSans = Work_Sans({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "Orbitum",
   description: "Social Media Platform",
@@ -39,7 +41,7 @@ export default function RootLayout({
       <ReduxProvider>
         <body
           suppressHydrationWarning
-          className={`${inter.className} ${lemonMilk.variable} ${openSans.className} ${lato.className} w-screen`}
+          className={`${inter.className} ${lemonMilk.variable} ${openSans.className} ${lato.className} ${workSans.className}  w-screen`}
         >
           <main
             className="h-screen

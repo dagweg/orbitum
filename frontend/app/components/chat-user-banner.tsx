@@ -9,15 +9,15 @@ function ChatUserBanner({
   onlineUsers,
   recipient,
   hasStartedTyping,
+  profileUrl,
 }: {
   onlineUsers: {};
   recipient: TUser | undefined;
   hasStartedTyping: {
     recipient: boolean;
   };
+  profileUrl: string | undefined;
 }) {
-  const { type, base64 } = recipient!.profilePicture;
-  const profileUrl = createUrl(base64, type);
   return (
     <div className=" w-full h-fit  p-2 sticky top-0 bg-white">
       <div className="flex  gap-2">

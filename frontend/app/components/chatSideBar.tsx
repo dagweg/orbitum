@@ -78,7 +78,7 @@ function ChatSideBar() {
     dispatch(setOnlineUsers(data));
   });
 
-  console.log(people);
+  // console.log(people);
   return (
     <div
       className={cn(
