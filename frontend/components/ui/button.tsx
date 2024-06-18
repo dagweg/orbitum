@@ -21,6 +21,8 @@ const buttonVariants = cva(
           "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
         circleGhost:
           "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 rounded-full !aspect-square !p-0",
+        squareGhost:
+          "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 rounded-md !aspect-square !p-0",
         link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50",
         selected:
           "bg-neutral-100 text-neutral-800 hover:text-neutral-900 hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",

@@ -144,15 +144,6 @@ function ChatArea() {
 
   let recipient = chatArea.currentChat?.recipient;
 
-  let profileUrl = useRef<string | undefined>();
-
-  useEffect(() => {
-    if (recipient) {
-      const { type, base64 } = recipient.profilePicture;
-      profileUrl.current = createUrl(base64, type);
-    }
-  }, []);
-
   return (
     <>
       <div
@@ -169,7 +160,6 @@ function ChatArea() {
             hasStartedTyping={hasStartedTyping}
             onlineUsers={onlineUsers}
             recipient={recipient}
-            profileUrl={profileUrl.current}
           />
         )}
         <div className="w-full flex-1 flex flex-col  justify-center h-full ">
