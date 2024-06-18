@@ -18,6 +18,9 @@ import React, { FormEvent, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 import { Search } from "lucide-react";
+import { TUserSchema } from "@/lib/types/schema";
+import { createUrl } from "@/util/file";
+import { initials } from "@/lib/utils";
 
 function SearchSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -71,34 +74,40 @@ function SearchSideBar() {
       </div>
       {searchPanel.enabled && searchResult && (
         <div className="w-full bg-neutral-100 shadow-lg rounded-lg absolute top-[3rem] border-neutral-300 border-t-0 rounded-t-none border-2">
-          {searchResult.map((result: any, key: any) => (
-            <>
-              <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
-                <Avatar>
-                  <AvatarImage
-                    src={
-                      result.profilePicture ?? "https://imgur.com/0omjre2.png"
-                    }
-                    alt="@username"
-                    className="bg-center self-center"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col flex-1">
-                  <span>{result.firstName + " " + result.lastName}</span>
-                  <span className="text-sm text-neutral-500">
-                    {result.bio ?? "This is a test Bio"}
-                  </span>
+          {searchResult.map((result: TUserSchema, key: any) => {
+            const profileUrl = createUrl(
+              result.profilePicture.base64,
+              result.profilePicture.type
+            );
+            return (
+              <>
+                <div className="hover:bg-neutral-50 p-2 rounded-md flex items-center gap-3 cursor-pointer">
+                  <Avatar>
+                    <AvatarImage
+                      src={profileUrl}
+                      alt="@username"
+                      className="bg-center self-center object-cover"
+                    />
+                    <AvatarFallback>
+                      {initials(result.firstName, result.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col flex-1">
+                    <span>{result.firstName + " " + result.lastName}</span>
+                    <span className="text-sm text-neutral-500">
+                      {result.bio ?? "This is a test Bio"}
+                    </span>
+                  </div>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() => handleChatClick(result._id as string)}
+                  >
+                    Chat
+                  </Button>
                 </div>
-                <Button
-                  variant={"ghost"}
-                  onClick={() => handleChatClick(result._id)}
-                >
-                  Chat
-                </Button>
-              </div>
-            </>
-          ))}
+              </>
+            );
+          })}
         </div>
       )}
     </div>

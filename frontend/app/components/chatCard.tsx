@@ -25,7 +25,7 @@ function ChatCard({
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src={profilePicture ?? "https://imgur.com/0omjre2.png"}
+            src={profilePicture ?? "https://imgur.com/mkrjkrY.png"}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"

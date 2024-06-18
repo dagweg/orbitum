@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
-import React, { Ref, useState } from "react";
+import React, { Ref, useRef, useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 import EmojiPicker from "emoji-picker-react";
 import { cn } from "@/lib/utils";
+import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 
 function ChatTextArea({
   chatTextAreaRef,
@@ -26,10 +27,20 @@ function ChatTextArea({
     enabled: false,
   });
 
+  const emojiRef = useRef<HTMLDivElement>(null);
+  const emojiRefHandleClickOutside = () => {
+    setEmojiPane({
+      ...emojiPane,
+      enabled: false,
+    });
+  };
+  useClickOutsideObserver(emojiRef, emojiRefHandleClickOutside);
+
   return (
     <>
       <div className="flex flex-col w-full  sticky  bottom-0 ">
         <div
+          ref={emojiRef}
           className={cn(
             "relative max-w-[700px] w-full mx-auto duration-100 ease-out",
             emojiPane.enabled ? "scale-y-1" : "scale-y-0"

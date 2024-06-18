@@ -43,62 +43,64 @@ function AvatarWrapper({
     }
 
   return (
-    <div
-      className={cn(
-        `flex items-start justify-start gap-2 ${background}  rounded-lg ${className}`
-      )}
-    >
-      {!noavatar && (
-        <Avatar
-          className={cn(
-            size == "small"
-              ? "h-12 w-12"
-              : size == "medium"
-              ? "h-20 w-20"
-              : size == "large"
-              ? "h-32 w-32"
-              : "h-12 w-12",
-            "overflow-hidden rounded-full"
-          )}
-        >
-          <AvatarImage src={src} alt={alt} />
-          <AvatarFallback>{fallback}</AvatarFallback>
-        </Avatar>
-      )}
+    <div className="relative">
       <div
         className={cn(
-          "flex flex-col",
-          name.length > 0 || date !== undefined || summary.length > 0
-            ? "visible"
-            : "hidden"
+          `relative  z-10 flex items-start justify-start gap-2 ${background}  rounded-lg ${className}`
         )}
       >
-        <span
+        {!noavatar && (
+          <Avatar
+            className={cn(
+              size == "small"
+                ? "h-12 w-12"
+                : size == "medium"
+                ? "h-20 w-20"
+                : size == "large"
+                ? "h-32 w-32"
+                : "h-12 w-12",
+              "overflow-hidden rounded-full"
+            )}
+          >
+            <AvatarImage src={src} alt={alt} />
+            <AvatarFallback>{fallback}</AvatarFallback>
+          </Avatar>
+        )}
+        <div
           className={cn(
-            (name.length == 0 || chatType === "private") && "hidden"
+            "flex flex-col",
+            name.length > 0 || date !== undefined || summary.length > 0
+              ? "visible"
+              : "hidden"
           )}
         >
-          {name}
-        </span>
-        <span
-          className={cn(
-            "text-[10pt] opacity-70 ",
-            (date === undefined || summary.length > 0) && "hidden"
-          )}
-        >
-          {date
-            ? dateModif
-            : new Date().toDateString().split(" ").slice(1, 4).join(" ")}
-        </span>
+          <span
+            className={cn(
+              (name.length == 0 || chatType === "private") && "hidden"
+            )}
+          >
+            {name}
+          </span>
+          <span
+            className={cn(
+              "text-[10pt] opacity-70 ",
+              (date === undefined || summary.length > 0) && "hidden"
+            )}
+          >
+            {date
+              ? dateModif
+              : new Date().toDateString().split(" ").slice(1, 4).join(" ")}
+          </span>
 
-        <span
-          className={cn(
-            `text-sm font-light ${lineClamp} max-w-prose`,
-            summary.length <= 0 && "hidden"
-          )}
-        >
-          {summary}
-        </span>
+          <span
+            className={cn(
+              `text-sm  ${lineClamp} max-w-prose flex flex-col gap-[-1px]`,
+              summary.length <= 0 && "hidden"
+            )}
+          >
+            {summary}
+          </span>
+        </div>
       </div>
     </div>
   );

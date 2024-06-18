@@ -26,7 +26,9 @@ export async function searchChatSidebar(req: Request, res: Response) {
         },
         { email: { $ne: email } },
       ],
-    }).select("-password");
+    })
+      .select("-password")
+      .populate("profilePicture");
 
     return res.status(200).json(users);
   } catch (error) {

@@ -56,6 +56,7 @@ export const UserSchema = z.object({
   channelMemberships: z.array(z.string()).optional(),
   posts: z.array(z.string()).optional(),
   stories: z.array(z.string()).optional(),
+  bio: z.string().optional(),
 });
 
 export const UserSchemaRefined = UserSchema.refine(

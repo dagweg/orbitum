@@ -35,3 +35,7 @@ export function getCookie(cname: string, cookies: string) {
 export function contains(str: string, arr: string[]) {
   return arr.some((el) => str.includes(el));
 }
+
+export function initials(firstname: string, lastname: string) {
+  return firstname[0] + lastname[0];
+}
