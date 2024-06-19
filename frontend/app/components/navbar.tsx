@@ -74,30 +74,6 @@ export default function Navbar() {
     dispatch(fetchUser());
   }, []);
 
-  const links = [
-    {
-      href: "/site/feed",
-      label: "Home",
-      icon: <Home />,
-    },
-    {
-      href: "/site/chat",
-      label: "Chat",
-      onClick: handleChatClick,
-      icon: <MessageCircle />,
-    },
-    {
-      href: "/site/notifications",
-      label: "Notifications",
-      icon: <Bell />,
-    },
-    {
-      href: "#",
-      label: "You",
-      icon: <User />,
-    },
-  ];
-
   const handleLogout = () => {
     dialogTriggerRef.current?.click();
   };
@@ -173,55 +149,56 @@ export default function Navbar() {
               Alpha Release
             </span>
           </div>
+
           <NavigationMenu className="!relative">
             <NavigationMenuList className=" relative ">
-              {links.map((link, key) => {
-                if (link.href === "#") {
-                  let node;
-                  switch (link.label) {
-                    case "You":
-                      node = user.map((usr, key) => (
-                        <NavItem key={usr.title}>
-                          {usr.icon}
-                          <ListItem
-                            key={usr.title}
-                            title={usr.title}
-                            href={usr.href}
-                            onClick={usr.onClick}
-                          ></ListItem>
-                        </NavItem>
-                        // <Link href={usr.href} className="hover:underline">
-                        //   {usr.title}
-                        // </Link>
-                      ));
-                      break;
-                    default:
-                      break;
-                  }
-                  return (
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger title={link.label}>
-                        {link.icon}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] !z-[1000] relative">
-                          {node}
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  );
-                }
-                return (
-                  <Link
-                    href={link.href}
-                    className=" px-4 rounded-md py-2 hover:bg-white duration-100 ease-in-out"
-                    onClick={link.onClick}
-                    title={link.label}
-                  >
-                    {link.icon}
-                  </Link>
-                );
-              })}
+              <Link
+                href={"/site/feed"}
+                className=" px-4 rounded-md py-2 hover:bg-white duration-100 ease-in-out"
+                title={"Feed"}
+              >
+                <Home />
+              </Link>
+              <Link
+                href={"/site/chat"}
+                className=" px-4 rounded-md py-2 hover:bg-white duration-100 ease-in-out"
+                title={"Chat"}
+                onClick={handleChatClick}
+              >
+                <MessageCircle />
+              </Link>
+              <Link
+                href={"/site/notifications"}
+                className=" px-4 rounded-md py-2 relative hover:bg-white duration-100 ease-in-out"
+                title={"Notifications"}
+              >
+                <div className="relative ">
+                  <Bell />
+                  <div className="bg-red-500 max-w-fit h-[15px] p-[2px] w-fit max-h-[15px] min-w-[15px] min-h-[15px] font-opensans font-semibold border-[2px] flex items-center justify-center border-neutral-100 rounded-md text-[7pt]  text-white absolute top-[-3px] right-0">
+                    5
+                  </div>
+                </div>
+              </Link>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger title={"You"}>
+                  {<User />}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] !z-[1000] relative">
+                    {user.map((usr, key) => (
+                      <NavItem key={usr.title}>
+                        {usr.icon}
+                        <ListItem
+                          key={usr.title}
+                          title={usr.title}
+                          href={usr.href}
+                          onClick={usr.onClick}
+                        ></ListItem>
+                      </NavItem>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>

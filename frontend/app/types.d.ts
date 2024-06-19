@@ -90,7 +90,7 @@ export type TChatSideBarPerson = {
   firstName: string;
   lastName: string;
   profilePicture: TProfilePic;
-  recentMessage: { content: string };
+  recentMessage: { content: string; date: Date };
 };
 
 export type TImage = {

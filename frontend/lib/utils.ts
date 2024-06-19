@@ -39,3 +39,11 @@ export function contains(str: string, arr: string[]) {
 export function initials(firstname: string, lastname: string) {
   return firstname[0] + lastname[0];
 }
+
+// returns the date as HH:MM AM/PM
+export function getTime2(date: Date) {
+  let dateTimeSplit = date.toLocaleTimeString().split(":");
+  return Array.prototype
+    .concat(dateTimeSplit.slice(0, 2).join(":"), dateTimeSplit[2].split(" ")[1])
+    .join(" ");
+}

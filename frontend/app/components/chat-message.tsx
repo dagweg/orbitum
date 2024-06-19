@@ -1,7 +1,8 @@
-import { cn } from "@/lib/utils";
+import { cn, getTime2 } from "@/lib/utils";
 import { TChatProps } from "../types";
 import AvatarWrapper from "./avatar-wrapper";
 import { send } from "process";
+import { Check, CheckCheck, Clock, Timer } from "lucide-react";
 
 function ChatMessage({
   name,
@@ -11,10 +12,7 @@ function ChatMessage({
   date,
 }: TChatProps) {
   let dateModif = new Date(date?.toString() as string);
-  let dateTimeSplit = dateModif.toLocaleTimeString().split(":");
-  let dateTime = Array.prototype
-    .concat(dateTimeSplit.slice(0, 2).join(":"), dateTimeSplit[2].split(" ")[1])
-    .join(" ");
+  let dateTime = getTime2(dateModif);
 
   return (
     <div
@@ -34,13 +32,17 @@ function ChatMessage({
           name={name}
           lineClamp="line-clamp-none"
           summary={message}
-          className="p-2 !bg-white rounded-lg ring-neutral-200 w-fit z-0 "
+          className="p-2 pb-4 !bg-white rounded-lg ring-neutral-200 w-fit z-0 "
           chatType={chatType}
           sender={sender}
           date={dateModif}
           dateType="timeAgo"
         />
-
+        <span className="absolute bottom-[18px] px-2 flex flex-col items-center justify-center text-[8pt]  ">
+          <CheckCheck className="seen" size={13} opacity={0.5} />
+          {/* <Check className="sent" size={13} opacity={0.5} /> */}
+          {/* <Clock className="pending" size={10} opacity={0.5} /> */}
+        </span>
         <span
           className={cn(
             "font-light text-xs opacity-50 w-full px-1",

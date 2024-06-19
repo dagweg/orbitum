@@ -73,7 +73,7 @@ function ChatSideBar() {
   }
 
   const { people } = sideBar.chat;
-
+  console.log(people);
   useSocket("users:connected", (data) => {
     dispatch(setOnlineUsers(data));
   });
@@ -94,6 +94,7 @@ function ChatSideBar() {
               <ChatCard
                 name={person.firstName + " " + person.lastName}
                 recentMessage={person.recentMessage.content}
+                date={person.recentMessage.date}
                 profilePicture={
                   person.profilePicture
                     ? createUrl(

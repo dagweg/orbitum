@@ -27,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import CommentCard from "./comment-card";
 import { TImagePost, TUser } from "../types";
 import ImageGallery from "./image-gallery";
+import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
 
 type TComment = {
   name: string;
@@ -162,11 +163,12 @@ export default function Post({
               className="flex items-center gap-3"
               onClick={() => handleLike()}
             >
-              <ThumbsUp
+              {liked ? <FaThumbsUp size={18} /> : <FaRegThumbsUp size={18} />}
+              {/* <ThumbsUp
                 className={cn({
                   "text-green-700": liked,
                 })}
-              />
+              /> */}
               {liked ? "Liked" : "Like"}
             </Button>
             <Button

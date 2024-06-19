@@ -1,18 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 import OnlineIndicator from "./online-indicator";
+import { getTime2 } from "@/lib/utils";
 
 type TChatCardProps = {
   name: string;
   recentMessage?: string;
   profilePicture?: string;
   isOnline?: boolean;
+  date: Date;
   onClick?: () => void;
 };
 
 function ChatCard({
   name,
   recentMessage,
+  date,
   profilePicture,
   isOnline = false,
   onClick,
@@ -36,10 +39,11 @@ function ChatCard({
           <OnlineIndicator className="left-[-4px] top-[0px] right-auto" />
         )}
       </div>
-      <div className="">
+      <div className="w-full">
         <div className="font-workSans opacity-70">{name}</div>
-        <p className="opacity-40 text-sm font-lato w-full line-clamp-1">
-          {recentMessage ?? "Recent Message is hidden"}
+        <p className="opacity-40 text-sm font-lato w-full line-clamp-1 flex justify-between ">
+          <span>{recentMessage ?? "Recent Message is hidden"}</span>
+          <span className="text-xs ">{getTime2(new Date(date as any))}</span>
         </p>
       </div>
     </div>
