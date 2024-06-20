@@ -15,6 +15,12 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 export type MessageDocument = InferSchemaType<typeof messageSchema>;

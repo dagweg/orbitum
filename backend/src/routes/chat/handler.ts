@@ -4,8 +4,13 @@ import { validateSession } from "../../middlewares/validateSession";
 import { getPrivateChats } from "./getPrivateChats";
 import { getPrivateChat } from "./getPrivateChat";
 import { validateGETRequestSchema } from "../../middlewares/validateGETRequestSchema";
-import { GetPrivateChatSchema } from "../../validators/chat.validation";
+import {
+  GetPrivateChatSchema,
+  ViewMessageSchema,
+} from "../../validators/chat.validation";
 import { getAllChats } from "./getAllChat";
+import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
+import { viewMessage } from "../../controllers/chat/viewMessage";
 
 export default function chatRouteHandler(): Router {
   const router = express.Router();
@@ -20,6 +25,13 @@ export default function chatRouteHandler(): Router {
   );
 
   router.get("/all", getAllChats);
+
+  /** Handles viewing a message */
+  router.post(
+    "/viewMessage/",
+    validatePOSTRequestSchema(ViewMessageSchema),
+    viewMessage
+  );
 
   return router;
 }

@@ -48,12 +48,12 @@ export default function userRouteHandler(): Router {
   /** GET ALL POSTS THE USER HAS POSTED TILL NOW */
   router.get("/post", validateSession, getAllUserPosts);
 
+  /** Updates the profile picture of a user */
   router.put(
     "/settings/profile",
     validateSession,
     validatePUTRequestSchema(ProfilePicSchema),
     changeProfilePicture
   );
-
   return router;
 }
