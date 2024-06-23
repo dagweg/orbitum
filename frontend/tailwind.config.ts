@@ -12,9 +12,9 @@ const config = {
   theme: {
     fontFamily: {
       lemonMilk: ["var(--font-lemonmilk)"],
-      openSans: ["'Open Sans'", "sans-serif"],
-      lato: ["'Lato'", "sans-serif"],
-      workSans: ["'Work Sans", "sans-serif"],
+      openSans: ['"Open Sans"', "sans-serif"],
+      lato: ['"Lato"', "sans-serif"],
+      workSans: ['"Work Sans"', "sans-serif"],
     },
     container: {
       center: true,

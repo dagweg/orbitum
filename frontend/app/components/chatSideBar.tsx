@@ -92,6 +92,7 @@ function ChatSideBar() {
           people.map((person: TChatSideBarPerson, index: number) => {
             return (
               <ChatCard
+                key={index}
                 name={person.firstName + " " + person.lastName}
                 recentMessage={person.recentMessage.content}
                 date={person.recentMessage.date}

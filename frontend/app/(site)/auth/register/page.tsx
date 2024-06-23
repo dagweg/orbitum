@@ -45,7 +45,6 @@ function Register() {
       firstName: "Dagmawi",
       lastName: "Tefera",
       password: "abcd1234@A",
-      // phoneNumber: "+251993508272",
       confirmPassWord: "abcd1234@A",
       email: "dagtef@gmail.com",
     },

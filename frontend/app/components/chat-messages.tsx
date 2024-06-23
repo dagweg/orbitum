@@ -10,6 +10,7 @@ function ChatMessages({ messages }: { messages: TMessageSchema[] }) {
       {messages &&
         messages.map((message: TMessageSchema, index) => (
           <ChatMessage
+            key={index}
             name={message.sender.userName}
             message={message.content as string}
             sender={message.you ? "you" : "default"}

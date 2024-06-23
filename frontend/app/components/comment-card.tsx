@@ -2,6 +2,7 @@ import React from "react";
 import { TUser } from "../types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dot } from "lucide-react";
+import { createUrl } from "@/util/file";
 
 type Props = {
   user: TUser;
@@ -12,13 +13,15 @@ type Props = {
 function CommentCard({ user, text, createdAt }: Props) {
   console.log(Date.now());
   const createdAtTime = new Date(createdAt).toDateString().slice(0, 15);
-
+  const profilePic = user.profilePicture
+    ? createUrl(user.profilePicture.base64, user.profilePicture.type)
+    : undefined;
   return (
     <div className={`flex  gap-2 p-2 h-fit   rounded-sm bg-neutral-50   `}>
       <div className="relative h-full flex items-start">
         <Avatar>
           <AvatarImage
-            src={user.profilePicture ?? "https://imgur.com/cAy8VXf.png"}
+            src={profilePic ?? "https://imgur.com/cAy8VXf.png"}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"

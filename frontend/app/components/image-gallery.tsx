@@ -76,7 +76,7 @@ const ImageGallery = ({ images }: { images: TImagePost[] }) => {
           <Carousel className="h-screen m-2  flex items-center justify-center">
             <CarouselContent>
               {images.map((image, key) => (
-                <CarouselItem className="w-[100px]">
+                <CarouselItem className="w-[100px]" key={key}>
                   <Image
                     src={image.url}
                     alt={`image-${key}`}

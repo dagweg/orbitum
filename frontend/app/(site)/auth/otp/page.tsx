@@ -23,7 +23,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export default function OtpPage() {
@@ -34,12 +34,19 @@ export default function OtpPage() {
   const goBackRef = useRef<HTMLButtonElement>(null);
   const resendRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
-  const params = useSearchParams();
-  const token = params.get("jwt");
+  // const params = useSearchParams();
+  // const token = params.get("jwt");
+  const [token, setToken] = useState<string | null>(null);
 
   const [email, setEmail] = useState("");
   const [verified, setVerified] = useState(false);
   const dialogRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setToken(new URLSearchParams(window.location.search).get("jwt"));
+    }
+  }, []);
 
   /**
    *  Handling token verification & authorization

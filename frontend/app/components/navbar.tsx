@@ -72,7 +72,7 @@ export default function Navbar() {
 
   React.useLayoutEffect(() => {
     dispatch(fetchUser());
-  }, []);
+  }, [dispatch]);
 
   const handleLogout = () => {
     dialogTriggerRef.current?.click();

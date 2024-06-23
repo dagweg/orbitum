@@ -244,6 +244,7 @@ function CommentSection({
             </span>
             {comments.map((comment: any, key: number) => (
               <CommentCard
+                key={key}
                 user={comment.user as TUser}
                 text={comment.text}
                 createdAt={comment.createdAt}

@@ -55,16 +55,6 @@ export default function PostInput() {
         videos,
       })
     );
-    // fetch(`${API_ORIGIN}/api/v1/post`, {
-    //   method: "POST",
-    //   credentials: "include",
-    //   body: formData,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then(async (res) => {
-    //   const data = await res.json();
-    // });
   }
 
   function handleFileChange(fileList: FileList) {
