@@ -54,6 +54,7 @@ function ChatArea() {
   });
 
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const chatMessagesRef = useRef<HTMLDivElement>(null);
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setMessage(e.currentTarget.value);
@@ -110,7 +111,7 @@ function ChatArea() {
 
   function handleMessageSend() {
     console.log(message);
-
+    setMessage("");
     if (chatArea.currentChat) {
       socket.emit("chat:sendMessage", {
         to: chatArea.currentChat.recipientId,
@@ -144,6 +145,12 @@ function ChatArea() {
 
   let recipient = chatArea.currentChat?.recipient;
 
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <>
       <div
@@ -162,13 +169,13 @@ function ChatArea() {
             recipient={recipient}
           />
         )}
-        <div className="w-full flex-1 flex flex-col  justify-center h-full ">
+        <div className="w-full  flex-1 flex flex-col  justify-center h-full ">
           {!messages ? (
             <Badge className="mx-auto text-base rounded-sm bg-neutral-600 text-white">
               Get started by selecting a chat
             </Badge>
           ) : (
-            <div className="h-full  flex flex-col gap-3">
+            <div className="h-full flex-1 flex flex-col gap-3">
               {messages.length === 0 ? (
                 <div className="flex-1  flex flex-col gap-3 justify-center items-center ">
                   <Image
@@ -181,11 +188,16 @@ function ChatArea() {
                   Get started by saying hi.
                 </div>
               ) : (
-                <section className="h-full  overflow-y-scroll no-scrollbar p-2 mb-[50px]">
+                <section
+                  ref={chatMessagesRef}
+                  className="h-full  overflow-y-scroll overflow-x-clip no-scrollbar  mb-[50px]"
+                >
                   <ChatMessages messages={messages} />
                 </section>
               )}
               <ChatTextArea
+                message={message}
+                setMessage={setMessage}
                 chatTextAreaRef={chatTextAreaRef}
                 handleMessageSend={handleMessageSend}
                 handleTextAreaChange={handleTextAreaChange}

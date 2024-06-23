@@ -1,12 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Mic, Paperclip, SendHorizontal, Smile } from "lucide-react";
-import React, { Ref, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  Ref,
+  RefObject,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 
 function ChatTextArea({
+  message,
+  setMessage,
   chatTextAreaRef,
   handleTextAreaChange,
   handleTextAreaKeyDown,
@@ -14,7 +24,9 @@ function ChatTextArea({
   hasStartedTyping,
   handleMessageSend,
 }: {
-  chatTextAreaRef: Ref<HTMLTextAreaElement>;
+  message: string;
+  setMessage: Dispatch<SetStateAction<string>>;
+  chatTextAreaRef: RefObject<HTMLTextAreaElement>;
   handleTextAreaChange: (e: any) => void;
   handleTextAreaKeyDown: (e: any) => void;
   handleTextAreaKeyUp: (e: any) => void;
@@ -36,6 +48,11 @@ function ChatTextArea({
   };
   useClickOutsideObserver(emojiRef, emojiRefHandleClickOutside);
 
+  const handleEmojiClick = (e: EmojiClickData) => {
+    const message = chatTextAreaRef.current;
+    setMessage(message?.value + e.emoji);
+  };
+
   return (
     <>
       <div className="flex flex-col w-full  sticky  bottom-0 ">
@@ -46,7 +63,10 @@ function ChatTextArea({
             emojiPane.enabled ? "scale-y-1" : "scale-y-0"
           )}
         >
-          <EmojiPicker className="!absolute bottom-0 right-0 z-[1000]" />
+          <EmojiPicker
+            className="!absolute bottom-0 right-0 z-[1000]"
+            onEmojiClick={(e) => handleEmojiClick(e)}
+          />
         </div>
 
         <section className=" pb-2     w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
@@ -62,6 +82,7 @@ function ChatTextArea({
               ref={chatTextAreaRef}
               className=" outline-none rounded-lg no-scrollbar md:scrollbar resize-none"
               placeholder="Type a message"
+              value={message}
               onChange={(e) => handleTextAreaChange(e)}
               onKeyDown={(e) => handleTextAreaKeyDown(e)}
               onKeyUp={(e) => handleTextAreaKeyUp(e)}
@@ -81,7 +102,11 @@ function ChatTextArea({
                   onClick={hasStartedTyping.you ? handleMessageSend : () => {}}
                   variant={"circleGhost"}
                 >
-                  {hasStartedTyping.you ? <SendHorizontal /> : <Mic />}
+                  {hasStartedTyping.you || message.length > 0 ? (
+                    <SendHorizontal />
+                  ) : (
+                    <Mic />
+                  )}
                 </Button>
               </div>
             </div>

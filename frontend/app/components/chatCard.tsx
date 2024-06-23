@@ -41,9 +41,13 @@ function ChatCard({
       </div>
       <div className="w-full">
         <div className="font-workSans opacity-70">{name}</div>
-        <p className="opacity-40 text-sm font-lato w-full line-clamp-1 flex justify-between ">
-          <span>{recentMessage ?? "Recent Message is hidden"}</span>
-          <span className="text-xs ">{getTime2(new Date(date as any))}</span>
+        <p className="opacity-40 text-sm  w-full  flex justify-between ">
+          <span className="!line-clamp-1 flex-1">
+            {recentMessage ?? "Recent Message is hidden"}
+          </span>
+          <span className="text-xs w-fit">
+            {getTime2(new Date(date as any))}
+          </span>
         </p>
       </div>
     </div>
