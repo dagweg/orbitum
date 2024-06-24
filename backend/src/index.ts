@@ -36,10 +36,21 @@ app.use(
     origin: [
       process.env.CLIENT_ORIGIN,
       "http://localhost:3000",
-      "https://orbitum.vercel.app/",
       "https://orbitum.vercel.app",
+      "https://orbitum.vercel.app/",
     ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+      "X-Auth-Token",
+    ],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 app.use(express.json({ limit: "10mb" }));
