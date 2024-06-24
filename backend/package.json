@@ -1,8 +1,8 @@
 {
   "scripts": {
     "start": "nodemon --files src/index.ts",
-    "build": "tsc ",
-    "serve": "node dist/index.js"
+    "build": "pnpm tsc",
+    "serve": "node dist/index.ts"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",
