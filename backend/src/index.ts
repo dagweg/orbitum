@@ -27,9 +27,6 @@ const router = express.Router();
 
 const port = process.env.PORT || 5000;
 
-// Socket.IO
-socketHandler(server);
-
 // middlewares
 app.use(
   cors({
@@ -70,6 +67,9 @@ app.use("/api/v1/comment", commentRouteHandler());
 app.get("/api/v1/mock/conversations", (req: Request, res: Response) => {
   return res.json(createConversations());
 });
+
+// Socket.IO
+socketHandler(server);
 
 server.listen(port, () => {
   console.log("LISTENING ON PORT ", port);
