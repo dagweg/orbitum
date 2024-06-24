@@ -33,7 +33,12 @@ socketHandler(server);
 // middlewares
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN,
+    origin: [
+      process.env.CLIENT_ORIGIN,
+      "http://localhost:3000",
+      "https://orbitum.vercel.app/",
+      "https://orbitum.vercel.app",
+    ],
     credentials: true,
   })
 );
