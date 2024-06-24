@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "nodemon --files src/index.ts",
-    "build": "pnpm tsc",
+    "build": "npm install --global typescript && pnpm tsc",
     "serve": "node dist/index.ts"
   },
   "dependencies": {
