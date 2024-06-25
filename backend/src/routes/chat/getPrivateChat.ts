@@ -18,13 +18,18 @@ export async function getPrivateChat(req: Request, res: Response) {
     })
       .populate({
         path: "messages",
-        populate: {
-          path: "sender",
-          select: "firstName lastName userName email _id profilePicture",
-          populate: {
-            path: "profilePicture",
+        populate: [
+          {
+            path: "sender",
+            select: "firstName lastName userName email _id profilePicture",
+            populate: {
+              path: "profilePicture",
+            },
           },
-        },
+          {
+            path: "views",
+          },
+        ],
       })
       .populate({
         path: "user1",

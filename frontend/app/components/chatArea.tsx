@@ -29,10 +29,11 @@ import { Button } from "@/components/ui/button";
 import { PulseLoader, SyncLoader } from "react-spinners";
 import OnlineIndicator from "./online-indicator";
 import ChatWallpaper from "./chat-wallpaper";
-import ChatUserBanner from "./chat-user-banner";
+import ChatHeader from "./chat-header";
 import ChatTextArea from "./chat-text-area";
 import ChatMessages from "./chat-messages";
 import { createUrl } from "@/util/file";
+import { useChatSocket } from "../hooks/useChatSocket";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -42,19 +43,26 @@ function ChatArea() {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const { hasStartedTyping, refreshChat, setHasStartedTyping } =
+    useChatSocket();
+
   const messages = chatArea.currentChat
     ? chatArea.currentChat.messages
     : undefined;
 
   const [message, setMessage] = useState<string>("");
 
-  const [hasStartedTyping, setHasStartedTyping] = useState({
-    you: false,
-    recipient: false,
-  });
-
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
+
+  let keys = {
+    enter: false,
+    leftShift: false,
+  };
+
+  const typingTimeout = useRef(setTimeout(() => {}));
+
+  let recipient = chatArea.currentChat?.recipient;
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setMessage(e.currentTarget.value);
@@ -67,11 +75,6 @@ function ChatArea() {
       to: chatArea.currentChat?.recipientId,
     });
   }
-
-  let keys = {
-    enter: false,
-    leftShift: false,
-  };
 
   function handleTextAreaKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.code === "Enter") {
@@ -100,15 +103,6 @@ function ChatArea() {
     }
   }
 
-  function refreshChat() {
-    if (chatArea.currentChat)
-      dispatch(
-        setCurrentChat({
-          id: chatArea.currentChat.recipientId,
-        })
-      );
-  }
-
   function handleMessageSend() {
     console.log(message);
     setMessage("");
@@ -122,12 +116,12 @@ function ChatArea() {
     }
   }
 
+  function handleMicRecord() {}
+
   useSocket("chat:receiveMessage", ({ from, message }) => {
     console.log("You have recieved message: ", message, " from ", from);
     refreshChat();
   });
-
-  const typingTimeout = useRef(setTimeout(() => {}));
 
   useSocket("chat:type", (from) => {
     console.log("tyPING", from);
@@ -142,8 +136,6 @@ function ChatArea() {
       setHasStartedTyping((prev) => ({ ...prev, recipient: false }));
     }, 1000);
   });
-
-  let recipient = chatArea.currentChat?.recipient;
 
   useEffect(() => {
     if (chatMessagesRef.current) {
@@ -162,40 +154,21 @@ function ChatArea() {
         )}
       >
         {/* <ChatWallpaper wallpaper={abstract} /> */}
-        {messages && messages.length !== 0 && (
-          <ChatUserBanner
-            hasStartedTyping={hasStartedTyping}
-            onlineUsers={onlineUsers}
-            recipient={recipient}
-          />
-        )}
+        <ChatHeader
+          messages={messages}
+          hasStartedTyping={hasStartedTyping}
+          onlineUsers={onlineUsers}
+          recipient={recipient}
+        />
         <div className="w-full  flex-1 flex flex-col  justify-center h-full ">
-          {!messages ? (
-            <Badge className="mx-auto text-base rounded-sm bg-neutral-600 text-white">
-              Get started by selecting a chat
-            </Badge>
-          ) : (
-            <div className="h-full flex-1 flex flex-col gap-3">
-              {messages.length === 0 ? (
-                <div className="flex-1  flex flex-col gap-3 justify-center items-center ">
-                  <Image
-                    src={"https://imgur.com/wnW8YPI.png"}
-                    className="rounded-lg "
-                    width={200}
-                    height={200}
-                    alt="ola"
-                  ></Image>
-                  Get started by saying hi.
-                </div>
-              ) : (
-                <section
-                  ref={chatMessagesRef}
-                  className="h-full  overflow-y-scroll overflow-x-clip no-scrollbar  mb-[50px]"
-                >
-                  <ChatMessages messages={messages} />
-                </section>
-              )}
+          <div className="h-full flex-1 flex flex-col gap-3">
+            <ChatMessages
+              chatMessagesRef={chatMessagesRef}
+              messages={messages}
+            />
+            {messages && (
               <ChatTextArea
+                handleMicRecord={handleMicRecord}
                 message={message}
                 setMessage={setMessage}
                 chatTextAreaRef={chatTextAreaRef}
@@ -205,8 +178,8 @@ function ChatArea() {
                 handleTextAreaKeyUp={handleTextAreaKeyUp}
                 hasStartedTyping={hasStartedTyping}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </>

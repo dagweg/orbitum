@@ -11,6 +11,9 @@ export async function getAllPosts(req: Request, res: Response) {
         path: "comments",
         populate: {
           path: "user",
+          populate: {
+            path: "profilePicture",
+          },
         },
       })
       .populate("images")

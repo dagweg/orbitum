@@ -23,6 +23,7 @@ function ChatTextArea({
   handleTextAreaKeyUp,
   hasStartedTyping,
   handleMessageSend,
+  handleMicRecord,
 }: {
   message: string;
   setMessage: Dispatch<SetStateAction<string>>;
@@ -34,6 +35,7 @@ function ChatTextArea({
     you: boolean;
   };
   handleMessageSend: () => void;
+  handleMicRecord: () => void;
 }) {
   const [emojiPane, setEmojiPane] = useState({
     enabled: false,
@@ -69,8 +71,8 @@ function ChatTextArea({
           />
         </div>
 
-        <section className=" pb-2     w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
-          <div className="h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto ring-1 max-w-[700px]  ring-neutral-400  rounded-lg">
+        <section className=" pb-2  w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
+          <div className="h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto ring-1 max-w-[700px]  focus-within:ring-2 ring-neutral-400 duration-200 ease-in  rounded-lg">
             <div className="h-full flex flex-col-reverse items-end">
               <Button variant={"circleGhost"}>
                 <Paperclip className="" />
@@ -99,14 +101,24 @@ function ChatTextArea({
                   <Smile />
                 </Button>
                 <Button
-                  onClick={hasStartedTyping.you ? handleMessageSend : () => {}}
+                  onClick={
+                    hasStartedTyping.you ? handleMessageSend : handleMicRecord
+                  }
                   variant={"circleGhost"}
                 >
-                  {hasStartedTyping.you || message.length > 0 ? (
-                    <SendHorizontal />
-                  ) : (
-                    <Mic />
-                  )}
+                  <SendHorizontal
+                    className={cn(
+                      "scale-0 w-0 duration-200 ease-in",
+                      (hasStartedTyping.you || message.length > 0) &&
+                        "scale-100 w-auto"
+                    )}
+                  />
+                  <Mic
+                    className={cn(
+                      "scale-100 w-auto duration-200 ease-in",
+                      hasStartedTyping.you && "scale-0 w-0"
+                    )}
+                  />
                 </Button>
               </div>
             </div>
