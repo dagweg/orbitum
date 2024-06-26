@@ -19,3 +19,13 @@ export function createUrl(base64: string, type: string) {
     console.log((error as Error).message);
   }
 }
+
+export function arrayBuffertoBase64(arrayBuffer: ArrayBuffer) {
+  let uint8array = new Uint8Array(arrayBuffer);
+  let binary = "";
+  const binaryLength = uint8array.length;
+  for (let i = 0; i < binaryLength; i++) {
+    binary += String.fromCharCode(uint8array[i]);
+  }
+  return btoa(binary);
+}

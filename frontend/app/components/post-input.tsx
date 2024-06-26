@@ -28,6 +28,8 @@ import { TImage, TVideo } from "../types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { createPost } from "@/lib/redux/slices/post/postThunks";
+import { arrayBuffertoBase64 } from "@/util/file";
+import { usePostInput } from "../hooks/usePostInput";
 
 const FILE_TYPES = ["JPG", "PNG", "GIF"];
 
@@ -41,70 +43,19 @@ export default function PostInput() {
   const [size, setSize] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  function openDialog() {
-    triggerRef.current?.click();
-  }
-
-  function handlePost() {
-    dispatch(
-      createPost({
-        content,
-        images,
-        videos,
-      })
+  const { openDialog, removeImage, handleFileChange, handlePost } =
+    usePostInput(
+      triggerRef,
+      content,
+      images,
+      videos,
+      size,
+      loading,
+      setLoading,
+      setImages,
+      setSize,
+      setVideos
     );
-  }
-
-  function handleFileChange(fileList: FileList) {
-    setSize(Array.from(fileList).length as number);
-    setLoading(true);
-    if (!fileList || fileList.length === 0) {
-      console.error("No files selected");
-      return;
-    }
-
-    let imgs: TImage[] = [];
-    const fileReaderPromise = Array.from(fileList).map((file) => {
-      return new Promise<void>((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.onload = (result) => {
-          const arrayBuffer = result.target?.result as ArrayBuffer;
-          let uint8array = new Uint8Array(arrayBuffer);
-          let binary = "";
-          const binaryLength = uint8array.length;
-          for (let i = 0; i < binaryLength; i++) {
-            binary += String.fromCharCode(uint8array[i]);
-          }
-          imgs.push({
-            name: file.name,
-            type: file.type,
-            base64: btoa(binary),
-            url: URL.createObjectURL(file),
-          });
-          resolve();
-        };
-        fileReader.readAsArrayBuffer(file);
-        fileReader.onerror = (error) => reject(error);
-      });
-    });
-
-    Promise.all(fileReaderPromise)
-      .then(() => {
-        setImages([...images, ...imgs]);
-        console.log(imgs);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log("Error reading files ", error);
-      });
-  }
-
-  function removeImage(key: number) {
-    setImages([...images.filter((image) => image.url !== images[key].url)]);
-  }
 
   return (
     <div>
