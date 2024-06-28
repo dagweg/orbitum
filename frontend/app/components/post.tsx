@@ -28,6 +28,7 @@ import CommentCard from "./comment-card";
 import { TImagePost, TUser } from "../types";
 import ImageGallery from "./image-gallery";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
+import { createUrl } from "@/util/file";
 
 type TComment = {
   name: string;
@@ -120,7 +121,14 @@ export default function Post({
             name={user.userName}
             date={date}
             dateType="both"
-            src=""
+            src={
+              user.profilePicture
+                ? createUrl(
+                    user.profilePicture.base64,
+                    user.profilePicture.type
+                  )
+                : "https://imgur.com/mkrjkrY.png"
+            }
           />
           <Button variant={"ghost"}>
             <Ellipsis />
