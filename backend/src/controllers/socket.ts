@@ -47,6 +47,10 @@ export default function socketHandler(server: any) {
       }
     });
 
+    socket.on("chat:sendAudio", async ({ to, audio }) => {
+      // Send Audio Functionality
+    });
+
     socket.on("chat:type", ({ to }) => {
       console.log("User is typing to ", to);
       const socketId = map.get(to);

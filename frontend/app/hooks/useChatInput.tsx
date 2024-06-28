@@ -140,6 +140,8 @@ export function useChatInput(
       // Stop recording
       setIsRecording(false);
       mediaRecorderRef?.current?.stop();
+
+      // Add the audio to database
     }
 
     return { mouseDown, mouseUp };

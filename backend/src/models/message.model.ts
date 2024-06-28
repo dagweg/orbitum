@@ -11,6 +11,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  audio: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Audio",
+  },
   date: {
     type: Date,
     default: Date.now,

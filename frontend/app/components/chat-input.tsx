@@ -10,7 +10,9 @@ export function ChatInput({
   setMessage: Dispatch<SetStateAction<string>>;
 }) {
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const visualizerRef = useRef();
+
   const {
     audio,
     isRecording,
@@ -25,6 +27,12 @@ export function ChatInput({
 
   return (
     <>
+      {audio && audio.url && (
+        <audio controls>
+          <source src={audio?.url} type="audio/wav"></source>
+          Your browser doesn't support the audio element.
+        </audio>
+      )}
       <ChatTextArea
         audio={audio}
         isRecording={isRecording}

@@ -42,7 +42,7 @@ const postsSchema = new mongoose.Schema({
   videos: [
     {
       type: ObjectId,
-      ref: "PostVideos",
+      ref: "Videos",
     },
   ],
   privacy: {
