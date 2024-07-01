@@ -2,7 +2,7 @@
   "scripts": {
     "start": "nodemon --files src/index.ts",
     "build": "npm install --global typescript && pnpm tsc",
-    "serve": "node dist/index.ts"
+    "serve": "node dist/index.js"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",
