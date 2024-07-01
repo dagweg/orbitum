@@ -10,7 +10,7 @@ export async function getPrivateChat(req: Request, res: Response) {
     console.log("User 1 id ", userId);
     console.log("User 2 id ", user2Id);
 
-    let chats = await PrivateChat.find({
+    const chats = await PrivateChat.find({
       $or: [
         { user1: userId, user2: user2Id },
         { user2: userId, user1: user2Id },
@@ -55,7 +55,7 @@ export async function getPrivateChat(req: Request, res: Response) {
     }
 
     // If there is a chat then return it
-    let ret = chats.map((chat) =>
+    const ret = chats.map((chat) =>
       chat.toObject().messages.map((message: any) => ({
         ...message,
         you: message.sender._id.toString() === userId.toString(),

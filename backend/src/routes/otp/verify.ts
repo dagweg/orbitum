@@ -10,7 +10,7 @@ export async function verifyOTP(req: Request, res: Response) {
 
     if (!inputOtp) return res.status(400).json({ message: "OTP is required" });
 
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({

@@ -7,9 +7,9 @@ import * as jwt from "jsonwebtoken";
 
 export async function registerUser(req: Request, res: Response) {
   try {
-    let userData = req.body as TUserSchema;
+    const userData = req.body as TUserSchema;
 
-    let { otp, otpExpiry } = generateOTP();
+    const { otp, otpExpiry } = generateOTP();
 
     const token = jwt.sign(
       { email: userData.email },
@@ -24,7 +24,7 @@ export async function registerUser(req: Request, res: Response) {
     });
 
     if (user) {
-      let response = {
+      const response = {
         message: "Conflict",
         verified: user.emailVerified,
         token,

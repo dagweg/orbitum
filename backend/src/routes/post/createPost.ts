@@ -9,8 +9,8 @@ export async function createPost(req: Request, res: Response) {
     const { userId } = req.user;
     const { content, images, videos } = req.body;
 
-    let videoIds: Types.ObjectId[] = [];
-    let imageIds: Types.ObjectId[] = [];
+    const videoIds: Types.ObjectId[] = [];
+    const imageIds: Types.ObjectId[] = [];
 
     console.log(images);
     console.log(videos);

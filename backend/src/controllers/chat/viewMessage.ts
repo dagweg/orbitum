@@ -5,8 +5,8 @@ import { Message } from "../../models/message.model";
 
 export async function viewMessage(req: Request, res: Response) {
   try {
-    let { userId } = req.user;
-    let { messageId } = req.body;
+    const { userId } = req.user;
+    const { messageId } = req.body;
 
     const message = await Message.findById(messageId);
 

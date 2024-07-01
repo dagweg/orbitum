@@ -4,7 +4,7 @@ import { Images } from "../../models/image.model";
 
 export async function changeProfilePicture(req: Request, res: Response) {
   try {
-    let { userId } = req.user;
+    const { userId } = req.user;
 
     const { base64, name, type } = req.body;
 

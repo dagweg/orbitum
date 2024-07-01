@@ -2,7 +2,7 @@ import { Server as SocketIOServer } from "socket.io";
 import { validateSocketSession } from "../middlewares/validateSocketSession";
 import sendMessage from "./sendMessage";
 
-let map = new Map();
+const map = new Map();
 
 export default function socketHandler(server: any) {
   const io = new SocketIOServer(server, {

@@ -27,7 +27,7 @@ export async function validateOTPGenerateRequest(
     }
 
     const { token } = validation.data;
-    let decoded = verifyJWT(token);
+    const decoded = verifyJWT(token);
 
     if (!decoded) {
       return res.status(401).json({ message: "Invalid token" });
@@ -35,7 +35,7 @@ export async function validateOTPGenerateRequest(
 
     const email = (decoded as { email: string }).email;
 
-    let user = await User.findOne({
+    const user = await User.findOne({
       email,
     });
 

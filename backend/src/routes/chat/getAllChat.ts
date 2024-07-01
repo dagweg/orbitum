@@ -11,7 +11,7 @@ export async function getAllChats(req: Request, res: Response) {
     // PRIVATE, GROUP and CHANNELS
     // console.log("USER ID ", userId);
 
-    let chats = await PrivateChat.find({
+    const chats = await PrivateChat.find({
       $or: [{ user1: userId }, { user2: userId }],
     })
       .populate({
@@ -31,7 +31,7 @@ export async function getAllChats(req: Request, res: Response) {
       .populate("messages", "content date")
       .exec();
     console.log(chats);
-    let ret = chats.map((chat) => {
+    const ret = chats.map((chat) => {
       const { user1, user2, messages } = chat.toObject();
       const recentMessage = messages.sort(
         (a: any, b: any) => b.date.getTime() - a.date.getTime()

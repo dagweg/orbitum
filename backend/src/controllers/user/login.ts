@@ -10,7 +10,7 @@ export async function loginUser(req: Request, res: Response) {
     const { email, password } = req.body;
 
     // Check if user exists
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
     console.log("👤 USER IS");
     console.log(user);

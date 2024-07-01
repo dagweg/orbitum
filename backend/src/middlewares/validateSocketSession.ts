@@ -17,7 +17,7 @@ export function validateSocketSession(
     return next(new Error("Cookie header cannot be empty"));
   }
 
-  let sessionToken = parseCookie(cookieHeader)[SESSION_TOKEN];
+  const sessionToken = parseCookie(cookieHeader)[SESSION_TOKEN];
 
   // console.log("SESSION TOKEN inside SOCKET.IO ", sessionToken);
 
