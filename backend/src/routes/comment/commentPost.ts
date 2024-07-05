@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Comments } from "../../models/comments.model";
 import { Posts } from "../../models/posts.model";
-import mongoose from "mongoose";
 
 export async function postComment(req: Request, res: Response) {
   try {

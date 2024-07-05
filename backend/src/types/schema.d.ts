@@ -3,7 +3,6 @@ import { UserSchemaRefined } from "../validators/user.validation";
 import { LoginSchema } from "../validators/login.validation";
 import { OTPVerifySchema } from "../validators/otpVerify.validation";
 import { PostSchema, PostSchemaRefined } from "../validators/post.validation";
-import { Message } from "../models/message.model";
 import { PostVideos } from "../models/video.model";
 import { Images } from "../models/Images.model";
 

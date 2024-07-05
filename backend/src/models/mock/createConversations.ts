@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { PrivateChat } from "../private_chat.model";
 import { Message } from "../message.model";
 import { ObjectId } from "mongodb";
@@ -35,7 +34,7 @@ async function createMessage(sender: string, content: string) {
 }
 
 // Function to add messages to a private chat
-async function addMessagesToChat(chatId: Object, messages: ObjectId[]) {
+async function addMessagesToChat(chatId: ObjectId, messages: ObjectId[]) {
   try {
     const chat = await PrivateChat.findById(chatId);
     if (!chat) {

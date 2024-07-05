@@ -1,7 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { z } from "zod";
-import * as jwt from "jsonwebtoken";
-import { OTPVerifySchema } from "../validators/otpVerify.validation";
 import { verifyJWT } from "../utils/jwt";
 import { TOTPVerifySchema } from "../types/schema";
 
@@ -18,8 +15,12 @@ export async function validateOtpVerifyRequestToken(
     if (!decoded) {
       return res.status(403).json({ message: "Invalid token. Unauthorized." });
     }
+    const { email, userId } = decoded as { email: string; userId: string };
 
-    req.user = decoded;
+    req.user = {
+      email,
+      userId,
+    };
     next();
   } catch (error) {
     return res.status(500).json({ error, message: (error as Error).message });

@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
-import mongoose, { InferSchemaType, mongo } from "mongoose";
-import { optional } from "zod";
+import mongoose, { InferSchemaType } from "mongoose";
 import { dateHoursFromNow } from "../utils/date";
 
 const sessionSchema = new mongoose.Schema({

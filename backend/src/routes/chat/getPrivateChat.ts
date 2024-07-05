@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PrivateChat } from "../../models/private_chat.model";
-import { Message, MessageDocument } from "../../models/message.model";
 import { User } from "../../models/user.model";
+import { MessageDocument } from "../../models/message.model";
 
 export async function getPrivateChat(req: Request, res: Response) {
   try {
@@ -55,11 +55,13 @@ export async function getPrivateChat(req: Request, res: Response) {
     }
 
     // If there is a chat then return it
-    const ret = chats.map((chat) =>
-      chat.toObject().messages.map((message: any) => ({
-        ...message,
-        you: message.sender._id.toString() === userId.toString(),
-      }))
+    const ret = chats.flatMap((chat) =>
+      (chat.toObject().messages as unknown as MessageDocument[]).map(
+        (message) => ({
+          ...message,
+          you: message.sender._id.toString() === userId.toString(),
+        })
+      )
     );
 
     const recipient = await User.findById(
@@ -71,7 +73,7 @@ export async function getPrivateChat(req: Request, res: Response) {
       yourId: userId,
       recipientId: user2Id,
       recipient: recipient,
-      messages: ret.flat(1),
+      messages: ret,
     });
   } catch (error) {
     console.log((error as Error).message);

@@ -1,5 +1,3 @@
-import { string } from "zod";
-
 export function generateOTP(
   len: number = 6,
   hours: number = 7

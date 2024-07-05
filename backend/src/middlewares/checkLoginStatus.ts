@@ -25,7 +25,7 @@ export async function checkLoginStatus(
         .json({ loggedIn: false, message: "Invalid session token" });
     }
 
-    const { email, userId } = decoded as { email: string; userId: string };
+    const { userId } = decoded as { email: string; userId: string };
     const user = await User.findById(userId);
 
     if (!user) {
@@ -43,7 +43,10 @@ export async function checkLoginStatus(
       });
     }
 
-    req.user = user;
+    req.user = {
+      email: user.email as string,
+      userId: String(user._id),
+    };
     next();
   } catch (error) {
     return res.status(401).json({ loggedIn: false });

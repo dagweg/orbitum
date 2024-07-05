@@ -1,12 +1,14 @@
 "use client";
 
 import {
-  closeChatArea,
   closeChatSideBar,
-  openChatArea,
   openChatSideBar,
   setOnlineUsers,
-} from "@/lib/redux/slices/chat/chatSlice";
+} from "@/lib/redux/slices/chat/chatSideBarSlice";
+import {
+  closeChatArea,
+  openChatArea,
+} from "@/lib/redux/slices/chat/chatAreaSlice";
 import { RootState, AppDispatch } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";

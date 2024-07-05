@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import { User } from "../models/user.model";
 import { verifyJWT } from "../utils/jwt";
-import { JwtPayload } from "jsonwebtoken";
 /**
  *
  * @param req {token}
@@ -33,7 +32,7 @@ export async function validateOTPGenerateRequest(
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    const email = (decoded as { email: string }).email;
+    const { email, userId } = decoded as { email: string; userId: string };
 
     const user = await User.findOne({
       email,
@@ -45,7 +44,7 @@ export async function validateOTPGenerateRequest(
       });
     }
 
-    req.user = { email };
+    req.user = { email, userId };
     next();
   } catch (e) {
     return res.status(500).json(e);

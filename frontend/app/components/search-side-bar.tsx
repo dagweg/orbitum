@@ -8,7 +8,7 @@ import {
   openChatArea,
   setChatSideBar,
   setSearchPanel,
-} from "@/lib/redux/slices/chat/chatSlice";
+} from "@/lib/redux/slices/chat/chatSideBarSlice";
 import {
   chatSideBarSearch,
   setCurrentChat,

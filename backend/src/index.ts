@@ -1,10 +1,13 @@
-const express = require("express");
+// // const express = require("express");
+import express from "express";
 import { Server } from "http";
 import connectDB from "./utils/db";
 import * as dotenv from "dotenv";
 import userRouteHandler from "./routes/user/handler";
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+// const cors = require("cors");
+// const cookieParser = require("cookie-parser");
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import { tokenRouteHandler } from "./routes/token/handler";
 import { otpRouteHandler } from "./routes/otp/handler";
 import postsRouterHandler from "./routes/post/handler";
@@ -31,7 +34,7 @@ const port = process.env.PORT || 5000;
 app.use(
   cors({
     origin: [
-      process.env.CLIENT_ORIGIN,
+      process.env.CLIENT_ORIGIN as string,
       "http://localhost:3000",
       "https://orbitum.vercel.app",
       "https://orbitum.vercel.app/",

@@ -12,19 +12,7 @@ import {
 } from "react";
 import socket from "@/lib/socket";
 import { arrayBuffertoBase64, base64ToBlob } from "@/util/file";
-
-export type MicHandlerReturn = {
-  mouseDown: () => void;
-  mouseUp: () => void;
-};
-
-export type TAudio = {
-  url: string | undefined;
-  base64: string | undefined;
-  type: string | undefined;
-  name?: string | undefined;
-  size?: number;
-};
+import { TAudio } from "../types";
 
 export function useChatInput(
   message: string,
@@ -33,11 +21,6 @@ export function useChatInput(
 ) {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
   const [isRecording, setIsRecording] = useState(false);
-
-  // For Audio recording
-  const [audio, setAudio] = useState<TAudio>();
-  const mediaRecorderRef = useRef<MediaRecorder>();
-  const audioChunksRef = useRef<Blob[]>([]);
 
   const { refreshChat, setHasStartedTyping, hasStartedTyping } =
     useChatSocket();
@@ -99,63 +82,14 @@ export function useChatInput(
     }
   }
 
-  function handleMicRecord(): MicHandlerReturn {
-    function mouseDown() {
-      // Start Recording
-      if (!isRecording) {
-        setIsRecording(true);
-      }
-
-      (async function record() {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        mediaRecorderRef.current = new MediaRecorder(stream);
-
-        mediaRecorderRef.current.ondataavailable = (event) => {
-          audioChunksRef.current.push(event.data);
-        };
-
-        mediaRecorderRef.current.onstop = async () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/wav",
-          });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          const arrayBuffer = await audioBlob.arrayBuffer();
-
-          setAudio({
-            url: audioUrl,
-            base64: arrayBuffertoBase64(arrayBuffer),
-            type: audioBlob.type,
-            size: audioBlob.size,
-          } as TAudio);
-
-          audioChunksRef.current = [];
-        };
-        mediaRecorderRef.current.start();
-      })();
-    }
-
-    function mouseUp() {
-      // Stop recording
-      setIsRecording(false);
-      mediaRecorderRef?.current?.stop();
-
-      // Add the audio to database
-    }
-
-    return { mouseDown, mouseUp };
-  }
-
   return {
-    audio,
     isRecording,
     setIsRecording,
     hasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,
     handleTextAreaKeyUp,
-    handleMicRecord,
+
     handleMessageSend,
   };
 }

@@ -22,7 +22,10 @@ export function validateSession(
       return res.status(400).json({ message: "Session token is not valid." });
     }
 
-    req.user = decoded;
+    req.user = {
+      email: decoded.email,
+      userId: decoded.userId,
+    };
     req.body.email = decoded.email;
     req.body.userId = decoded.userId;
 

@@ -15,6 +15,7 @@ export type TChatProps = {
   name: string;
   message: string;
   sender?: TSender;
+  audio?: TAudio;
   chatType?: TChatType;
   date?: Date;
 };
@@ -111,6 +112,19 @@ export type TVideo = {
   type: string;
   base64: string;
   url: string;
+};
+
+export type MicHandlerReturn = {
+  start: () => void;
+  stop: () => void;
+};
+
+export type TAudio = {
+  url: string;
+  base64: string;
+  type: string;
+  name?: string;
+  size?: number;
 };
 
 export type TPost = {

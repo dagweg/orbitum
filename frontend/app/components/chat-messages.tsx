@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ChatMessage from "./chat-message";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { TAudio } from "../types";
 
 function ChatMessages({
   chatMessagesRef,
@@ -45,6 +46,7 @@ function ChatMessages({
             key={index}
             name={message.sender.userName}
             message={message.content as string}
+            audio={message.audio as TAudio}
             sender={message.you ? "you" : "default"}
             date={message.date}
           />
