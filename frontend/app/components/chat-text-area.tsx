@@ -21,7 +21,7 @@ import TextAreaAutoSize from "react-textarea-autosize";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
-import { MicHandlerReturn, TAudio } from "../hooks/useChatInput";
+import { MicHandlerReturn, TAudio } from "../hooks/useAudio";
 import { BsRecordCircleFill } from "react-icons/bs";
 
 function ChatTextArea({
@@ -134,14 +134,10 @@ function ChatTextArea({
                   onClick={hasStartedTyping.you ? handleMessageSend : undefined}
                   variant={"circleGhost"}
                   onMouseDown={
-                    !hasStartedTyping.you
-                      ? handleMicRecord().mouseDown
-                      : undefined
+                    !hasStartedTyping.you ? handleMicRecord().start : undefined
                   }
                   onMouseUp={
-                    !hasStartedTyping.you
-                      ? handleMicRecord().mouseUp
-                      : undefined
+                    !hasStartedTyping.you ? handleMicRecord().stop : undefined
                   }
                   className={cn(
                     "relative",

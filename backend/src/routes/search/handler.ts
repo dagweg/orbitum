@@ -1,4 +1,5 @@
-const express = require("express");
+// const express = require("express");
+import express from "express";
 import { SearchSchema } from "../../validators/search.validation";
 import { searchChatSidebar } from "./searchChatSidebar";
 import { validateSession } from "../../middlewares/validateSession";

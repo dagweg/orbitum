@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 
 export const UserSchema = z.object({
@@ -19,10 +18,7 @@ export const UserSchema = z.object({
     .optional(),
   email: z
     .string()
-    .regex(
-      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-      { message: "Must be a valid email" }
-    ),
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Must be a valid email" }),
   password: z
     .string()
     .min(8, { message: " Password must be at least 8 characters long" })
@@ -32,7 +28,7 @@ export const UserSchema = z.object({
     .regex(/^.*[A-Z]+.*$/, {
       message: "Password must contain at least 1 uppercase letter",
     })
-    .regex(/^.*[!@#$%^&*()_+\-={}\[\]:;"'<>,.?\/].*$/, {
+    .regex(/^(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/, {
       message: "Password must contain at least 1 special character.",
     }),
   confirmPassWord: z.string(),

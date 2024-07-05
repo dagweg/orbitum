@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { User } from "../../models/user.model";
-import { Images } from "../../models/image.model";
 import { Message } from "../../models/message.model";
+import { ObjectId } from "mongodb";
 
 export async function viewMessage(req: Request, res: Response) {
   try {
@@ -16,13 +15,16 @@ export async function viewMessage(req: Request, res: Response) {
       });
     }
 
-    if (message.views.findIndex(userId) != -1) {
+    const userObjectId = new ObjectId(userId);
+    const userObjectIdString = String(userObjectId);
+
+    if (message.views.has(userObjectIdString)) {
       res.status(200).json({
         message: "Already viewed that message",
       });
     }
 
-    message.views.push(userId);
+    message.views.set(userObjectIdString, true);
     await message.save();
 
     return res.status(201).json(message);

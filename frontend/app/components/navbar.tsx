@@ -34,7 +34,7 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import {
   closeChatArea,
   openChatSideBar,
-} from "@/lib/redux/slices/chat/chatSlice";
+} from "@/lib/redux/slices/chat/chatSideBarSlice";
 import { fetchUser } from "@/lib/redux/slices/user/userThunks";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";

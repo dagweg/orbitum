@@ -3,12 +3,15 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 declare global {
   namespace Express {
     interface Request {
-      user: any;
+      user: { email: string; userId: string };
     }
   }
 
   interface Socket extends DefaultEventsMap {
-    user: any;
+    user: {
+      email: string;
+      userId: string;
+    };
   }
 }
 

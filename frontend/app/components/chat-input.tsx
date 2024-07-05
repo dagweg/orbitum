@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useRef } from "react";
 import ChatTextArea from "./chat-text-area";
 import { useChatInput } from "../hooks/useChatInput";
+import { useAudio } from "../hooks/useAudio";
 
 export function ChatInput({
   message,
@@ -14,23 +15,23 @@ export function ChatInput({
   const visualizerRef = useRef();
 
   const {
-    audio,
     isRecording,
     setIsRecording,
     hasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,
     handleTextAreaKeyUp,
-    handleMicRecord,
     handleMessageSend,
   } = useChatInput(message, setMessage, chatTextAreaRef);
+
+  const { audio, handleMicRecord } = useAudio(isRecording, setIsRecording);
 
   return (
     <>
       {audio && audio.url && (
         <audio controls>
           <source src={audio?.url} type="audio/wav"></source>
-          Your browser doesn't support the audio element.
+          Your browser doesn&apos;t support the audio element.
         </audio>
       )}
       <ChatTextArea

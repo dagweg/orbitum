@@ -1,11 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { ZodObject, z } from "zod";
-import { UserSchema } from "../../validators/user.validation";
-import { User } from "../../models/user.model";
+import { Request, Response } from "express";
 import { Session } from "../../models/session.model";
-import { generateToken } from "../../utils/token";
-import { dateHoursFromNow, getHourGap } from "../../utils/date";
-import * as jwt from "jsonwebtoken";
 import { SESSION_TOKEN } from "../../config/apiConfig";
 import { verifyJWT } from "../../utils/jwt";
 
@@ -20,7 +14,7 @@ export async function logoutUser(req: Request, res: Response) {
 
     // Verify the validity of the session id
     const decoded = verifyJWT(sessionToken);
-    const { email, userId } = decoded as { email: string; userId: string };
+    const { userId } = decoded as { email: string; userId: string };
 
     if (!decoded) {
       return res.status(400).json("Invalid sessionToken!");

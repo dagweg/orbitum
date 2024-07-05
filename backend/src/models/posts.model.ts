@@ -15,12 +15,11 @@ const postsSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  likes: [
-    {
-      type: ObjectId,
-      ref: "User",
-    },
-  ],
+  likes: {
+    type: Map,
+    of: Boolean,
+    default: {},
+  },
   comments: [
     {
       type: ObjectId,
@@ -52,5 +51,7 @@ const postsSchema = new mongoose.Schema({
   },
 });
 
-export type TPosts = InferSchemaType<typeof postsSchema>;
+export interface TPosts extends InferSchemaType<typeof postsSchema> {
+  likes: Map<string, boolean>;
+}
 export const Posts = mongoose.model<TPosts>("Posts", postsSchema);

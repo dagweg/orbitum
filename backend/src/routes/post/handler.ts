@@ -1,11 +1,11 @@
 import { Router } from "express";
-const express = require("express");
+// const express = require("express");
+import express from "express";
 import { createPost } from "./createPost";
 import { PostSchema } from "../../validators/post.validation";
 import { validatePOSTRequestSchema } from "../../middlewares/validatePOSTRequestSchema";
 import { validateSession } from "../../middlewares/validateSession";
 import { getAllPosts } from "./getAllPosts";
-import { getAllUserPosts } from "../../controllers/user/getAllUserPosts";
 import { likeSchema } from "../../validators/like.validation";
 import { likePost } from "./likePost";
 

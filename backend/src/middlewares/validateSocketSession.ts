@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import { SESSION_TOKEN } from "../config/apiConfig";
 import { verifyJWT } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";

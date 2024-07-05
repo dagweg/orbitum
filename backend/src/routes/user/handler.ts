@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
-const express = require("express");
+// const express = require("express");
+import express from "express";
 import { loginUser } from "../../controllers/user/login";
 import { logoutUser } from "../../controllers/user/logout";
 import { registerUser } from "../../controllers/user/register";

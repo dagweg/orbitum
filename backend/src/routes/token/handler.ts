@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { User } from "../../models/user.model";
 
@@ -35,7 +35,7 @@ export async function validateToken(req: Request, res: Response) {
 
     return res.status(200).json({
       message: "Token is Valid!",
-      ...(decoded as {}),
+      ...(decoded as object),
       emailVerified: user.emailVerified,
     });
   } catch (error) {

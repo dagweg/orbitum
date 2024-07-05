@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import { PrivateChat } from "../../models/private_chat.model";
-import { MessageDocument } from "../../models/message.model";
-import { User } from "../../models/user.model";
 
 export async function getAllChats(req: Request, res: Response) {
   try {
@@ -34,7 +32,9 @@ export async function getAllChats(req: Request, res: Response) {
     const ret = chats.map((chat) => {
       const { user1, user2, messages } = chat.toObject();
       const recentMessage = messages.sort(
-        (a: any, b: any) => b.date.getTime() - a.date.getTime()
+        (a: unknown, b: unknown) =>
+          (b as { date: Date }).date.getTime() -
+          (a as { date: Date }).date.getTime()
       )[0];
       let ret;
 

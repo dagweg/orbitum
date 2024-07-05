@@ -1,5 +1,4 @@
 import mongoose, { InferSchemaType } from "mongoose";
-import { send } from "process";
 
 const messageSchema = new mongoose.Schema({
   sender: {
@@ -9,7 +8,6 @@ const messageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
   },
   audio: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,15 +17,17 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  views: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  views: {
+    type: Map,
+    of: Boolean,
+    default: {},
+  },
 });
 
-export type MessageDocument = InferSchemaType<typeof messageSchema>;
+export interface MessageDocument extends InferSchemaType<typeof messageSchema> {
+  views: Map<string, boolean>;
+}
+
 export const Message = mongoose.model<MessageDocument>(
   "Message",
   messageSchema

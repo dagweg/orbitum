@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { User } from "./user.model";
 import { ObjectId } from "mongodb";
 
 const friendsSchema = new mongoose.Schema({

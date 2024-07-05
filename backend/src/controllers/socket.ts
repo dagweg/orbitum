@@ -1,10 +1,15 @@
 import { Server as SocketIOServer } from "socket.io";
 import { validateSocketSession } from "../middlewares/validateSocketSession";
-import sendMessage from "./sendMessage";
+import { Server } from "http";
+import SocketEvents from "../config/socketEvents";
+import { handleLogout } from "./socket/handleLogout";
+import { handleMessageSend } from "./socket/handleMessageSend";
+import { handleAudioSend } from "./socket/handleAudioSend";
+import { handleTyping } from "./socket/handleTyping";
 
-const map = new Map();
+const userMap: Map<string, string> = new Map();
 
-export default function socketHandler(server: any) {
+export default function socketHandler(server: Server) {
   const io = new SocketIOServer(server, {
     cors: {
       origin: process.env.CLIENT_ORIGIN,
@@ -15,54 +20,40 @@ export default function socketHandler(server: any) {
 
   io.use(validateSocketSession);
 
-  io.on("connection", (socket) => {
+  io.on(SocketEvents.ON_CONNECTION, (socket) => {
     console.log("a user connected");
 
     console.log("Connected User is ", socket.data.user.email);
-    map.set(socket.data.user.userId, socket.id);
+    userMap.set(socket.data.user.userId, socket.id);
 
     // Broadcast the connected users
-    io.emit("users:connected", Object.fromEntries(map));
+    io.emit(SocketEvents.EMIT_USERS_CONNECTED, Object.fromEntries(userMap));
 
-    socket.on("user:logout", () => {
-      console.log("Logged out user ", socket.data.user.email);
-      map.delete(socket.data.user.userId);
-    });
+    // Logout Event
+    socket.on(SocketEvents.ON_USER_LOGOUT, handleLogout(socket, userMap));
 
-    socket.on("chat:sendMessage", async ({ to, message }) => {
-      console.log("SENDING MESSAGE TO ", to);
-      console.log("MESSAGE IS ", message);
-      const socketId = map.get(to);
-      console.log("Socket ID is ", socketId);
+    // Listening to message send
+    socket.on(
+      SocketEvents.ON_CHAT_SEND_MESSAGE,
+      handleMessageSend(io, socket, userMap)
+    );
 
-      const msg = await sendMessage(socket.data.user.userId, to, message);
+    // Listening to audio send
+    socket.on(
+      SocketEvents.ON_CHAT_SEND_AUDIO,
+      handleAudioSend(io, socket, userMap)
+    );
 
-      if (msg.status === 200 || msg.status === 201) {
-        io.to(socketId).emit("chat:receiveMessage", {
-          from: socket.data.user.userId,
-          message,
-        });
-      } else {
-        console.log("Error: ", msg.message);
-      }
-    });
+    // Listening to typing event
+    socket.on(SocketEvents.ON_CHAT_TYPE, handleTyping(io, socket, userMap));
 
-    socket.on("chat:sendAudio", async ({ to, audio }) => {
-      // Send Audio Functionality
-    });
-
-    socket.on("chat:type", ({ to }) => {
-      console.log("User is typing to ", to);
-      const socketId = map.get(to);
-      io.to(socketId).emit("chat:type", { from: socket.data.user.userId });
-    });
-
-    socket.on("disconnect", () => {
+    // Listening to user disconnection
+    socket.on(SocketEvents.ON_DISCONNECT, () => {
       console.log("Disconnected user ", socket.data.user.email);
-      map.delete(socket.data.user.userId);
+      userMap.delete(socket.data.user.userId);
 
       // Broadcast the connected users after user with id has been deleted
-      io.emit("users:connected", Object.fromEntries(map));
+      io.emit("users:connected", Object.fromEntries(userMap));
     });
   });
 }
