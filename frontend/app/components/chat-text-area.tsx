@@ -21,8 +21,8 @@ import TextAreaAutoSize from "react-textarea-autosize";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
-import { MicHandlerReturn, TAudio } from "../hooks/useAudio";
 import { BsRecordCircleFill } from "react-icons/bs";
+import { MicHandlerReturn, TAudio } from "../types";
 
 function ChatTextArea({
   audio,
@@ -37,6 +37,7 @@ function ChatTextArea({
   hasStartedTyping,
   handleMessageSend,
   handleMicRecord,
+  setHasStartedTyping,
 }: {
   audio: TAudio | undefined;
   message: string;
@@ -49,9 +50,13 @@ function ChatTextArea({
   handleTextAreaKeyUp: (e: any) => void;
   hasStartedTyping: {
     you: boolean;
+    recipient: boolean;
   };
   handleMessageSend: () => void;
   handleMicRecord: () => MicHandlerReturn;
+  setHasStartedTyping: Dispatch<
+    SetStateAction<{ you: boolean; recipient: boolean }>
+  >;
 }) {
   const [emojiPane, setEmojiPane] = useState({
     enabled: false,
@@ -69,6 +74,7 @@ function ChatTextArea({
   const handleEmojiClick = (e: EmojiClickData) => {
     const message = chatTextAreaRef.current;
     setMessage(message?.value + e.emoji);
+    setHasStartedTyping({ ...hasStartedTyping, you: true });
   };
 
   console.log(audio);

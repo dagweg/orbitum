@@ -3,6 +3,7 @@ import { Socket } from "socket.io";
 import { Message } from "../../models/message.model";
 import { PrivateChat } from "../../models/private_chat.model";
 import { Audios } from "../../models/audio.model";
+import SocketEvents from "../../config/socketEvents";
 
 type Audio = {
   name: string;
@@ -27,7 +28,7 @@ export const handleAudioSend =
 
     if (msg.status === 200 || msg.status === 201) {
       // Send the audio to the reciever in realtime
-      io.to(socketId as string).emit("chat:receiveMessage", {
+      io.to(socketId as string).emit(SocketEvents.EMIT_CHAT_RECIEVE_AUDIO, {
         from: socket.data.user.userId,
         audio,
       });
@@ -78,7 +79,7 @@ async function sendAudio(
       }
 
       return {
-        message: String(msg.audio),
+        message: String(newAudio),
         status: 201,
       };
     }
@@ -87,7 +88,7 @@ async function sendAudio(
     await pchat.save();
 
     return {
-      message: String(msg.audio),
+      message: String(newAudio),
       status: 201,
     };
   } catch (error) {

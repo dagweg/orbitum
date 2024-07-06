@@ -8,7 +8,10 @@ import { AudioSchema } from "../validators/audio.validation";
 
 export type TUserSchema = z.infer<typeof UserSchema>;
 export type TLoginSchema = z.infer<typeof LoginSchema>;
-export type TPostSchema = z.infer<typeof PostSchemaRefined>;
+export type TPostSchemaResponse = z.infer<typeof PostSchemaRefined>;
+export interface IPostSchema extends TPostSchemaResponse {
+  likes: Map<string, boolean>;
+}
 export type TMessageSchema = z.infer<typeof MessageSchema>;
 export type TAudioSchema = z.infer<typeof AudioSchema>;
 

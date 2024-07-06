@@ -42,7 +42,7 @@ type TPost = {
   user: TUserSchema;
   date: Date;
   content: string;
-  likes: Object[];
+  likes: Map<string, boolean>;
   liked: boolean;
   comments: Object[];
   shares: Object[];
@@ -144,11 +144,10 @@ export default function Post({
           )}
         </section>
         <section className="w-full  space-y-3 flex flex-col">
-          {likes.length > 0 && (
+          {/* {likes.size > 0 && (
             <>
               <div className="flex -space-x-2 border-b-2 pb-2">
                 {["👍"].map((em, i) => {
-                  // TODO
                   const z = 10 - i;
                   return (
                     <span
@@ -160,10 +159,10 @@ export default function Post({
                     </span>
                   );
                 })}
-                {likes.length}
+                {likes.size}
               </div>
             </>
-          )}
+          )} */}
 
           <div className="flex gap-3 justify-between">
             <Button
@@ -177,7 +176,7 @@ export default function Post({
                   "text-green-700": liked,
                 })}
               /> */}
-              {liked ? "Liked" : "Like"}
+              {liked ? `(${likes}) Liked` : "Like"}
             </Button>
             <Button
               variant={"ghost"}

@@ -71,7 +71,6 @@ export function useChatInput(
 
   function handleMessageSend() {
     console.log(message);
-    setMessage("");
     if (chatArea.currentChat) {
       socket.emit("chat:sendMessage", {
         to: chatArea.currentChat.recipientId,
@@ -80,11 +79,13 @@ export function useChatInput(
 
       setTimeout(() => refreshChat(), 50);
     }
+    setMessage("");
   }
 
   return {
     isRecording,
     setIsRecording,
+    setHasStartedTyping,
     hasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,

@@ -33,7 +33,6 @@ const getAllPosts = createAsyncThunk(
         credentials: "include",
       });
       const user = await response.json();
-
       return { posts, user } as any;
     } catch (error) {
       return rejectWithValue((error as Error).message);

@@ -29,6 +29,9 @@ export async function getPrivateChat(req: Request, res: Response) {
           {
             path: "views",
           },
+          {
+            path: "audio",
+          },
         ],
       })
       .populate({

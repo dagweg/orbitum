@@ -18,6 +18,7 @@ export function ChatInput({
     isRecording,
     setIsRecording,
     hasStartedTyping,
+    setHasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,
     handleTextAreaKeyUp,
@@ -47,6 +48,7 @@ export function ChatInput({
         handleTextAreaKeyDown={handleTextAreaKeyDown}
         handleTextAreaKeyUp={handleTextAreaKeyUp}
         hasStartedTyping={hasStartedTyping}
+        setHasStartedTyping={setHasStartedTyping}
       />
     </>
   );

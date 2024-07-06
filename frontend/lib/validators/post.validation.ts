@@ -11,7 +11,7 @@ export const PostSchemaRefined = z.object({
   user: z.string(),
   content: z.string(),
   createdAt: z.string(),
-  likes: z.array(z.string()),
+  likes: z.object({}),
   liked: z.boolean().optional(),
   comments: z.array(z.string()),
   shares: z.array(z.string()),

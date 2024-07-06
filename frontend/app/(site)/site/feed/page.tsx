@@ -7,13 +7,13 @@ import useSocket from "@/app/hooks/useSocket";
 import { TImagePost } from "@/app/types";
 import { getAllPosts } from "@/lib/redux/slices/post/postThunks";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { TPostSchema, TUserSchema } from "@/lib/types/schema";
+import { IPostSchema, TUserSchema } from "@/lib/types/schema";
 import { base64ToBlob } from "@/util/file";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function FeedPage() {
-  const posts: TPostSchema[] = useSelector((state: RootState) => state.Posts);
+  const posts: IPostSchema[] = useSelector((state: RootState) => state.Posts);
   const dispatch = useDispatch<AppDispatch>();
 
   useSocket("chat", (data) => {
@@ -44,7 +44,7 @@ function FeedPage() {
       url: "https://imgur.com/mNkCX9W.png",
     },
   ];
-
+  console.log(posts);
   return (
     <div className="flex w-full justify-center bg-white">
       <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
@@ -62,7 +62,7 @@ function FeedPage() {
           images={testImages}
         /> */}
         {posts.length > 0 &&
-          posts.map((post: TPostSchema, key: number) => (
+          posts.map((post: IPostSchema, key: number) => (
             <Post
               postId={post._id}
               key={key}

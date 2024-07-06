@@ -18,7 +18,7 @@ const postsSchema = new mongoose.Schema({
   likes: {
     type: Map,
     of: Boolean,
-    default: {},
+    default: new Map(),
   },
   comments: [
     {

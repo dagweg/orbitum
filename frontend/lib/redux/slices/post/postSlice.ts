@@ -6,13 +6,13 @@ import {
   likePost,
   postComment,
 } from "./postThunks";
-import { TPostSchema } from "@/lib/types/schema";
+import { IPostSchema, TPostSchemaResponse } from "@/lib/types/schema";
 import { User } from "../user/userSlice";
 import { useSelector } from "react-redux";
 import { RootState, store } from "../../store";
 import { TPost } from "@/app/types";
 
-const initialState: TPostSchema[] = [];
+const initialState: IPostSchema[] = [];
 
 const posts = createSlice({
   name: "posts",
@@ -25,15 +25,29 @@ const posts = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAllPosts.fulfilled, (state, action) => {
-      let { posts, user } = action.payload;
-      // if (typeof posts == "object" && posts.length)
-      posts.map((post: TPostSchema) => {
-        if (post.likes.includes(user._id)) {
-          post.liked = true;
-        }
-      });
-      // console.log(posts);
-      return posts;
+      let {
+        posts,
+        user,
+      }: { posts: TPostSchemaResponse[]; user: { _id: string } } =
+        action.payload;
+      console.log(posts);
+
+      for (const post of posts) {
+        const likes = new Map(Object.entries(post.likes));
+        console.log(likes);
+      }
+
+      let newPosts: IPostSchema[] = [];
+      if (typeof posts == "object" && posts.length)
+        newPosts = posts.map((post: TPostSchemaResponse) => {
+          const likes = new Map(Object.entries(post.likes));
+          if (likes.has(user._id)) {
+            post.liked = true;
+          }
+          post.likes = likes;
+          return post;
+        }) as IPostSchema[];
+      return newPosts;
     });
 
     builder.addCase(getUserPosts.fulfilled, (state, action) => {});

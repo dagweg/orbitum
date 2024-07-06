@@ -13,34 +13,24 @@ function ChatMessage({
   date,
 }: TChatProps) {
   let dateModif = getTime2(new Date(date?.toString() as string));
-
+  console.log(audio);
   return (
     <div
       className={cn(
-        "px-2  py-1 w-full flex ",
-        sender === "default" ? "justify-start" : "justify-end"
+        "px-2  py-1 w-full flex flex-col ",
+        sender === "default" ? "items-start" : "items-end"
       )}
     >
-      <div
-        className={cn(
-          "flex flex-col relative",
-          sender === "you" ? "items-end" : "items-start"
+      <div className="bg-neutral-100 p-2 w-fit  rounded-t-md rounded-b-lg">
+        {message && audio ? (
+          <>message and audio</>
+        ) : message ? (
+          <>{message}</>
+        ) : (
+          <>audio</>
         )}
-      >
-        <div className="relative">
-          <div
-            className={cn(
-              `relative  z-10 flex items-start justify-start gap-2 rounded-lg `
-            )}
-          >
-            <span
-              className={cn(`text-sm  max-w-prose flex flex-col gap-[-1px]`)}
-            >
-              {message}
-            </span>
-          </div>
-        </div>
       </div>
+
       <span className="absolute bottom-[18px] px-2 flex flex-col items-center justify-center text-[8pt]  ">
         <CheckCheck className="seen" size={13} opacity={0.5} />
         {/* <Check className="sent" size={13} opacity={0.5} /> */}
@@ -48,14 +38,13 @@ function ChatMessage({
       </span>
       <span
         className={cn(
-          "font-light text-xs opacity-50 w-full px-1",
+          "font-light text-xs opacity-50 w-full px-1 ",
           sender === "you" ? "text-right" : "text-left"
         )}
       >
         {dateModif}
       </span>
-
-      <div
+      {/* <div
         className={cn(
           " w-4 scale-x-[1.9] bg-white aspect-square absolute  top-0 z-0",
           sender === "you"
@@ -70,7 +59,7 @@ function ChatMessage({
             ? "-right-4 rounded-br-full"
             : "-left-4 rounded-bl-full"
         )}
-      ></div>
+      ></div> */}
     </div>
   );
 }

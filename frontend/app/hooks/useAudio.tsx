@@ -12,6 +12,7 @@ export function useAudio(
 ) {
   // For Audio recording
   const [audio, setAudio] = useState<TAudio>();
+  const audioRef = useRef<TAudio>();
   const mediaRecorderRef = useRef<MediaRecorder>();
   const audioChunksRef = useRef<Blob[]>([]);
 
@@ -45,12 +46,16 @@ export function useAudio(
           const audioUrl = URL.createObjectURL(audioBlob);
           const arrayBuffer = await audioBlob.arrayBuffer();
 
-          setAudio({
+          const newAudio = {
             url: audioUrl,
             base64: arrayBuffertoBase64(arrayBuffer),
             type: audioBlob.type,
             size: audioBlob.size,
-          } as TAudio);
+          } as TAudio;
+
+          // Update State and Ref of the Audio
+          setAudio(newAudio);
+          audioRef.current = newAudio;
 
           audioChunksRef.current = [];
         };
@@ -63,11 +68,15 @@ export function useAudio(
       setIsRecording(false);
       mediaRecorderRef.current?.stop();
 
-      if (chatArea.currentChat) {
+      const newAudio = audioRef.current;
+
+      console.log(newAudio);
+
+      if (chatArea.currentChat && newAudio) {
         // Add the audio to database
         socket.emit("chat:sendAudio", {
           to: chatArea.currentChat.recipientId,
-          audio,
+          audio: newAudio,
         });
 
         setTimeout(() => refreshChat(), 50);
@@ -75,7 +84,7 @@ export function useAudio(
     }
 
     return { start, stop };
-  }, [isRecording, setIsRecording, audio, chatArea.currentChat, refreshChat]);
+  }, [isRecording, setIsRecording, chatArea.currentChat, refreshChat]);
 
   return {
     audio,
