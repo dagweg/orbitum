@@ -176,7 +176,7 @@ export default function Post({
                   "text-green-700": liked,
                 })}
               /> */}
-              {liked ? `(${likes}) Liked` : "Like"}
+              {liked ? `(${likes.size}) Liked` : "Like"}
             </Button>
             <Button
               variant={"ghost"}

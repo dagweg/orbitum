@@ -37,9 +37,9 @@ function ChatHeader({
               <Image
                 src={profileUrl ?? "https://imgur.com/mkrjkrY.png"}
                 alt="prof"
-                width={50}
-                height={50}
-                className="rounded-xl min-w-[50px] aspect-square max-w-[50px] object-cover"
+                width={5}
+                height={5}
+                className="rounded-xl  w-[50px] aspect-square min-w-[50px]  max-w-[50px] object-cover "
               ></Image>
               {isOnline && <OnlineIndicator />}
             </div>

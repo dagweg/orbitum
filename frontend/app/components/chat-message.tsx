@@ -17,7 +17,7 @@ function ChatMessage({
   return (
     <div
       className={cn(
-        "px-2  py-1 w-full flex flex-col ",
+        "px-2  py-1 w-full flex flex-col",
         sender === "default" ? "items-start" : "items-end"
       )}
     >
@@ -27,7 +27,10 @@ function ChatMessage({
         ) : message ? (
           <>{message}</>
         ) : (
-          <>audio</>
+          <audio controls>
+            {/* <source src={audio?.url} type="audio/wav"></source> */}
+            Your browser doesn&apos;t support the audio element.
+          </audio>
         )}
       </div>
 

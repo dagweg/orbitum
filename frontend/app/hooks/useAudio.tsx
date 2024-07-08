@@ -70,9 +70,8 @@ export function useAudio(
 
       const newAudio = audioRef.current;
 
-      console.log(newAudio);
-
       if (chatArea.currentChat && newAudio) {
+        console.log(newAudio);
         // Add the audio to database
         socket.emit("chat:sendAudio", {
           to: chatArea.currentChat.recipientId,
