@@ -11,7 +11,7 @@ export function validateSocketSession(
   next: (err?: ExtendedError) => void
 ) {
   const cookieHeader = socket.handshake.headers.cookie;
-
+  console.log(cookieHeader);
   if (!cookieHeader) {
     return next(new Error("Cookie header cannot be empty"));
   }

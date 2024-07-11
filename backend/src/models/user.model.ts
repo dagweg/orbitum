@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   bio: { type: String },
   phoneNumber: { type: String },
-  profilePicture: { type: ObjectId, ref: "Images" },
+  profilePicture: { type: ObjectId, ref: "Image" },
   otp: { type: String, default: null },
   otpExpiry: { type: Date },
   emailVerified: { type: Boolean, default: false },

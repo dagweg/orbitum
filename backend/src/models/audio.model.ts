@@ -20,5 +20,5 @@ const AudioSchema = new mongoose.Schema({
   },
 });
 
-export type AudiosDocument = InferSchemaType<typeof AudioSchema>;
-export const Audios = mongoose.model<AudiosDocument>("Audios", AudioSchema);
+export type AudioDocument = InferSchemaType<typeof AudioSchema>;
+export const Audio = mongoose.model<AudioDocument>("Audio", AudioSchema);

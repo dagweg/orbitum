@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrivateChat } from "../../models/private_chat.model";
 import { User } from "../../models/user.model";
 import { MessageDocument } from "../../models/message.model";
+import mongoose from "mongoose";
 
 export async function getPrivateChat(req: Request, res: Response) {
   try {
@@ -9,6 +10,13 @@ export async function getPrivateChat(req: Request, res: Response) {
     const user2Id = req.query.userId;
     console.log("User 1 id ", userId);
     console.log("User 2 id ", user2Id);
+
+    if (userId.length !== 24) {
+      throw new Error("User Id not valid for Sender");
+    }
+    if (user2Id?.length !== 24) {
+      throw new Error("User Id not valid for Reciever");
+    }
 
     const chats = await PrivateChat.find({
       $or: [
@@ -30,7 +38,16 @@ export async function getPrivateChat(req: Request, res: Response) {
             path: "views",
           },
           {
-            path: "audios",
+            path: "audio",
+          },
+          {
+            path: "video",
+          },
+          {
+            path: "attachment",
+            populate: {
+              path: "images videos audios",
+            },
           },
         ],
       })
@@ -80,6 +97,6 @@ export async function getPrivateChat(req: Request, res: Response) {
     });
   } catch (error) {
     console.log((error as Error).message);
-    return res.status(500).json(error);
+    return res.status(500).json({ error: (error as Error).message });
   }
 }

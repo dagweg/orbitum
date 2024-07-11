@@ -35,13 +35,13 @@ const postsSchema = new mongoose.Schema({
   images: [
     {
       type: ObjectId,
-      ref: "Images",
+      ref: "Image",
     },
   ],
   videos: [
     {
       type: ObjectId,
-      ref: "Videos",
+      ref: "Video",
     },
   ],
   privacy: {

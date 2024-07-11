@@ -2,10 +2,9 @@ import { Server as SocketIOServer } from "socket.io";
 import { validateSocketSession } from "../middlewares/validateSocketSession";
 import { Server } from "http";
 import SocketEvents from "../config/socketEvents";
-import { handleLogout } from "./socket/handleLogout";
-import { handleMessageSend } from "./socket/handleMessageSend";
-import { handleAudioSend } from "./socket/handleAudioSend";
-import { handleTyping } from "./socket/handleTyping";
+import { handleLogout } from "./socket/handlers/handleLogout";
+import { handleMessageSend } from "./socket/handlers/handleMessageSend";
+import { handleTyping } from "./socket/handlers/handleTyping";
 
 const userMap: Map<string, string> = new Map();
 
@@ -24,7 +23,11 @@ export default function socketHandler(server: Server) {
     console.log("a user connected");
 
     console.log("Connected User is ", socket.data.user.email);
-    userMap.set(socket.data.user.userId, socket.id);
+
+    if (!userMap.get(socket.data.user.userId)) {
+      userMap.set(socket.data.user.userId, socket.id);
+      console.log("Socket Id ", socket.id);
+    }
 
     // Broadcast the connected users
     io.emit(SocketEvents.EMIT_USERS_CONNECTED, Object.fromEntries(userMap));
@@ -36,12 +39,6 @@ export default function socketHandler(server: Server) {
     socket.on(
       SocketEvents.ON_CHAT_SEND_MESSAGE,
       handleMessageSend(io, socket, userMap)
-    );
-
-    // Listening to audio send
-    socket.on(
-      SocketEvents.ON_CHAT_SEND_AUDIO,
-      handleAudioSend(io, socket, userMap)
     );
 
     // Listening to typing event

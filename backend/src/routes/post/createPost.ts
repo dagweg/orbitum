@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { Posts } from "../../models/posts.model";
-import { Videos } from "../../models/video.model";
-import { Images } from "../../models/image.model";
+import { Video } from "../../models/video.model";
 import { Types } from "mongoose";
+import { Image } from "../../models/Image.model";
 
 export async function createPost(req: Request, res: Response) {
   try {
@@ -18,7 +18,7 @@ export async function createPost(req: Request, res: Response) {
     if (images)
       for (let i = 0; i < images.length; i++) {
         const curr = images[i];
-        const image = await Images.create({
+        const image = await Image.create({
           base64: curr.base64,
           name: curr.name,
           type: curr.type,
@@ -30,7 +30,7 @@ export async function createPost(req: Request, res: Response) {
     if (videos)
       for (let i = 0; i < videos.length; i++) {
         const curr = videos[i];
-        const video = await Videos.create({
+        const video = await Video.create({
           base64: curr.base64,
           name: curr.name,
           type: curr.type,

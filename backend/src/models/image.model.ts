@@ -16,4 +16,4 @@ const ImageSchema = new mongoose.Schema({
 });
 
 export type ImageDocument = InferSchemaType<typeof ImageSchema>;
-export const Images = mongoose.model<ImageDocument>("Images", ImageSchema);
+export const Image = mongoose.model<ImageDocument>("Image", ImageSchema);

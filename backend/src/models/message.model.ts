@@ -11,14 +11,16 @@ const messageSchema = new mongoose.Schema({
   },
   audio: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Audios",
+    ref: "Audio",
   },
-  attachments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Attachments",
-    },
-  ],
+  video: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Video",
+  },
+  attachment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Attachment",
+  },
   date: {
     type: Date,
     default: Date.now,

@@ -24,11 +24,9 @@ dotenv.config();
 // Estabilish connection to MongoDB
 connectDB();
 
-const app = express();
-const server = new Server(app);
+export const app = express();
+export const server = new Server(app);
 const router = express.Router();
-
-const port = process.env.PORT || 5000;
 
 // middlewares
 app.use(
@@ -73,6 +71,8 @@ app.get("/api/v1/mock/conversations", (req: Request, res: Response) => {
 
 // Socket.IO
 socketHandler(server);
+
+const port = process.env.PORT || 5000;
 
 server.listen(port, () => {
   console.log("LISTENING ON PORT ", port);

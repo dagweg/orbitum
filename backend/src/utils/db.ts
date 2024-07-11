@@ -1,7 +1,15 @@
 import { ServerApiVersion } from "mongodb";
 import mongoose from "mongoose";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 function connectDB() {
+  if (mongoose.connection.readyState === 1) {
+    console.log("Mongoose already connected");
+    return;
+  }
+
   const uri = process.env.MONGO_URI as string;
   console.log(uri);
   mongoose

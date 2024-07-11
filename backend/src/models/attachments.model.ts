@@ -1,17 +1,28 @@
 import mongoose, { InferSchemaType } from "mongoose";
 
-const attachmentsSchema = new mongoose.Schema({
-  type: {
-    type: new Enumerator(["VIDEO", "AUDIO", "PHOTO"]),
-    required: true,
-  },
-  ref: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
+const AttachmentSchema = new mongoose.Schema({
+  audios: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Audio",
+    },
+  ],
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Video",
+    },
+  ],
+  images: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
+    },
+  ],
 });
 
-export type AttachmentDocument = InferSchemaType<typeof attachmentsSchema>;
-export const Attachments = mongoose.model<AttachmentDocument>(
-  "Attachments",
-  attachmentsSchema
+export type AttachmentDocument = InferSchemaType<typeof AttachmentSchema>;
+export const Attachment = mongoose.model<AttachmentDocument>(
+  "Attachment",
+  AttachmentSchema
 );
