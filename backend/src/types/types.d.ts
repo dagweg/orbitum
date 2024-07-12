@@ -34,7 +34,7 @@ export type TAttachments = TAttachAudio[] | TAttachVideo[] | TAttachPhoto[];
 export type TMessagePayload = {
   to: string;
   content?: string;
-  attachments?: TAttachments;
+  attachment?: TAttachments;
   audio?: TAudio;
   video?: TVideo;
 };

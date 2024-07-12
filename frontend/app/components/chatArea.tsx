@@ -8,6 +8,7 @@ import ChatHeader from "./chat-header";
 import ChatMessages from "./chat-messages";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { ChatInput } from "./chat-input";
+import { useAudio } from "../hooks/useAudio";
 
 function ChatArea() {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
@@ -20,8 +21,6 @@ function ChatArea() {
   const messages = chatArea.currentChat
     ? chatArea.currentChat.messages
     : undefined;
-
-  const [message, setMessage] = useState<string>("");
 
   const chatMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -56,9 +55,7 @@ function ChatArea() {
               chatMessagesRef={chatMessagesRef}
               messages={messages}
             />
-            {messages && (
-              <ChatInput message={message} setMessage={setMessage} />
-            )}
+            {messages && <ChatInput />}
           </div>
         </div>
       </div>

@@ -94,37 +94,46 @@ export type TChatSideBarPerson = {
   recentMessage: { content: string; date: Date };
 };
 
-export type TImage = {
-  name: string;
-  type: string;
-  base64: string;
-  url: string;
-};
-
 export type TProfilePic = Pick<TImage, "name" | "base64" | "type">;
 
 export type TImagePost = {
   url: string;
 };
 
-export type TVideo = {
-  name: string;
+export type TImage = {
   type: string;
   base64: string;
   url: string;
 };
 
-export type MicHandlerReturn = {
-  start: () => void;
-  stop: () => void;
+export type TVideo = {
+  url: string;
+  base64: string;
+  type: string;
 };
 
 export type TAudio = {
   url: string;
   base64: string;
   type: string;
-  name?: string;
-  size?: number;
+};
+
+export type TAttachAudio = TAudio & {
+  name: string;
+};
+export type TAttachVideo = TVideo & {
+  name: string;
+};
+
+export type TAttachImage = TImage & {
+  name: string;
+};
+
+export type TAttachment = TAttachAudio | TAttachImage | TAttachVideo;
+
+export type MicHandlerReturn = {
+  start: () => void;
+  stop: () => void;
 };
 
 export type TPost = {

@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useChatSocket } from "./useChatSocket";
-import { RootState } from "@/lib/redux/store";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import {
   ChangeEvent,
   Dispatch,
@@ -12,15 +12,31 @@ import {
 } from "react";
 import socket from "@/lib/socket";
 import { arrayBuffertoBase64, base64ToBlob } from "@/util/file";
-import { TAudio } from "../types";
+import { TAttachment, TAudio, TVideo } from "../types";
+import { setChatMessage } from "@/lib/redux/slices/message/chatMessageSlice";
 
-export function useChatInput(
-  message: string,
-  setMessage: Dispatch<SetStateAction<string>>,
-  chatTextAreaRef: RefObject<HTMLTextAreaElement>
-) {
+/**
+ * Everything related to the chatinput is handled here inside useChatInput hook
+ */
+/**
+ *
+ * @param message
+ * @param setMessage
+ * @param chatTextAreaRef
+ * @returns
+ */
+export function useChatInput(chatTextAreaRef: RefObject<HTMLTextAreaElement>) {
   const chatArea = useSelector((state: RootState) => state.ChatArea);
   const [isRecording, setIsRecording] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const message = useSelector((state: RootState) => state.ChatMessage);
+  const chatAudio = useSelector((state: RootState) => state.ChatAudio);
+  const chatVideo = useSelector((state: RootState) => state.ChatVideo);
+  const chatAttachment = useSelector(
+    (state: RootState) => state.ChatAttachment
+  );
 
   const { refreshChat, setHasStartedTyping, hasStartedTyping } =
     useChatSocket();
@@ -31,7 +47,7 @@ export function useChatInput(
   };
 
   function handleTextAreaChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    setMessage(e.currentTarget.value);
+    dispatch(setChatMessage(e.currentTarget.value));
     if (e.currentTarget.value.length > 0) {
       setHasStartedTyping({ ...hasStartedTyping, you: true });
     } else {
@@ -74,23 +90,23 @@ export function useChatInput(
     if (chatArea.currentChat) {
       socket.emit("chat:sendMessage", {
         to: chatArea.currentChat.recipientId,
-        message,
+        content: message,
+        audio: chatAudio.audio,
+        video: chatVideo.video,
+        attachment: chatAttachment,
       });
 
       setTimeout(() => refreshChat(), 50);
     }
-    setMessage("");
+    dispatch(setChatMessage(""));
   }
 
   return {
-    isRecording,
-    setIsRecording,
     setHasStartedTyping,
     hasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,
     handleTextAreaKeyUp,
-
     handleMessageSend,
   };
 }

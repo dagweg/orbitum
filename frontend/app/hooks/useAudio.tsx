@@ -2,16 +2,21 @@ import { arrayBuffertoBase64 } from "@/util/file";
 import { Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
 import { MicHandlerReturn, TAudio } from "../types";
 import socket from "@/lib/socket";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useChatSocket } from "./useChatSocket";
+import {
+  setAudio,
+  setIsRecording,
+} from "@/lib/redux/slices/audio/chatAudioSlice";
 
-export function useAudio(
-  isRecording: boolean,
-  setIsRecording: Dispatch<SetStateAction<boolean>>
-) {
+export function useAudio() {
   // For Audio recording
-  const [audio, setAudio] = useState<TAudio>();
+  const { audio, isRecording } = useSelector(
+    (state: RootState) => state.ChatAudio
+  );
+  const dispatch = useDispatch<AppDispatch>();
+
   const audioRef = useRef<TAudio>();
   const mediaRecorderRef = useRef<MediaRecorder>();
   const audioChunksRef = useRef<Blob[]>([]);
@@ -24,8 +29,8 @@ export function useAudio(
     function start() {
       if (!isRecording) {
         audioChunksRef.current = [];
-        setAudio(undefined);
-        setIsRecording(true);
+        dispatch(setAudio(undefined));
+        dispatch(setIsRecording(true));
       }
 
       // The following will record from device mic
@@ -67,19 +72,6 @@ export function useAudio(
       // Stop recording
       setIsRecording(false);
       mediaRecorderRef.current?.stop();
-
-      const newAudio = audioRef.current;
-
-      if (chatArea.currentChat && newAudio) {
-        console.log(newAudio);
-        // Add the audio to database
-        socket.emit("chat:sendAudio", {
-          to: chatArea.currentChat.recipientId,
-          audio: newAudio,
-        });
-
-        setTimeout(() => refreshChat(), 50);
-      }
     }
 
     return { start, stop };
@@ -87,6 +79,7 @@ export function useAudio(
 
   return {
     audio,
+    setAudio,
     handleMicRecord,
   };
 }

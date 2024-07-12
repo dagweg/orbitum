@@ -2,46 +2,35 @@ import { Dispatch, SetStateAction, useRef } from "react";
 import ChatTextArea from "./chat-text-area";
 import { useChatInput } from "../hooks/useChatInput";
 import { useAudio } from "../hooks/useAudio";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 
-export function ChatInput({
-  message,
-  setMessage,
-}: {
-  message: string;
-  setMessage: Dispatch<SetStateAction<string>>;
-}) {
+export function ChatInput() {
   const chatTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const visualizerRef = useRef();
+  const chatAudio = useSelector((state: RootState) => state.ChatAudio);
 
   const {
-    isRecording,
-    setIsRecording,
     hasStartedTyping,
     setHasStartedTyping,
     handleTextAreaChange,
     handleTextAreaKeyDown,
     handleTextAreaKeyUp,
     handleMessageSend,
-  } = useChatInput(message, setMessage, chatTextAreaRef);
+  } = useChatInput(chatTextAreaRef);
 
-  const { audio, handleMicRecord } = useAudio(isRecording, setIsRecording);
+  const { handleMicRecord } = useAudio();
 
   return (
     <>
-      {audio && audio.url && (
+      {chatAudio.audio && chatAudio.audio.url && (
         <audio controls>
-          <source src={audio?.url} type="audio/wav"></source>
+          <source src={chatAudio.audio?.url} type="audio/wav"></source>
           Your browser doesn&apos;t support the audio element.
         </audio>
       )}
       <ChatTextArea
-        audio={audio}
-        isRecording={isRecording}
-        setIsRecording={setIsRecording}
         handleMicRecord={handleMicRecord}
-        message={message}
-        setMessage={setMessage}
         chatTextAreaRef={chatTextAreaRef}
         handleMessageSend={handleMessageSend}
         handleTextAreaChange={handleTextAreaChange}

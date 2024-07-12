@@ -14,8 +14,8 @@ import { TPost } from "@/app/types";
 
 const initialState: IPostSchema[] = [];
 
-const posts = createSlice({
-  name: "posts",
+const postSlice = createSlice({
+  name: "post",
   initialState,
   reducers: {
     setPosts(state, action) {
@@ -79,5 +79,5 @@ const posts = createSlice({
   },
 });
 
-export const { setPosts } = posts.actions;
-export const Posts = posts.reducer;
+export const { setPosts } = postSlice.actions;
+export const Posts = postSlice.reducer;

@@ -23,27 +23,11 @@ import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { MicHandlerReturn, TAudio } from "../types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { setChatMessage } from "@/lib/redux/slices/message/chatMessageSlice";
 
-function ChatTextArea({
-  audio,
-  message,
-  setMessage,
-  isRecording,
-  setIsRecording,
-  chatTextAreaRef,
-  handleTextAreaChange,
-  handleTextAreaKeyDown,
-  handleTextAreaKeyUp,
-  hasStartedTyping,
-  handleMessageSend,
-  handleMicRecord,
-  setHasStartedTyping,
-}: {
-  audio: TAudio | undefined;
-  message: string;
-  setMessage: Dispatch<SetStateAction<string>>;
-  isRecording: boolean;
-  setIsRecording: Dispatch<SetStateAction<boolean>>;
+type Props = {
   chatTextAreaRef: RefObject<HTMLTextAreaElement>;
   handleTextAreaChange: (e: any) => void;
   handleTextAreaKeyDown: (e: any) => void;
@@ -57,7 +41,23 @@ function ChatTextArea({
   setHasStartedTyping: Dispatch<
     SetStateAction<{ you: boolean; recipient: boolean }>
   >;
-}) {
+};
+
+function ChatTextArea({
+  chatTextAreaRef,
+  handleTextAreaChange,
+  handleTextAreaKeyDown,
+  handleTextAreaKeyUp,
+  hasStartedTyping,
+  handleMessageSend,
+  handleMicRecord,
+  setHasStartedTyping,
+}: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+  const chatAudio = useSelector((state: RootState) => state.ChatAudio);
+  const chatVideo = useSelector((state: RootState) => state.ChatVideo);
+  const message = useSelector((state: RootState) => state.ChatMessage);
+
   const [emojiPane, setEmojiPane] = useState({
     enabled: false,
   });
@@ -69,15 +69,16 @@ function ChatTextArea({
       enabled: false,
     });
   };
+
   useClickOutsideObserver(emojiRef, emojiRefHandleClickOutside);
 
   const handleEmojiClick = (e: EmojiClickData) => {
     const message = chatTextAreaRef.current;
-    setMessage(message?.value + e.emoji);
+    dispatch(setChatMessage(message?.value + e.emoji));
     setHasStartedTyping({ ...hasStartedTyping, you: true });
   };
 
-  console.log(audio);
+  console.log(chatAudio.audio);
 
   return (
     <>
@@ -100,7 +101,7 @@ function ChatTextArea({
             <span
               className={cn(
                 "absolute right-0 top-[-25px] flex font-semibold items-center gap-1 scale-0 duration-100 ease-in origin-bottom",
-                isRecording && "scale-100 w-auto"
+                chatAudio.isRecording && "scale-100 w-auto"
               )}
             >
               <BsRecordCircleFill
@@ -147,7 +148,7 @@ function ChatTextArea({
                   }
                   className={cn(
                     "relative",
-                    isRecording &&
+                    chatAudio.isRecording &&
                       "text-red-500 hover:text-red-500 bg-pink-100 hover:bg-pink-100 "
                   )}
                 >

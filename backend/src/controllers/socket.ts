@@ -23,6 +23,7 @@ export default function socketHandler(server: Server) {
     console.log("a user connected");
 
     console.log("Connected User is ", socket.data.user.email);
+    console.log("Connected User id is ", socket.data.user.userId);
 
     if (!userMap.get(socket.data.user.userId)) {
       userMap.set(socket.data.user.userId, socket.id);
