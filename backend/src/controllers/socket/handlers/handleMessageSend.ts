@@ -25,6 +25,7 @@ export const handleMessageSend =
       console.log("MESSAGE IS ", content);
       console.log("AUDIO IS ", audio);
       console.log("VIDEO IS ", video);
+      console.log("ATTACHMENT IS ", attachment);
 
       const socketId = userMap.get(to);
       console.log("Socket ID is ", socketId);
@@ -39,7 +40,7 @@ export const handleMessageSend =
       const sender = socket.data.user.userId;
       const reciever = new ObjectId(to);
 
-      if (attachment && content) {
+      if (JSON.stringify(attachment) !== "{}" && attachment && content) {
         const { attachmentId } = await new Attachments().createAttachment(
           attachment
         );

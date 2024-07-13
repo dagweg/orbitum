@@ -2,29 +2,43 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TAudio, TImage, TVideo } from "@/app/types";
 
 export type TChatAttachment = {
-  audios: TAudio[];
-  videos: TVideo[];
-  photos: TImage[];
+  audios?: TAudio[];
+  videos?: TVideo[];
+  photos?: TImage[];
 };
 
-const initialState: TChatAttachment = {
-  audios: [],
-  videos: [],
-  photos: [],
-};
+let initialState: TChatAttachment | null = {};
 
 const chatAttachmentSlice = createSlice({
   name: "chatAttachment",
   initialState,
   reducers: {
     setAudios(state, action) {
-      state.audios = action.payload;
+      if (!state) {
+        state = {
+          audios: [action.payload],
+        };
+      } else {
+        state.audios = action.payload;
+      }
     },
     setVideos(state, action) {
-      state.videos = action.payload;
+      if (!state) {
+        state = {
+          videos: [action.payload],
+        };
+      } else {
+        state.videos = action.payload;
+      }
     },
     setPhotos(state, action) {
-      state.photos = action.payload;
+      if (!state) {
+        state = {
+          photos: [action.payload],
+        };
+      } else {
+        state.photos = action.payload;
+      }
     },
   },
 });
