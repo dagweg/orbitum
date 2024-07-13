@@ -15,9 +15,22 @@ export type TChatProps = {
   name: string;
   message: string;
   sender?: TSender;
-  audio?: TAudio;
+  audio?: {
+    url: string;
+    type: string;
+  };
   chatType?: TChatType;
   date?: Date;
+};
+
+export type TMessage = {
+  sender: {
+    userName: string;
+  };
+  content: string;
+  audio: TAudio;
+  date: Date;
+  you: boolean;
 };
 
 export type TAvatarWrapper = {
@@ -81,7 +94,7 @@ export type TChatArea = {
         yourId: string;
         recipientId: string;
         recipient: TUser;
-        messages: TMessageSchema[];
+        messages: TMessage[];
       }
     | undefined;
 };

@@ -5,14 +5,15 @@ import { useSelector } from "react-redux";
 import ChatMessage from "./chat-message";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { TAudio } from "../types";
+import { TAudio, TMessage } from "../types";
+import { createUrl } from "@/util/file";
 
 function ChatMessages({
   chatMessagesRef,
   messages,
 }: {
   chatMessagesRef: RefObject<HTMLDivElement>;
-  messages: TMessageSchema[] | undefined;
+  messages: TMessage[] | undefined;
 }) {
   if (!messages) {
     return (
@@ -41,12 +42,19 @@ function ChatMessages({
       className="h-full  overflow-y-scroll overflow-x-clip no-scrollbar  mb-[50px]"
     >
       {messages &&
-        messages.map((message: TMessageSchema, index) => (
+        messages.map((message: TMessage, index) => (
           <ChatMessage
             key={index}
             name={message.sender.userName}
-            message={message.content as string}
-            audio={message.audio as TAudio}
+            message={message.content}
+            audio={
+              message.audio
+                ? {
+                    url: createUrl(message.audio.base64, message.audio.type)!,
+                    type: message.audio.type,
+                  }
+                : undefined
+            }
             sender={message.you ? "you" : "default"}
             date={message.date}
           />

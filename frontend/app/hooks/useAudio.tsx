@@ -9,6 +9,7 @@ import {
   setAudio,
   setIsRecording,
 } from "@/lib/redux/slices/audio/chatAudioSlice";
+import useSocket from "./useSocket";
 
 export function useAudio() {
   // For Audio recording
@@ -22,6 +23,7 @@ export function useAudio() {
   const audioChunksRef = useRef<Blob[]>([]);
 
   const chatArea = useSelector((state: RootState) => state.ChatArea);
+  const chatAudio = useSelector((state: RootState) => state.ChatAudio);
 
   const { refreshChat } = useChatSocket();
 
@@ -59,7 +61,7 @@ export function useAudio() {
           } as TAudio;
 
           // Update State and Ref of the Audio
-          setAudio(newAudio);
+          dispatch(setAudio(newAudio));
           audioRef.current = newAudio;
 
           audioChunksRef.current = [];
@@ -70,16 +72,23 @@ export function useAudio() {
 
     function stop() {
       // Stop recording
-      setIsRecording(false);
+      dispatch(setIsRecording(false));
+      console.log(chatAudio.audio);
+      if (chatArea && chatArea.currentChat && chatAudio) {
+        socket.emit("chat:sendMessage", {
+          to: chatArea.currentChat.recipientId,
+          audio: audioRef.current,
+        });
+      } else {
+        console.error("ChatArea is undefined or there is no audio");
+      }
       mediaRecorderRef.current?.stop();
     }
 
     return { start, stop };
-  }, [isRecording, setIsRecording, chatArea.currentChat, refreshChat]);
+  }, [chatArea.currentChat, refreshChat]);
 
   return {
-    audio,
-    setAudio,
     handleMicRecord,
   };
 }

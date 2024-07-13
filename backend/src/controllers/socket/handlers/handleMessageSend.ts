@@ -31,8 +31,9 @@ export const handleMessageSend =
       console.log("Socket ID is ", socketId);
 
       if (!socketId) {
-        console.log("Couldn't find user with that UserID");
-        return;
+        console.log(
+          "Couldn't find user with that Socket User Id. He/She is disconnected"
+        );
       }
 
       let message;
@@ -74,6 +75,7 @@ export const handleMessageSend =
       } else if (content) {
         message = await new Message().createMessage(content, sender);
         if (!message) throw new Error("Message not found");
+        console.log(message);
       } else {
         throw new Error("No message provided");
       }
@@ -86,7 +88,7 @@ export const handleMessageSend =
         message.id
       );
 
-      if (message) {
+      if (message && socketId) {
         console.log("SENDING THIS TO USER ", message);
         io.to(socketId).emit(SocketEvents.EMIT_CHAT_RECIEVE_MESSAGE, {
           from: socket.data.user.userId,
@@ -96,7 +98,7 @@ export const handleMessageSend =
           attachment,
         });
       } else {
-        console.log("Message is undefined");
+        console.log("Message is undefined or socketId is undefined");
       }
     } catch (error) {
       console.error("Error sending message: ", error);

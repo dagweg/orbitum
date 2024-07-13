@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import OnlineIndicator from "./online-indicator";
 import { PulseLoader } from "react-spinners";
-import { TUser } from "../types";
+import { TMessage, TUser } from "../types";
 import { IoMdMore } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { createUrl } from "@/util/file";
@@ -14,7 +14,7 @@ function ChatHeader({
   recipient,
   hasStartedTyping,
 }: {
-  messages: TMessageSchema[] | undefined;
+  messages: TMessage[] | undefined;
   onlineUsers: {};
   recipient: TUser | undefined;
   hasStartedTyping: {

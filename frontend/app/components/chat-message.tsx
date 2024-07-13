@@ -28,7 +28,7 @@ function ChatMessage({
           <>{message}</>
         ) : (
           <audio controls>
-            {/* <source src={audio?.url} type="audio/wav"></source> */}
+            <source src={audio?.url} type={audio?.type}></source>
             Your browser doesn&apos;t support the audio element.
           </audio>
         )}
