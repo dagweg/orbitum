@@ -7,6 +7,9 @@ import { ChatAudio } from "./slices/audio/chatAudioSlice";
 import { ChatVideo } from "./slices/video/chatVideoSlice";
 import { ChatMessage } from "./slices/message/chatMessageSlice";
 import { ChatAttachment } from "./slices/attachment/chatAttachmentSlice";
+import { enableMapSet } from "immer";
+
+enableMapSet();
 
 export const store = configureStore({
   reducer: {

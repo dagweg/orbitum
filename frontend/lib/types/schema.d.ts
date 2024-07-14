@@ -11,6 +11,8 @@ export type TLoginSchema = z.infer<typeof LoginSchema>;
 export type TPostSchemaResponse = z.infer<typeof PostSchemaRefined>;
 export interface IPostSchema extends TPostSchemaResponse {
   likes: Map<string, boolean>;
+  likes_count: number;
+  liked: boolean;
 }
 export type TMessageSchema = z.infer<typeof MessageSchema>;
 export type TAudioSchema = z.infer<typeof AudioSchema>;

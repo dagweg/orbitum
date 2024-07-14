@@ -16,7 +16,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import AvatarWrapper from "./avatar-wrapper";
 import Image from "next/image";
-import { TUserSchema } from "@/lib/types/schema";
+import { IPostSchema, TUserSchema } from "@/lib/types/schema";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState, store } from "@/lib/redux/store";
 import { fetchUser } from "@/lib/redux/slices/user/userThunks";
@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import useClickOutsideObserver from "../hooks/useClickOutsideObserver";
 import { Textarea } from "@/components/ui/textarea";
 import CommentCard from "./comment-card";
-import { TImagePost, TUser } from "../types";
+import { TImage, TImagePost, TUser } from "../types";
 import ImageGallery from "./image-gallery";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
 import { createUrl } from "@/util/file";
@@ -37,17 +37,38 @@ type TComment = {
   likes: number;
 };
 
-type TPost = {
+// type TPost = {
+//   postId: string;
+//   user: TUserSchema;
+//   date: Date;
+//   content: string;
+//   likes: Map<string, boolean>;
+//   liked: boolean;
+//   comments: Object[];
+//   shares: Object[];
+//   images?: TImagePost[];
+//   videos?: [];
+// };
+
+interface ExtendedProps extends IPostSchema {
   postId: string;
-  user: TUserSchema;
   date: Date;
-  content: string;
-  likes: Map<string, boolean>;
-  liked: boolean;
-  comments: Object[];
-  shares: Object[];
-  images?: TImagePost[];
-  videos?: [];
+}
+
+type Props = Pick<
+  ExtendedProps,
+  | "date"
+  | "content"
+  | "likes"
+  | "comments"
+  | "shares"
+  | "liked"
+  | "likes_count"
+  | "videos"
+  | "postId"
+> & {
+  user: TUserSchema;
+  images: TImagePost[];
 };
 
 export default function Post({
@@ -56,12 +77,13 @@ export default function Post({
   date,
   content,
   likes,
+  likes_count,
   liked,
   comments,
   shares,
   images,
   videos,
-}: TPost) {
+}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
   dispatch(fetchUser());
@@ -107,6 +129,7 @@ export default function Post({
   }
   useClickOutsideObserver(cardRef, cardOutsideClickHandler);
 
+  console.log(liked);
   return (
     <div className={cn(commentMode && commentModeStyle)}>
       <Card
@@ -144,6 +167,11 @@ export default function Post({
           )}
         </section>
         <section className="w-full  space-y-3 flex flex-col">
+          {likes_count > 0 && (
+            <span className="flex gap-1 items-center">
+              <ThumbsUp size={15} color="orange" /> {likes_count}
+            </span>
+          )}
           {/* {likes.size > 0 && (
             <>
               <div className="flex -space-x-2 border-b-2 pb-2">
@@ -170,13 +198,14 @@ export default function Post({
               className="flex items-center gap-3"
               onClick={() => handleLike()}
             >
-              {liked ? <FaThumbsUp size={18} /> : <FaRegThumbsUp size={18} />}
+              {/* {liked ? <FaThumbsUp size={18} /> : <FaRegThumbsUp size={18} />} */}
+              <FaThumbsUp size={18} className={cn(!liked && "invert-[0.5]")} />
               {/* <ThumbsUp
                 className={cn({
                   "text-green-700": liked,
                 })}
               /> */}
-              {liked ? `(${likes.size}) Liked` : "Like"}
+              {liked ? `Liked` : "Like"}
             </Button>
             <Button
               variant={"ghost"}

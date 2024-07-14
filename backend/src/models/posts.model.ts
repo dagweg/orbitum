@@ -17,8 +17,7 @@ const postsSchema = new mongoose.Schema({
   },
   likes: {
     type: Map,
-    of: Boolean,
-    default: new Map(),
+    default: {},
   },
   comments: [
     {
@@ -54,4 +53,5 @@ const postsSchema = new mongoose.Schema({
 export interface TPosts extends InferSchemaType<typeof postsSchema> {
   likes: Map<string, boolean>;
 }
+
 export const Posts = mongoose.model<TPosts>("Posts", postsSchema);

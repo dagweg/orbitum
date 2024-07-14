@@ -22,7 +22,7 @@ function FeedPage() {
 
   useEffect(() => {
     dispatch(getAllPosts());
-  }, [dispatch]);
+  }, []);
 
   const testImages: TImagePost[] = [
     {
@@ -44,7 +44,7 @@ function FeedPage() {
       url: "https://imgur.com/mNkCX9W.png",
     },
   ];
-  console.log(posts);
+  // console.log(posts);
   return (
     <div className="flex w-full justify-center bg-white">
       <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
@@ -70,6 +70,7 @@ function FeedPage() {
               date={new Date(post.createdAt)}
               content={post.content}
               likes={post.likes}
+              likes_count={post.likes_count}
               liked={post.liked as boolean}
               comments={post.comments}
               shares={post.shares}
@@ -80,6 +81,7 @@ function FeedPage() {
                   ),
                 };
               })}
+              videos={post.videos}
             />
           ))}
       </div>
