@@ -157,7 +157,7 @@ export default function Post({
             <Ellipsis />
           </Button>
         </section>
-        <section className="w-full font-lato ">
+        <section className="w-full">
           {content}
 
           {images && images.length > 0 && (
@@ -289,7 +289,7 @@ function CommentSection({
           </div>
         ) : (
           <div className=" p-2 rounded-lg">
-            <p className="text-center font-lato py-8 flex  gap-3 mx-auto  w-fit">
+            <p className="text-center  py-8 flex  gap-3 mx-auto  w-fit">
               <MessageSquareMore />
               Be the first to comment
             </p>

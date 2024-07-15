@@ -6,7 +6,9 @@ export async function getAllNotifications(req: Request, res: Response) {
 
     const notifications = await Notification.find({
       user: userId,
-    });
+    })
+      .populate("user")
+      .populate("user.profilePicture");
 
     return res.json({
       notifications,

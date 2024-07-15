@@ -29,6 +29,7 @@ const notificationSlice = createSlice({
   reducers: {
     addNotification(state, action) {
       state.notifications.push(action.payload);
+      state.notifications.sort((a, b) => (a.date > b.date ? -1 : 1));
       state.new_notifications_count++;
       state.total_notifications++;
     },

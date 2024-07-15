@@ -46,8 +46,8 @@ function FeedPage() {
   ];
   // console.log(posts);
   return (
-    <div className="flex w-full justify-center bg-white">
-      <div className="w-[600px] mx-auto  h-screen px-4 py-2 flex flex-col gap-3">
+    <div className="flex w-full justify-center bg-white h-screen overflow-y-scroll no-scrollbar">
+      <div className="w-[600px] mx-auto  px-4 py-2 flex flex-col gap-3">
         <Heading>Feed</Heading>
         <PostInput />
         {/* <Post

@@ -15,6 +15,7 @@ const config = {
       openSans: ['"Open Sans"', "sans-serif"],
       lato: ['"Lato"', "sans-serif"],
       workSans: ['"Work Sans"', "sans-serif"],
+      jakartaSans: ['"Plus Jakarta Sans"', "sans-serif"],
     },
     container: {
       center: true,

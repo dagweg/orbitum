@@ -19,9 +19,12 @@ import {
   Contrast,
   Divide,
   Home,
+  HomeIcon,
   Lock,
   LogOut,
+  LucideHome,
   MessageCircle,
+  Mic2Icon,
   Settings,
   Tv,
   User,
@@ -51,9 +54,18 @@ import { Card } from "@/components/ui/card";
 import { openChatSideBar } from "@/lib/redux/slices/chat/chatSideBarSlice";
 import { closeChatArea } from "@/lib/redux/slices/chat/chatAreaSlice";
 import { useNotification } from "../hooks/useNotification";
+import { Avatar } from "@/components/ui/avatar";
+import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { createUrl } from "@/util/file";
+import { FaHouse } from "react-icons/fa6";
+import { BsHouseDoor, BsHouseDoorFill } from "react-icons/bs";
+import { RiChat1Fill, RiChat1Line } from "react-icons/ri";
+import { GoBell, GoBellFill } from "react-icons/go";
 
 export default function Navbar() {
-  const { firstName, lastName } = useSelector((state: RootState) => state.User);
+  const { firstName, lastName, profilePicture } = useSelector(
+    (state: RootState) => state.User
+  );
   const { new_notifications_count } = useSelector(
     (state: RootState) => state.Notification
   );
@@ -112,7 +124,12 @@ export default function Navbar() {
   ];
 
   return (
-    <div className={cn("w-full", pathname.includes("chat") && "fixed")}>
+    <div
+      className={cn(
+        "w-full",
+        pathname.includes("chat") ? "fixed" : "sticky top-0"
+      )}
+    >
       <Dialog>
         <DialogTrigger asChild>
           <Button className="sr-only" ref={dialogTriggerRef}>
@@ -139,45 +156,60 @@ export default function Navbar() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <div className="flex w-full justify-center  bg-neutral-200 bg-opacity-50 backdrop-blur-md  !z-[100000]">
-        <div className="flex gap-10 items-center p-2   top-0 ">
+      <div className="flex w-full justify-center  bg-neutral-200 bg-opacity-50 backdrop-blur-md  !z-[100000] ">
+        <div className="grid grid-cols-3 gap-10 items-center p-2 w-full justify-between  top-0 ">
           <div className="w-full absolute left-0 h-full flex justify-between  px-4">
             <span
               className="self-center  font-bold font-lemonMilk tracking-[5pt]  flex items-center gap-2 cursor-pointer hover:opacity-100 duration-100 ease-in"
               onClick={() => router.push("/site/feed")}
             >
               <Image src={"/logo/logo.ico"} alt="" width={25} height={25} />
-              <span className="hidden md:block opacity-60">Orbitum</span>
-            </span>
-            <span className="hidden md:flex text-[5pt] self-center  font-bold font-lemonMilk tracking-[5pt] opacity-60 items-center gap-2 duration-100 ease-in">
-              Alpha Release
+              <div>
+                <span className="hidden md:block opacity-60">Orbitum</span>
+                <span className="hidden md:flex text-[5pt] self-center  font-bold font-lemonMilk tracking-[5pt] opacity-60 items-center gap-2 duration-100 ease-in">
+                  Alpha
+                </span>
+              </div>
             </span>
           </div>
 
+          <div></div>
           <NavigationMenu className="!relative">
-            <NavigationMenuList className=" relative ">
+            <NavigationMenuList className=" relative flex gap-3">
               <Link
                 href={"/site/feed"}
-                className=" px-4 rounded-md py-2 hover:bg-white duration-100 ease-in-out"
+                className=" rounded-full p-2  hover:rounded-none active:rounded-full  ring-0  border-b-4  border-transparent hover:border-b-4 hover:border-neutral-200 active:border-4 "
                 title={"Feed"}
               >
-                <Home />
+                {pathname.includes("feed") ? (
+                  <BsHouseDoorFill size={20} />
+                ) : (
+                  <BsHouseDoor size={20} />
+                )}
               </Link>
               <Link
                 href={"/site/chat"}
-                className=" px-4 rounded-md py-2 hover:bg-white duration-100 ease-in-out"
+                className=" rounded-full p-2  hover:rounded-none active:rounded-full  ring-0  border-b-4  border-transparent hover:border-b-4 hover:border-neutral-200 active:border-4 "
                 title={"Chat"}
                 onClick={handleChatClick}
               >
-                <MessageCircle />
+                {pathname.includes("chat") ? (
+                  <RiChat1Fill size={23} />
+                ) : (
+                  <RiChat1Line size={23} />
+                )}
               </Link>
               <Link
                 href={"/site/notifications"}
-                className=" px-4 rounded-md py-2 relative hover:bg-white duration-100 ease-in-out"
+                className=" rounded-full p-2  relative hover:rounded-none active:rounded-full  ring-0  border-b-4  border-transparent hover:border-b-4 hover:border-neutral-200 active:border-4 "
                 title={"Notifications"}
               >
                 <div className="relative ">
-                  <Bell />
+                  {pathname.includes("notifications") ? (
+                    <GoBellFill size={23} />
+                  ) : (
+                    <GoBell size={23} />
+                  )}
                   {new_notifications_count > 0 && (
                     <div className="bg-red-500 max-w-fit h-[15px] p-[2px] w-fit max-h-[15px] min-w-[15px] min-h-[15px] font-opensans font-semibold border-[2px] flex items-center justify-center border-neutral-100 rounded-md text-[7pt]  text-white absolute top-[-3px] right-0">
                       {new_notifications_count}
@@ -185,9 +217,30 @@ export default function Navbar() {
                   )}
                 </div>
               </Link>
+            </NavigationMenuList>
+          </NavigationMenu>
+          <NavigationMenu className="flex justify-end">
+            <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger title={"You"}>
-                  {<User />}
+                <NavigationMenuTrigger
+                  title={firstName + " " + lastName}
+                  className="bg-transparent"
+                >
+                  {profilePicture ? (
+                    <Avatar>
+                      <AvatarImage
+                        src={createUrl(
+                          profilePicture.base64,
+                          profilePicture.type
+                        )}
+                      ></AvatarImage>
+                      <AvatarFallback className="flex items-center justify-center">
+                        {(firstName[0] + lastName[0] || "").toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <User />
+                  )}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] !z-[1000] relative">
