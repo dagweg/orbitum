@@ -8,6 +8,7 @@ import { ChatVideo } from "./slices/video/chatVideoSlice";
 import { ChatMessage } from "./slices/message/chatMessageSlice";
 import { ChatAttachment } from "./slices/attachment/chatAttachmentSlice";
 import { enableMapSet } from "immer";
+import { Notification } from "./slices/notification/notificationSlice";
 
 enableMapSet();
 
@@ -21,6 +22,7 @@ export const store = configureStore({
     ChatVideo,
     ChatMessage,
     ChatAttachment,
+    Notification,
   },
 });
 

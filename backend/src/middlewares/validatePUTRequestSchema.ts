@@ -5,7 +5,7 @@ import { ZodSchema } from "zod";
 export const validatePUTRequestSchema =
   (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log("recieved ", req.body);
+      console.log("received ", req.body);
       const validation = schema.safeParse(req.body);
       if (!validation.success) {
         return res.status(400).json(validation.error.errors);

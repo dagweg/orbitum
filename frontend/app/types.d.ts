@@ -163,7 +163,7 @@ export type TZodReturn = {
       expected: string;
       message: string;
       path: string[];
-      recieved: string;
+      received: string;
     }
   ];
 };

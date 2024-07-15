@@ -8,6 +8,7 @@ import { Audio } from "../../audio";
 import { Video } from "../../video";
 import { PrivateChat } from "../../privateChat";
 import { ObjectId } from "mongodb";
+import { Notification } from "../../notification";
 
 /**
  *
@@ -39,7 +40,7 @@ export const handleMessageSend =
       let message;
 
       const sender = socket.data.user.userId;
-      const reciever = new ObjectId(to);
+      const receiver = new ObjectId(to);
 
       if (JSON.stringify(attachment) !== "{}" && attachment && content) {
         const { attachmentId } = await new Attachments().createAttachment(
@@ -84,19 +85,41 @@ export const handleMessageSend =
 
       const privateChat = await new PrivateChat().privateChatMessagePush(
         sender,
-        reciever,
+        receiver,
         message.id
+      );
+
+      const newNotification = await new Notification().createNotficiation(
+        receiver,
+        `You have a new ${audio ? "audio " : video ? "video " : ""}message`,
+        `${
+          audio ? "Listen to the audio" : video ? "Watch the video" : content
+        }.`,
+        "this-is-supposed-to-be-a-link"
+      );
+
+      console.log(
+        "THis is the new notification \n",
+        newNotification.notification
       );
 
       if (message && socketId) {
         console.log("SENDING THIS TO USER ", message);
-        io.to(socketId).emit(SocketEvents.EMIT_CHAT_RECIEVE_MESSAGE, {
+        io.to(socketId).emit(SocketEvents.EMIT_CHAT_RECEIVE_MESSAGE, {
           from: socket.data.user.userId,
           content,
           audio,
           video,
           attachment,
         });
+        if (newNotification.notification) {
+          io.to(socketId).emit(SocketEvents.EMIT_NOTIFICATION, {
+            from: socket.data.user.userId,
+            notification: newNotification.notification,
+          });
+        } else {
+          console.log("Notification not sent! Plase check the controller");
+        }
       } else {
         console.log("Message is undefined or socketId is undefined");
       }

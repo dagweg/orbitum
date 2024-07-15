@@ -15,13 +15,14 @@ export async function postComment(req: Request, res: Response) {
       });
     }
 
-    const newComment = await Comments.create({
+    let newComment = await Comments.create({
       user: userId,
       post: postId,
       text: comment,
     });
 
-    newComment.populate("user", "-password");
+    await newComment.populate("user", "-password");
+    await newComment.populate("user.profilePicture");
     await newComment.save();
     post.comments.push(newComment._id);
     await post.save();

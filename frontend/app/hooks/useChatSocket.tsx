@@ -25,11 +25,11 @@ export function useChatSocket() {
   }
 
   useSocket("chat:receiveMessage", ({ from, message }) => {
-    console.log("You have recieved message: ", message, " from ", from);
+    console.log("You have received message: ", message, " from ", from);
     refreshChat();
   });
 
-  useSocket("chat:recieveAudio", ({ from, message }) => {});
+  useSocket("chat:receiveAudio", ({ from, message }) => {});
 
   useSocket("chat:type", (from) => {
     console.log("tyPING", from);

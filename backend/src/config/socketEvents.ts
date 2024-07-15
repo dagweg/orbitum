@@ -6,8 +6,9 @@ const SocketEvents = {
   ON_CHAT_SEND_AUDIO: "chat:sendAudio",
   ON_CHAT_TYPE: "chat:type",
   EMIT_USERS_CONNECTED: "users:connected",
-  EMIT_CHAT_RECIEVE_MESSAGE: "chat:receiveMessage",
-  EMIT_CHAT_RECIEVE_AUDIO: "chat:recieveAudio",
+  EMIT_CHAT_RECEIVE_MESSAGE: "chat:receiveMessage",
+  EMIT_CHAT_RECEIVE_AUDIO: "chat:receiveAudio",
+  EMIT_NOTIFICATION: "receiveNotification",
 };
 
 export default SocketEvents;

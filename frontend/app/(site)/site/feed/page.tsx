@@ -17,7 +17,7 @@ function FeedPage() {
   const dispatch = useDispatch<AppDispatch>();
 
   useSocket("chat", (data) => {
-    console.log("recieved socketserver data ", data);
+    console.log("received socketserver data ", data);
   });
 
   useEffect(() => {

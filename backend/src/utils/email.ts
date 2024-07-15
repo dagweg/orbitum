@@ -32,7 +32,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
 }
 
 export async function sendOtpEmail(
-  recieverEmail: string,
+  receiverEmail: string,
   otp: string,
   otpExpiry: Date
 ) {
@@ -43,5 +43,5 @@ export async function sendOtpEmail(
 
   const emailBody = `<p>Thanks for registering to Orbitum.<br>Here is your OTP: <strong>${otp}</strong>.<br> It is to expire after ${expiryHours} hours at ${otpExpiry.toLocaleString()}</p>`;
 
-  await sendEmail(recieverEmail, "Account Verification OTP", emailBody);
+  await sendEmail(receiverEmail, "Account Verification OTP", emailBody);
 }

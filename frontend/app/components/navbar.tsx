@@ -31,10 +31,6 @@ import {
 import NavItem from "./navitem";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import {
-  closeChatArea,
-  openChatSideBar,
-} from "@/lib/redux/slices/chat/chatSideBarSlice";
 import { fetchUser } from "@/lib/redux/slices/user/userThunks";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -52,9 +48,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { openChatSideBar } from "@/lib/redux/slices/chat/chatSideBarSlice";
+import { closeChatArea } from "@/lib/redux/slices/chat/chatAreaSlice";
+import { useNotification } from "../hooks/useNotification";
 
 export default function Navbar() {
   const { firstName, lastName } = useSelector((state: RootState) => state.User);
+  const { new_notifications_count } = useSelector(
+    (state: RootState) => state.Notification
+  );
+
+  useNotification(); // Listens to new notifications
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -174,9 +178,11 @@ export default function Navbar() {
               >
                 <div className="relative ">
                   <Bell />
-                  <div className="bg-red-500 max-w-fit h-[15px] p-[2px] w-fit max-h-[15px] min-w-[15px] min-h-[15px] font-opensans font-semibold border-[2px] flex items-center justify-center border-neutral-100 rounded-md text-[7pt]  text-white absolute top-[-3px] right-0">
-                    5
-                  </div>
+                  {new_notifications_count > 0 && (
+                    <div className="bg-red-500 max-w-fit h-[15px] p-[2px] w-fit max-h-[15px] min-w-[15px] min-h-[15px] font-opensans font-semibold border-[2px] flex items-center justify-center border-neutral-100 rounded-md text-[7pt]  text-white absolute top-[-3px] right-0">
+                      {new_notifications_count}
+                    </div>
+                  )}
                 </div>
               </Link>
               <NavigationMenuItem>
