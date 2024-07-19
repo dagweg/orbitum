@@ -26,6 +26,7 @@ import { MicHandlerReturn, TAudio } from "../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { setChatMessage } from "@/lib/redux/slices/message/chatMessageSlice";
+import { AttachmentButton } from "./attachment-button";
 
 type Props = {
   chatTextAreaRef: RefObject<HTMLTextAreaElement>;
@@ -97,7 +98,7 @@ function ChatTextArea({
         </div>
 
         <section className="relative pb-2  w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
-          <div className=" relative h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto ring-1 max-w-[700px]  focus-within:ring-2 ring-neutral-400 duration-200 ease-in  rounded-lg">
+          <div className=" relative h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto  max-w-[700px]   duration-200 ease-in   rounded-t-none rounded-b-3xl">
             <span
               className={cn(
                 "absolute right-0 top-[-25px] flex font-semibold items-center gap-1 scale-0 duration-100 ease-in origin-bottom",
@@ -110,10 +111,9 @@ function ChatTextArea({
               />
               <span>Rec</span>
             </span>
+
             <div className="h-full flex flex-col-reverse items-end">
-              <Button variant={"circleGhost"}>
-                <Paperclip className="" />
-              </Button>
+              <AttachmentButton />
             </div>
 
             <TextAreaAutoSize

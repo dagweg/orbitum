@@ -194,9 +194,9 @@ export default function Navbar() {
                 onClick={handleChatClick}
               >
                 {pathname.includes("chat") ? (
-                  <RiChat1Fill size={23} />
+                  <RiChat1Fill size={21} />
                 ) : (
-                  <RiChat1Line size={23} />
+                  <RiChat1Line size={21} />
                 )}
               </Link>
               <Link
@@ -206,9 +206,9 @@ export default function Navbar() {
               >
                 <div className="relative ">
                   {pathname.includes("notifications") ? (
-                    <GoBellFill size={23} />
+                    <GoBellFill size={20} />
                   ) : (
-                    <GoBell size={23} />
+                    <GoBell size={20} />
                   )}
                   {new_notifications_count > 0 && (
                     <div className="bg-red-500 max-w-fit h-[15px] p-[2px] w-fit max-h-[15px] min-w-[15px] min-h-[15px] font-opensans font-semibold border-[2px] flex items-center justify-center border-neutral-100 rounded-md text-[7pt]  text-white absolute top-[-3px] right-0">
