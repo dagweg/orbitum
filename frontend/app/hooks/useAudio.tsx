@@ -29,11 +29,9 @@ export function useAudio() {
 
   const handleMicRecord = useCallback((): MicHandlerReturn => {
     function start() {
-      if (!isRecording) {
-        audioChunksRef.current = [];
-        dispatch(setAudio(undefined));
-        dispatch(setIsRecording(true));
-      }
+      audioChunksRef.current = [];
+      dispatch(setAudio(undefined));
+      dispatch(setIsRecording(true));
 
       // The following will record from device mic
       (async function record() {

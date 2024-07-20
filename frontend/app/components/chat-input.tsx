@@ -23,12 +23,6 @@ export function ChatInput() {
 
   return (
     <>
-      {chatAudio.audio && chatAudio.audio.url && (
-        <audio controls>
-          <source src={chatAudio.audio?.url} type="audio/wav"></source>
-          Your browser doesn&apos;t support the audio element.
-        </audio>
-      )}
       <ChatTextArea
         handleMicRecord={handleMicRecord}
         chatTextAreaRef={chatTextAreaRef}

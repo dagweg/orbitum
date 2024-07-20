@@ -93,7 +93,12 @@ export function useChatInput(chatTextAreaRef: RefObject<HTMLTextAreaElement>) {
         content: message,
         audio: chatAudio.audio,
         video: chatVideo.video,
-        attachment: chatAttachment,
+        attachment:
+          chatAttachment.attachments.audios.length ||
+          chatAttachment.attachments.videos.length ||
+          chatAttachment.attachments.photos.length
+            ? chatAttachment.attachments
+            : undefined,
       });
 
       setTimeout(() => refreshChat(), 50);

@@ -40,7 +40,6 @@ function NotificationsPage() {
       {notifications.map(
         ({ title, description, date, user, link, thumbnail }) => (
           <NotificationCard
-            user={user}
             title={title}
             description={description}
             imgSrc={
