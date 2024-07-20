@@ -1,7 +1,7 @@
 import React from "react";
 import { TUser } from "../types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dot } from "lucide-react";
+import { Dot, User } from "lucide-react";
 import { createUrl } from "@/util/file";
 
 type Props = {
@@ -21,12 +21,12 @@ function CommentCard({ user, text, createdAt }: Props) {
       <div className="relative h-full flex items-start">
         <Avatar>
           <AvatarImage
-            src={profilePic ?? "https://imgur.com/cAy8VXf.png"}
+            src={profilePic}
             width={200}
             height={200}
             className="bg-center object-cover !bg-cover"
           ></AvatarImage>
-          <AvatarFallback></AvatarFallback>
+          <AvatarFallback><User /></AvatarFallback>
         </Avatar>
       </div>
       <div className="">

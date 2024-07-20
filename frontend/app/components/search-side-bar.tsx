@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   closeChatSideBar,
-  openChatArea,
-  setChatSideBar,
   setSearchPanel,
 } from "@/lib/redux/slices/chat/chatSideBarSlice";
 import {
@@ -21,6 +19,7 @@ import { Search } from "lucide-react";
 import { TUserSchema } from "@/lib/types/schema";
 import { createUrl } from "@/util/file";
 import { initials } from "@/lib/utils";
+import { openChatArea } from "@/lib/redux/slices/chat/chatAreaSlice";
 
 function SearchSideBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,7 +74,7 @@ function SearchSideBar() {
       {searchPanel.enabled && searchResult && (
         <div className="w-full bg-neutral-100 shadow-lg rounded-lg absolute top-[3rem] border-neutral-300 border-t-0 rounded-t-none border-2">
           {searchResult.map((result: TUserSchema, key: any) => {
-            const profileUrl = createUrl(
+            const profileUrl = result.profilePicture && createUrl(
               result.profilePicture.base64,
               result.profilePicture.type
             );

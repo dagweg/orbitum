@@ -60,10 +60,8 @@ export default function OtpPage() {
         },
         body: JSON.stringify({ token }),
       });
-      if (!response.ok) {
-        router.push("/auth/register");
-        return;
-      }
+
+      console.log(response)
 
       const data = await response.json();
 

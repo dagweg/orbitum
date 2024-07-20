@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
 
   const sessionToken = req.cookies.get(SESSION_TOKEN)?.value;
 
-  const loggedIn = await checkLoginStatus(sessionToken as string);
+  const loggedIn = await checkLoginStatus(sessionToken);
 
   if (contains(pathname, logoutRequiringRoutes) && loggedIn) {
     return NextResponse.redirect(new URL("/site/feed", CLIENT_ORIGIN));

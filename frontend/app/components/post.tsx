@@ -150,7 +150,8 @@ export default function Post({
                     user.profilePicture.base64,
                     user.profilePicture.type
                   )
-                : "https://imgur.com/mkrjkrY.png"
+                  : undefined
+                
             }
           />
           <Button variant={"ghost"}>
