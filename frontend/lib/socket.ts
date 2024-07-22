@@ -1,8 +1,32 @@
 import { API_ORIGIN } from "@/app/config/apiConfig";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 
-const socket = io(API_ORIGIN, {
-  withCredentials: true,
-});
+let socket: Socket;
 
-export default socket;
+const getSocket = () => {
+  if (!socket) {
+    socket = io(API_ORIGIN, {
+      withCredentials: true,
+    });
+
+    // Add general event listeners
+    socket.on("connect", () => {
+      console.log("Connected to server.");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server.");
+    });
+
+    socket.on("reconnect_attempt", () => {
+      console.log("Attempting to reconnect...");
+    });
+
+    socket.on("reconnect", (attemptNumber) => {
+      console.log(`Reconnected to server after ${attemptNumber} attempts.`);
+    });
+  }
+  return socket;
+};
+
+export default getSocket;

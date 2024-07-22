@@ -1,19 +1,29 @@
 import { cn, getTime2 } from "@/lib/utils";
-import { TChatProps } from "../types";
+import { TChatMessageProps, TFile } from "../types";
 import AvatarWrapper from "./avatar-wrapper";
 import { send } from "process";
-import { Check, CheckCheck, Clock, Timer } from "lucide-react";
+import { Check, CheckCheck, Clock, File, Timer } from "lucide-react";
+import React from "react";
+import { createUrl, identifyMultimediaFileType } from "@/util/file";
+import Image from "next/image";
 
 function ChatMessage({
   name,
   message,
   sender = "default",
   audio,
+  video,
+  attachment,
   chatType = "private",
   date,
-}: TChatProps) {
+}: TChatMessageProps) {
   let dateModif = getTime2(new Date(date?.toString() as string));
-  console.log(audio);
+  // console.log(audio);
+  console.log(attachment);
+
+  if ((!attachment || !attachment.length) && !message && !video && !audio)
+    return;
+
   return (
     <div
       className={cn(
@@ -22,15 +32,26 @@ function ChatMessage({
       )}
     >
       <div className="bg-neutral-100 p-2 w-fit  rounded-t-md rounded-b-lg">
-        {message && audio ? (
-          <>message and audio</>
+        {audio ? (
+          <audio controls>
+            <source src={audio.url} type={audio.type}></source>
+            Your browser doesn&apos;t support the audio element.
+          </audio>
+        ) : video ? (
+          <video controls>
+            <source src={video.url} type={video.type}></source>
+            Your browser doesn&apos;t support the video element.
+          </video>
+        ) : attachment && attachment.length > 0 && message ? (
+          <div>
+            {attachment.map((file, index) => (
+              <span key={index}>{file.name}</span>
+            ))}
+          </div>
         ) : message ? (
           <>{message}</>
         ) : (
-          <audio controls>
-            <source src={audio?.url} type={audio?.type}></source>
-            Your browser doesn&apos;t support the audio element.
-          </audio>
+          attachment && attachment.length > 0 && renderAttachment(attachment)
         )}
       </div>
 
@@ -47,24 +68,60 @@ function ChatMessage({
       >
         {dateModif}
       </span>
-      {/* <div
-        className={cn(
-          " w-4 scale-x-[1.9] bg-white aspect-square absolute  top-0 z-0",
-          sender === "you"
-            ? "-right-4 rounded-br-full"
-            : "-left-4 rounded-bl-full"
-        )}
-      ></div>
-      <div
-        className={cn(
-          " w-4 bg-neutral-200 aspect-square absolute   top-0 z-0 rotate-180",
-          sender === "you"
-            ? "-right-4 rounded-br-full"
-            : "-left-4 rounded-bl-full"
-        )}
-      ></div> */}
     </div>
   );
 }
 
 export default ChatMessage;
+
+function renderAttachment(attachment: TFile[]): React.ReactElement {
+  return (
+    <>
+      {attachment.map((file: TFile, index) => {
+        let toRender: React.ReactElement;
+
+        const fileUrl = createUrl(file.base64, file.type);
+
+        switch (identifyMultimediaFileType(file.type)) {
+          case "Photo":
+            toRender = fileUrl ? (
+              <Image
+                src={fileUrl}
+                alt={file.name}
+                width={400}
+                height={400}
+                className="max-w-[400px]  object-contain"
+              />
+            ) : (
+              <>Tried to send Unsupported Image</>
+            );
+            break;
+          case "Audio":
+            toRender = (
+              <audio controls>
+                <source src={fileUrl} type={file.type}></source>
+                Your browser doesn&apos;t support the audio element.
+              </audio>
+            );
+            break;
+          case "Video":
+            toRender = (
+              <video controls>
+                <source src={fileUrl} type={file.type}></source>
+                Your browser doesn&apos;t support the video element.
+              </video>
+            );
+            break;
+          default:
+            toRender = (
+              <div className="flex flex-col items-center">
+                <File />
+                <span>{file.name.slice(10)}</span>
+              </div>
+            );
+        }
+        return toRender;
+      })}
+    </>
+  );
+}

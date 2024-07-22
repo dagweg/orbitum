@@ -45,9 +45,6 @@ export async function getPrivateChat(req: Request, res: Response) {
           },
           {
             path: "attachment",
-            populate: {
-              path: "images videos audios",
-            },
           },
         ],
       })

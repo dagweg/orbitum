@@ -42,18 +42,39 @@ export const handleMessageSend =
       const sender = socket.data.user.userId;
       const receiver = new ObjectId(to);
 
-      if (JSON.stringify(attachment) !== "{}" && attachment && content) {
-        const { attachmentId } = await new Attachments().createAttachment(
+      if (attachment && attachment.length > 0 && content) {
+        /**
+         * Handle case where both attachment and content (message) are provided
+         */
+
+        const { fileIds } = await new Attachments().createAttachment(
           attachment
         );
-        if (attachmentId) {
+        if (fileIds) {
           message = await new Message().createMessageWithAttachment(
-            content,
-            attachmentId,
+            fileIds,
+            sender,
+            content
+          );
+        } else {
+          throw new Error("File Ids not found");
+        }
+      } else if (attachment && attachment.length > 0) {
+        /**
+         * Handle case where only attachment is provided without any content (message)
+         */
+
+        const { fileIds } = await new Attachments().createAttachment(
+          attachment
+        );
+
+        if (fileIds) {
+          message = await new Message().createMessageWithAttachment(
+            fileIds,
             sender
           );
         } else {
-          throw new Error("Attachment Id not found");
+          throw new Error("File Ids not found!");
         }
       } else if (audio) {
         const audioId = (
@@ -89,19 +110,20 @@ export const handleMessageSend =
         message.id
       );
 
-      const newNotification = await new Notification().createNotficiation(
-        receiver,
-        `You have a new ${audio ? "audio " : video ? "video " : ""}message`,
-        `${
-          audio ? "Listen to the audio" : video ? "Watch the video" : content
-        }.`,
-        "this-is-supposed-to-be-a-link"
-      );
+      // console.log(privateChat);
+      // const newNotification = await new Notification().createNotficiation(
+      //   receiver,
+      //   `You have a new ${audio ? "audio " : video ? "video " : ""}message`,
+      //   `${
+      //     audio ? "Listen to the audio" : video ? "Watch the video" : content
+      //   }.`,
+      //   "this-is-supposed-to-be-a-link"
+      // );
 
-      console.log(
-        "THis is the new notification \n",
-        newNotification.notification
-      );
+      // console.log(
+      //   "THis is the new notification \n",
+      //   newNotification.notification
+      // );
 
       if (message && socketId) {
         console.log("SENDING THIS TO USER ", message);
@@ -112,14 +134,14 @@ export const handleMessageSend =
           video,
           attachment,
         });
-        if (newNotification.notification) {
-          io.to(socketId).emit(SocketEvents.EMIT_NOTIFICATION, {
-            from: socket.data.user.userId,
-            notification: newNotification.notification,
-          });
-        } else {
-          console.log("Notification not sent! Plase check the controller");
-        }
+        // if (newNotification.notification) {
+        //   io.to(socketId).emit(SocketEvents.EMIT_NOTIFICATION, {
+        //     from: socket.data.user.userId,
+        //     notification: newNotification.notification,
+        //   });
+        // } else {
+        //   console.log("Notification not sent! Plase check the controller");
+        // }
       } else {
         console.log("Message is undefined or socketId is undefined");
       }

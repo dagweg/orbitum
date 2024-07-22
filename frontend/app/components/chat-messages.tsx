@@ -42,23 +42,34 @@ function ChatMessages({
       className="h-full  overflow-y-scroll overflow-x-clip no-scrollbar  mb-[50px]"
     >
       {messages &&
-        messages.map((message: TMessage, index) => (
-          <ChatMessage
-            key={index}
-            name={message.sender.userName}
-            message={message.content}
-            audio={
-              message.audio
-                ? {
-                    url: createUrl(message.audio.base64, message.audio.type)!,
-                    type: message.audio.type,
-                  }
-                : undefined
-            }
-            sender={message.you ? "you" : "default"}
-            date={message.date}
-          />
-        ))}
+        messages.map((message: TMessage, index) => {
+          const audio = message.audio
+            ? {
+                url: createUrl(message.audio.base64, message.audio.type)!,
+                type: message.audio.type,
+              }
+            : undefined;
+
+          const video = message.video
+            ? {
+                url: createUrl(message.video.base64, message.video.type)!,
+                type: message.video.type,
+              }
+            : undefined;
+
+          return (
+            <ChatMessage
+              key={index}
+              name={message.sender.userName}
+              message={message.content}
+              audio={audio}
+              video={video}
+              attachment={message.attachment}
+              sender={message.you ? "you" : "default"}
+              date={message.date}
+            />
+          );
+        })}
     </section>
   );
 }

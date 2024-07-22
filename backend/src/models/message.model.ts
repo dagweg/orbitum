@@ -17,10 +17,12 @@ const messageSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Video",
   },
-  attachment: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Attachment",
-  },
+  attachment: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,

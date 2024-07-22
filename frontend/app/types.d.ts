@@ -11,14 +11,13 @@ export type TContactProps = {
 type TSender = "you" | "default";
 type TChatType = "default" | "private" | "group" | "channel";
 
-export type TChatProps = {
+export type TChatMessageProps = {
   name: string;
-  message: string;
+  message?: string;
   sender?: TSender;
-  audio?: {
-    url: string;
-    type: string;
-  };
+  audio?: Pick<TAudio, "url" | "type">;
+  video?: Pick<TVideo, "url" | "type">;
+  attachment?: TFile[];
   chatType?: TChatType;
   date?: Date;
 };
@@ -27,8 +26,10 @@ export type TMessage = {
   sender: {
     userName: string;
   };
-  content: string;
-  audio: TAudio;
+  content?: string;
+  audio?: TAudio;
+  video?: TVideo;
+  attachment?: TFile[];
   date: Date;
   you: boolean;
 };

@@ -29,8 +29,6 @@ export function useChatSocket() {
     refreshChat();
   });
 
-  useSocket("chat:receiveAudio", ({ from, message }) => {});
-
   useSocket("chat:type", (from) => {
     console.log("tyPING", from);
 

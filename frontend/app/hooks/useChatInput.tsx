@@ -10,10 +10,13 @@ import {
   useRef,
   useState,
 } from "react";
-import socket from "@/lib/socket";
 import { arrayBuffertoBase64, base64ToBlob } from "@/util/file";
 import { TAttachment, TAudio, TVideo } from "../types";
 import { setChatMessage } from "@/lib/redux/slices/message/chatMessageSlice";
+import { clearAttachments } from "@/lib/redux/slices/attachment/chatAttachmentSlice";
+import getSocket from "@/lib/socket";
+
+const socket = getSocket();
 
 /**
  * Everything related to the chatinput is handled here inside useChatInput hook
@@ -70,8 +73,9 @@ export function useChatInput(chatTextAreaRef: RefObject<HTMLTextAreaElement>) {
     if (keys.enter && keys.leftShift) {
       // Send Message Here
       handleMessageSend();
-      if (chatTextAreaRef && chatTextAreaRef.current)
+      if (chatTextAreaRef && chatTextAreaRef.current) {
         chatTextAreaRef.current.value = "";
+      }
     }
   }
 
@@ -86,24 +90,27 @@ export function useChatInput(chatTextAreaRef: RefObject<HTMLTextAreaElement>) {
   }
 
   function handleMessageSend() {
-    console.log(message);
-    if (chatArea.currentChat) {
-      socket.emit("chat:sendMessage", {
-        to: chatArea.currentChat.recipientId,
-        content: message,
-        audio: chatAudio.audio,
-        video: chatVideo.video,
-        attachment:
-          chatAttachment.attachments.audios.length ||
-          chatAttachment.attachments.videos.length ||
-          chatAttachment.attachments.photos.length
-            ? chatAttachment.attachments
-            : undefined,
-      });
+    const data = {
+      to: chatArea?.currentChat?.recipientId,
+      content: message.length > 0 ? message : undefined,
+      audio: chatAudio.audio,
+      video: chatVideo.video,
+      attachment: chatAttachment.attachments,
+    };
 
-      setTimeout(() => refreshChat(), 50);
-    }
+    console.log("Sending data", data);
+
+    socket.emit("chat:sendMessage", {
+      to: chatArea?.currentChat?.recipientId,
+      content: message.length > 0 ? message : undefined,
+      audio: chatAudio.audio,
+      video: chatVideo.video,
+    });
+
+    setTimeout(() => refreshChat(), 50);
+
     dispatch(setChatMessage(""));
+    dispatch(clearAttachments());
   }
 
   return {

@@ -82,7 +82,7 @@ function ChatTextArea({
     setHasStartedTyping({ ...hasStartedTyping, you: true });
   };
 
-  console.log(chatAudio.audio);
+  // console.log(chatAudio.audio);
 
   return (
     <>

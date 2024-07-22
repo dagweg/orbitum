@@ -29,7 +29,14 @@ export type TAttachVideo = TVideo & {
   name: string;
 };
 
-export type TAttachments = TAttachAudio[] | TAttachVideo[] | TAttachPhoto[];
+export type TFile = {
+  name: string;
+  type: string;
+  base64: string;
+  url?: string;
+};
+
+export type TAttachments = TFile[];
 
 export type TMessagePayload = {
   to: string;

@@ -7,9 +7,9 @@ export class Message {
   constructor() {}
 
   async createMessageWithAttachment(
-    content: string,
-    attachmentId: mongoose.Types.ObjectId,
-    sender: mongoose.Types.ObjectId
+    fileIds: mongoose.Types.ObjectId[],
+    sender: mongoose.Types.ObjectId,
+    content?: string
   ): Promise<{
     message?: Object;
     id?: ObjectId;
@@ -19,9 +19,10 @@ export class Message {
       const message = await MessageModel.create({
         sender,
         content,
-        attachment: attachmentId,
+        attachment: fileIds,
       });
-
+      console.log(message);
+      // await message.populate("attachment");
       return { message, id: message._id };
     } catch (error) {
       return { error: error as Error };

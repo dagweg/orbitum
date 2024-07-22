@@ -1,7 +1,6 @@
 import { arrayBuffertoBase64 } from "@/util/file";
 import { Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
 import { MicHandlerReturn, TAudio } from "../types";
-import socket from "@/lib/socket";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useChatSocket } from "./useChatSocket";
@@ -10,6 +9,9 @@ import {
   setIsRecording,
 } from "@/lib/redux/slices/audio/chatAudioSlice";
 import useSocket from "./useSocket";
+import getSocket from "@/lib/socket";
+
+const socket = getSocket();
 
 export function useAudio() {
   // For Audio recording
@@ -72,15 +74,13 @@ export function useAudio() {
       // Stop recording
       dispatch(setIsRecording(false));
       console.log(chatAudio.audio);
-      if (chatArea && chatArea.currentChat && chatAudio) {
-        socket.emit("chat:sendMessage", {
-          to: chatArea.currentChat.recipientId,
-          audio: audioRef.current,
-        });
-      } else {
-        console.error("ChatArea is undefined or there is no audio");
-      }
+      socket.emit("chat:sendMessage", {
+        to: chatArea?.currentChat?.recipientId,
+        audio: audioRef.current,
+      });
       mediaRecorderRef.current?.stop();
+      audioRef.current = undefined;
+      setAudio(undefined);
     }
 
     return { start, stop };

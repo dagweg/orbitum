@@ -35,6 +35,7 @@ export function AttachmentButton() {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     // console.log(e.target.files);
     const fileList: FileList | null = e.target.files;
+    console.log(fileList);
     if (!fileList) return;
 
     for (let i = 0; i < fileList.length; i++) {
@@ -66,6 +67,7 @@ export function AttachmentButton() {
         ref={fileRef}
         onChange={(e) => handleFileChange(e)}
         hidden
+        multiple
       />
       <Button variant={"circleGhost"} onClick={handleAttachmentButtonClick}>
         <Paperclip className="" />

@@ -19,6 +19,7 @@ export default function chatRouteHandler(): Router {
   router.use(validateSession);
 
   router.get("/private", getPrivateChats);
+
   router.get(
     "/private/user",
     validateGETRequestSchema(GetPrivateChatSchema),

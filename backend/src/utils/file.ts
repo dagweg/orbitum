@@ -1,4 +1,6 @@
-export function identifyMultimediaFileType(fileType: string): string {
+export function identifyMultimediaFileType(
+  fileType: string
+): "Photo" | "Video" | "Audio" | "Unknown" {
   const photoTypes = [
     "image/jpeg",
     "image/png",

@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import socket from "@/lib/socket";
+import getSocket from "@/lib/socket";
 
 export default function useSocket(
   eventName: string = "connect",
   callback: (data: any) => void = () => {}
 ) {
   useEffect(() => {
+    const socket = getSocket();
+
     const handleConnect = () => {
       console.log("Connected to the server");
     };
