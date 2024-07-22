@@ -103,7 +103,7 @@ export default function PostInput() {
                         <div className="relative group/image">
                           <Image
                             src={image.url}
-                            alt={image.name}
+                            alt={image.name ?? "Image"}
                             width={50}
                             height={50}
                             key={key}

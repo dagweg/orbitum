@@ -42,12 +42,7 @@ export const handleMessageSend =
       const sender = socket.data.user.userId;
       const receiver = new ObjectId(to);
 
-      if (
-        JSON.stringify(attachment) !== "{}" &&
-        attachment &&
-        attachment &&
-        content
-      ) {
+      if (JSON.stringify(attachment) !== "{}" && attachment && content) {
         const { attachmentId } = await new Attachments().createAttachment(
           attachment
         );

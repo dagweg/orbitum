@@ -1,23 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TAudio, TImage, TVideo } from "@/app/types";
+import { TAudio, TFile, TImage, TVideo } from "@/app/types";
 
-export type TChatAttachment = {
-  audios: TAudio[] | [];
-  videos: TVideo[] | [];
-  photos: TImage[] | [];
-};
+// export type TChatAttachment = {
+//   audios: TAudio[] | [];
+//   videos: TVideo[] | [];
+//   photos: TImage[] | [];
+// };
 
 export type TChatAttachmentProps = {
-  attachments: TChatAttachment;
+  attachments: TFile[];
   isUploadAttachmentOpen: boolean;
 };
 
 let initialState: TChatAttachmentProps = {
-  attachments: {
-    audios: [],
-    videos: [],
-    photos: [],
-  },
+  attachments: [],
   isUploadAttachmentOpen: false,
 };
 
@@ -25,14 +21,16 @@ const chatAttachmentSlice = createSlice({
   name: "chatAttachment",
   initialState,
   reducers: {
-    setAudios(state, action) {
-      state.attachments.audios = action.payload;
+    addAttachment(state, action: { payload: TFile }) {
+      state.attachments.push(action.payload);
     },
-    setVideos(state, action) {
-      state.attachments.videos = action.payload;
+    clearAttachments(state) {
+      state.attachments = [];
     },
-    setPhotos(state, action) {
-      state.attachments.photos = action.payload;
+    removeAttachment(state, action: { payload: number }) {
+      state.attachments = state.attachments.filter(
+        (_, i) => i !== action.payload
+      );
     },
     setIsUploadAttachmentOpen(state, action) {
       state.isUploadAttachmentOpen = action.payload;
@@ -40,6 +38,10 @@ const chatAttachmentSlice = createSlice({
   },
 });
 
-export const { setAudios, setVideos, setPhotos, setIsUploadAttachmentOpen } =
-  chatAttachmentSlice.actions;
+export const {
+  addAttachment,
+  removeAttachment,
+  clearAttachments,
+  setIsUploadAttachmentOpen,
+} = chatAttachmentSlice.actions;
 export const ChatAttachment = chatAttachmentSlice.reducer;

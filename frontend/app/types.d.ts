@@ -114,21 +114,31 @@ export type TImagePost = {
 };
 
 export type TImage = {
+  name?: string;
   type: string;
   base64: string;
   url: string;
 };
 
 export type TVideo = {
+  name?: string;
   url: string;
   base64: string;
   type: string;
 };
 
 export type TAudio = {
+  name?: string;
   url: string;
   base64: string;
   type: string;
+};
+
+export type TFile = {
+  name: string;
+  type: string;
+  base64: string;
+  url?: string;
 };
 
 export type TAttachAudio = TAudio & {

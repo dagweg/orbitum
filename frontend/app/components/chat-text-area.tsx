@@ -58,6 +58,9 @@ function ChatTextArea({
   const chatAudio = useSelector((state: RootState) => state.ChatAudio);
   const chatVideo = useSelector((state: RootState) => state.ChatVideo);
   const message = useSelector((state: RootState) => state.ChatMessage);
+  const { attachments } = useSelector(
+    (state: RootState) => state.ChatAttachment
+  );
 
   const [emojiPane, setEmojiPane] = useState({
     enabled: false,
@@ -98,10 +101,15 @@ function ChatTextArea({
         </div>
 
         <section className="relative pb-2  w-full  mx-auto flex flex-col-reverse items-end gap-3 bg-neutral-200 pt-4 h-fit px-10">
-          <div className=" relative h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto  max-w-[700px]   duration-200 ease-in   rounded-t-none rounded-b-3xl">
+          <div
+            className={cn(
+              " relative h-fit flex items-center justify-around gap-4 bg-white w-full p-2 mx-auto  max-w-[700px]   duration-200 ease-in    rounded-lg",
+              attachments.length > 0 && "!rounded-t-none"
+            )}
+          >
             <span
               className={cn(
-                "absolute right-0 top-[-25px] flex font-semibold items-center gap-1 scale-0 duration-100 ease-in origin-bottom",
+                "text-xs absolute right-[10px] top-[-20px] flex font-semibold items-center gap-1 scale-0 duration-100 ease-in origin-bottom",
                 chatAudio.isRecording && "scale-100 w-auto"
               )}
             >
@@ -109,7 +117,7 @@ function ChatTextArea({
                 color="red"
                 className="animate-pulse duration-1000"
               />
-              <span>Rec</span>
+              <span>REC</span>
             </span>
 
             <div className="h-full flex flex-col-reverse items-end">
@@ -137,44 +145,39 @@ function ChatTextArea({
                 >
                   <Smile />
                 </Button>
-                <Button
-                  onClick={hasStartedTyping.you ? handleMessageSend : undefined}
-                  variant={"circleGhost"}
-                  onMouseDown={
-                    !hasStartedTyping.you ? handleMicRecord().start : undefined
-                  }
-                  onMouseUp={
-                    !hasStartedTyping.you ? handleMicRecord().stop : undefined
-                  }
-                  className={cn(
-                    "relative",
-                    chatAudio.isRecording &&
-                      "text-red-500 hover:text-red-500 bg-pink-100 hover:bg-pink-100 "
-                  )}
-                >
-                  <div className="relative z-[100]">
-                    <SendHorizontal
-                      className={cn(
-                        "scale-0 w-0 duration-200 ease-in",
-                        (hasStartedTyping.you || message.length > 0) &&
-                          "scale-100 w-auto"
-                      )}
-                    />
-                  </div>
-                  <div
+
+                {hasStartedTyping.you ||
+                message.length > 0 ||
+                attachments.length > 0 ? (
+                  <Button variant={"circleGhost"} onClick={handleMessageSend}>
+                    <div className="relative z-[100]">
+                      <SendHorizontal
+                        className={cn("duration-200 ease-in w-auto")}
+                      />
+                    </div>
+                  </Button>
+                ) : (
+                  <Button
+                    variant={"circleGhost"}
+                    onMouseUp={handleMicRecord().stop}
+                    onMouseDown={handleMicRecord().start}
                     className={cn(
-                      "relative flex flex-col  justify-center",
-                      hasStartedTyping.you && "scale-0 w-0"
+                      "relative",
+                      chatAudio.isRecording &&
+                        "text-red-500 hover:text-red-500 bg-pink-100 hover:bg-pink-100 "
                     )}
                   >
-                    <Mic
-                      className={cn(
-                        "scale-100 w-auto duration-200 ease-in z-10"
-                      )}
-                    />
-                    {/* <span className="font-xs ">Rec</span> */}
-                  </div>
-                </Button>
+                    <div
+                      className={cn("relative flex flex-col  justify-center")}
+                    >
+                      <Mic
+                        className={cn(
+                          "scale-100 w-auto duration-200 ease-in z-10"
+                        )}
+                      />
+                    </div>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
