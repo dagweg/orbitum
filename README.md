@@ -1,6 +1,6 @@
 # Orbitum - Social Media Platform Powered By Next.js & Express
 
-A social media platform that has the essential features for a social media with a focus on minimalism and clean aesthetics.
+A social media platform that has the essential features like any social media with a focus on minimalism and clean aesthetics.
 
 ## Features
 + Create a Post (Text only, Image + Text, Video + Text)
