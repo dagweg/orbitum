@@ -10,3 +10,9 @@ export const ViewMessageSchema = z.object({
     message: "Message id can't be empty",
   }),
 });
+
+export const DeleteChatSchema = z.object({
+  chatId: z.string().refine((val) => val.trim().length > 0, {
+    message: "ChatID is required to delete a chat.",
+  }),
+});
