@@ -25,7 +25,7 @@ export class PrivateChat {
     message: mongoose.Types.ObjectId
   ): Promise<{ privateChat?: Object; error?: Error }> {
     try {
-      let chat = await PrivateChatModel.findOneAndUpdate(
+      const chat = await PrivateChatModel.findOneAndUpdate(
         {
           $or: [
             { user1, user2 },

@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import { Posts } from "../../models/posts.model";
-import mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 
 export async function getAllPosts(req: Request, res: Response) {
   try {
     const { userId } = req.user;
-    const userIdObject = new ObjectId(userId);
 
-    let posts = await Posts.find({})
+    const posts = await Posts.find({})
       .populate("user")
       .populate({
         path: "comments",
@@ -24,7 +21,7 @@ export async function getAllPosts(req: Request, res: Response) {
       .populate("shares")
       .populate("likes");
 
-    let newPosts = posts
+    const newPosts = posts
       .sort(
         (a, b) =>
           (b.createdAt as Date).getTime() - (a.createdAt as Date).getTime()

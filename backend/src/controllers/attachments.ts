@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import { TAttachments } from "../types/types";
 import { identifyMultimediaFileType } from "../utils/file";
-import { Video } from "../models/video.model";
-import { Audio } from "../models/audio.model";
-import { Image } from "../models/Image.model";
 import { FileModel } from "../models/file.model";
 
 export default class Attachments {
@@ -24,7 +21,7 @@ export default class Attachments {
 
         const { name, type, base64 } = attachment;
 
-        let newFile = await FileModel.create({
+        const newFile = await FileModel.create({
           name,
           type,
           base64,

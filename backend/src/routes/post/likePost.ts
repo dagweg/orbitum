@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { Posts } from "../../models/posts.model";
-import { ObjectId } from "mongodb";
-import mongoose from "mongoose";
 
 export async function likePost(req: Request, res: Response) {
   try {
-    let { userId } = req.user;
+    const { userId } = req.user;
     const { postId } = req.body;
 
     // const userIdObject = new mongoose.Types.ObjectId(userId);

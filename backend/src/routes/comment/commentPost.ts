@@ -15,7 +15,7 @@ export async function postComment(req: Request, res: Response) {
       });
     }
 
-    let newComment = await Comments.create({
+    const newComment = await Comments.create({
       user: userId,
       post: postId,
       text: comment,

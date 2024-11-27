@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { InferSchemaType } from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
+
 
 /**
  *

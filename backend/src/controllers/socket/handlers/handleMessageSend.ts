@@ -1,5 +1,5 @@
-import { Server as SocketIOServer } from "socket.io";
-import { Socket } from "socket.io";
+import { Server as SocketIOServer , Socket } from "socket.io";
+
 import SocketEvents from "../../../config/socketEvents";
 import { TMessagePayload } from "../../../types/types";
 import Attachments from "../../attachments";
