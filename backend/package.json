@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon --files src/index.ts",
+    "start": "node dist/index.js",
     "build": "pnpm tsc",
     "serve": "node dist/index.js",
     "lint": "eslint ./src/**/*.{js,ts}",
