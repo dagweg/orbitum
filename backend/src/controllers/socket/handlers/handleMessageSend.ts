@@ -1,4 +1,4 @@
-import { Server as SocketIOServer , Socket } from "socket.io";
+import { Server as SocketIOServer, Socket } from "socket.io";
 
 import SocketEvents from "../../../config/socketEvents";
 import { TMessagePayload } from "../../../types/types";
@@ -8,7 +8,6 @@ import { Audio } from "../../audio";
 import { Video } from "../../video";
 import { PrivateChat } from "../../privateChat";
 import { ObjectId } from "mongodb";
-import { Notification } from "../../notification";
 
 /**
  *

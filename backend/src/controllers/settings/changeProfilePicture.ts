@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../../models/user.model";
-import { Image } from "../../models/Image.model";
+import { Image } from "../../models/image.model";
 
 export async function changeProfilePicture(req: Request, res: Response) {
   try {

@@ -1,6 +1,5 @@
 import mongoose, { InferSchemaType } from "mongoose";
 
-
 const ImageSchema = new mongoose.Schema({
   type: {
     type: String,

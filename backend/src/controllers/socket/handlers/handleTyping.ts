@@ -1,5 +1,4 @@
-import { Server as SocketIOServer , Socket } from "socket.io";
-
+import { Server as SocketIOServer, Socket } from "socket.io";
 
 export const handleTyping =
   (io: SocketIOServer, socket: Socket, userMap: Map<string, string>) =>

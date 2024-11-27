@@ -1,4 +1,3 @@
-import { TAttachments, TAudio } from "../types/types";
 import { Message as MessageModel } from "../models/message.model";
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
