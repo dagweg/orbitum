@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Posts } from "../../models/posts.model";
 import { Video } from "../../models/video.model";
 import { Types } from "mongoose";
-import { Image } from "../../models/Image.model";
+import { Image } from "../../models/image.model";
 
 export async function createPost(req: Request, res: Response) {
   try {

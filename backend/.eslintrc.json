@@ -8,12 +8,12 @@
     "node": true,
     "es2021": true
   },
-  // "extends": [
-  //   "eslint:recommended",
-  //   "plugin:@typescript-eslint/recommended",
-  //   "plugin:import/errors",
-  //   "plugin:import/warnings"
-  // ],
+  "extends": [
+    // "eslint:recommended",
+    // "plugin:@typescript-eslint/recommended",
+    // "plugin:import/errors",
+    // "plugin:import/warnings"
+  ],
   "plugins": ["@typescript-eslint"],
   "rules": {
     // "import/no-unresolved": [2, { "commonjs": true, "amd": true }]
