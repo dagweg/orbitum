@@ -74,7 +74,7 @@ app.get("/api/v1/mock/conversations", (req: Request, res: Response) => {
 // Socket.IO
 socketHandler(server);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 server.listen(port, () => {
   console.log("LISTENING ON PORT ", port);
