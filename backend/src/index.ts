@@ -1,4 +1,3 @@
-// // const express = require("express");
 import express from "express";
 import { Server } from "http";
 import connectDB from "./utils/db";
