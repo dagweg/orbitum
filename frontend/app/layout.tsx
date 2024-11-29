@@ -51,6 +51,7 @@ export default function RootLayout({
         <script
           src="https://kit.fontawesome.com/bb488c4407.js"
           crossOrigin="anonymous"
+          defer
         ></script>
       </Head>
       <ReduxProvider>

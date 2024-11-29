@@ -99,7 +99,10 @@ export function AttachmentButton() {
                   icon = <File size={50} />;
               }
               return (
-                <div className="relative group/file h-full bg-neutral-100 px-3 rounded-md flex flex-col items-center">
+                <div
+                  key={index}
+                  className="relative group/file h-full bg-neutral-100 px-3 rounded-md flex flex-col items-center"
+                >
                   <Button
                     variant={"circleGhost"}
                     onClick={() => dispatch(removeAttachment(index))}

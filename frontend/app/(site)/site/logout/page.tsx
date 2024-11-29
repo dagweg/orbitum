@@ -2,8 +2,10 @@
 
 import LoaderPage from "@/app/components/loader-page";
 import { API_ORIGIN } from "@/app/config/apiConfig";
-import socket from "@/lib/socket";
+import getSocket from "@/lib/socket";
 import { useEffect } from "react";
+
+const socket = getSocket();
 
 function Logout() {
   useEffect(() => {

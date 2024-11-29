@@ -38,8 +38,9 @@ function NotificationsPage() {
         </Button>
       </div>
       {notifications.map(
-        ({ title, description, date, user, link, thumbnail }) => (
+        ({ title, description, date, user, link, thumbnail }, key) => (
           <NotificationCard
+            key={key}
             title={title}
             description={description}
             imgSrc={
