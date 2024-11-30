@@ -61,7 +61,7 @@ export default function OtpPage() {
         body: JSON.stringify({ token }),
       });
 
-      console.log(response)
+      console.log(response);
 
       const data = await response.json();
 
@@ -132,14 +132,13 @@ export default function OtpPage() {
   }
 
   function resendOTP() {
-    fetch(`${API_ORIGIN}/api/v1/otp/generate`, {
+    fetch(`${API_ORIGIN}/api/v1/otp/resend`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token,
-        inputOtp: otp,
+        email,
       }),
     }).then(async (res) => {
       const data = await res.json();
