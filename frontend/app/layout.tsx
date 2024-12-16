@@ -35,9 +35,16 @@ const lato = Lato({ subsets: ["latin"], weight: "400" });
 
 const workSans = Work_Sans({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Orbitum",
   description: "Social Media Platform",
+  externalScripts: [
+    {
+      src: "https://kit.fontawesome.com/bb488c4407.js",
+      crossOrigin: "anonymous",
+      defer: true,
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -47,13 +54,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      {/* <Head>
         <script
           src="https://kit.fontawesome.com/bb488c4407.js"
           crossOrigin="anonymous"
           defer
         ></script>
-      </Head>
+      </Head> */}
       <ReduxProvider>
         <body
           suppressHydrationWarning

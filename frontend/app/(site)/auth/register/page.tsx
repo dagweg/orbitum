@@ -73,26 +73,43 @@ function Register() {
         setLoading(false);
         tokenRef.current = data.token;
         setErrors({});
+
+        let errz: TZodErrors = {};
+
         switch (res.status) {
           case 200:
             redirectToOtpPage();
             break;
           case 409:
-            toast({
-              title: "An error has occured",
-              description: data.message,
-            });
+            // toast({
+            //   title: "An error has occured",
+            //   description: data.message,
+            // });
             if (!data.verified) {
-              dialogRef.current?.click();
+              redirectToOtpPage();
             }
+            errz["email"] = {
+              message: data.errors.email,
+              code: "custom",
+              path: ["email"],
+            };
+            errz["userName"] = {
+              message: data.errors.username,
+              code: "custom",
+              path: ["userName"],
+            };
+
+            console.log(errz);
+            setErrors(errz);
             break;
           case 400:
-            let errz: TZodErrors = getMappedZodErrors(data);
+            errz = getMappedZodErrors(data);
             if (errz["confirmPassword"]) {
               if (formValues.password !== formValues.confirmPassWord)
                 errz["confirmPassWord"].message = "Passwords don't match";
               else errz["confirmPassWord"].message = "";
             }
+            console.log(errz);
             setErrors(errz);
             break;
           default:
@@ -107,7 +124,7 @@ function Register() {
   };
 
   return (
-    <div className="w-full sm:min-w-fit sm:w-[450px]  my-4 duration-300  p-10 mx-auto rounded-md">
+    <div className="w-full sm:min-w-fit sm:w-[450px]   my-4 duration-300  p-10 mx-auto rounded-md">
       <h1 className="text-4xl font-bold  mb-4 font-lemonMilk flex w-full justify-center flex-col items-center">
         <Image src={"/logo/logo.ico"} alt="" width={65} height={65} />
         <span className="tracking-[6pt] text-sm opacity-60">Orbitum</span>
@@ -253,9 +270,8 @@ function Register() {
                 An unverified account has been found!
               </AlertDialogTitle>
               <AlertDialogDescription>
-                We have found an account with the following credentials. Click
-                continue if you want us to send you an otp so that you get
-                verified and start using our platform.
+                Click continue if you want us to send you an otp so that you get
+                verified and start using Orbitum.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

@@ -3,7 +3,7 @@ import { SESSION_TOKEN } from "../config/constants";
 
 export async function checkLoginStatus(sessionToken: string | undefined) {
   try {
-    if(!sessionToken) return false
+    if (!sessionToken) return false;
 
     const res = await fetch(`${API_ORIGIN}/api/v1/user/status`, {
       headers: {
@@ -14,7 +14,7 @@ export async function checkLoginStatus(sessionToken: string | undefined) {
     });
 
     const data = await res.json();
-    if(!res.ok) return false
+    if (!res.ok) return false;
     return data.loggedIn;
   } catch (error) {
     console.log("ERROR CHECKING LOGGED IN STATUS: ", (error as Error).message);

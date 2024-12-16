@@ -28,12 +28,26 @@ export async function registerUser(req: Request, res: Response) {
         message: "Conflict",
         verified: user.emailVerified,
         token,
+        errors: {
+          username: "",
+          email: "",
+        },
       };
+
+      // If the user is not verified send an otp and upate the new otp to the db user table
+      if (!user.emailVerified) {
+        user.otp = otp;
+        user.otpExpiry = otpExpiry;
+        await user.save();
+
+        await sendOtpEmail(userData.email, otp, otpExpiry);
+      }
+
       if (user.email === userData.email) {
-        response.message =
+        response.errors["email"] =
           "User with the specified email already exists. Please login!";
       } else if (user.userName === userData.userName) {
-        response.message =
+        response.errors["username"] =
           "User with the specified username already exists. Please login!";
       }
 
@@ -46,6 +60,8 @@ export async function registerUser(req: Request, res: Response) {
       otp,
       otpExpiry,
     });
+
+    user.save();
 
     await sendOtpEmail(userData.email, otp, otpExpiry);
 
