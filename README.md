@@ -2,6 +2,10 @@
 
 A social media platform that has the essential features like any social media with a focus on minimalism and clean aesthetics.
 
+
+<img width="1902" height="948" alt="image" src="https://github.com/user-attachments/assets/0a16f8bd-5599-443f-baa9-aa5b136fc741" />
+
+
 ## Features
 + Create a Post (Text only, Image + Text, Video + Text)
 + Make Post comments 
